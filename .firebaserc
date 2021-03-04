@@ -7,6 +7,9 @@
       "hosting": {
         "nco": [
           "aa-nco"
+        ],
+        "uac": [
+          "aa-uac"
         ]
       }
     }
