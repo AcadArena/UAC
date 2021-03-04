@@ -14,6 +14,7 @@ const mcs = makeStyles({
     backgroundPosition: "center",
     backgroundImage: `url(${DraftingFrame})`,
   },
+  scores: {},
 });
 
 const InGame = () => {
