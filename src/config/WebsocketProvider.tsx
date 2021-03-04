@@ -24,7 +24,7 @@ if (window.location.hostname === "localhost") {
   host = hostCloud;
 }
 let socket = io.connect(`${host}`);
-socket.emit("join_room", { room: "nco", username: "brodcast module" });
+socket.emit("join_room", { room: "uac", username: "brodcast module" });
 socket.on("set_live_settings", (settings: any) =>
   store.dispatch(setLiveSettings(settings))
 );

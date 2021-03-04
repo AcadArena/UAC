@@ -16,6 +16,8 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { wsContext } from "../config/WebsocketProvider";
 import { Transition } from "react-spring/renderprops";
 import { RouteComponentProps, withRouter } from "react-router-dom";
+import LeftFrame from "../assets/imgs/left-frame.png";
+import RightFrame from "../assets/imgs/right-frame.png";
 
 const ms = makeStyles({
   screen: {
@@ -28,8 +30,8 @@ const ms = makeStyles({
 
   LowerThirds: {
     position: "absolute",
-    bottom: 99,
-    left: 108,
+    top: 822,
+    left: 359,
 
     "& .fade-enter": {
       opacity: 0,
@@ -63,10 +65,10 @@ const ms = makeStyles({
   headline: {
     color: "#ffd200",
     fontFamily: "'industry', sans-serif",
-    fontSize: 34,
+    fontSize: 34 * 0.746031746031746,
     fontWeight: "bold",
     flex: 1,
-    padding: "0px 39px 0px 67px",
+    padding: `0px ${39 * 0.746031746031746}px 0px ${67 * 0.746031746031746}px`,
     display: "flex",
     alignItems: "center",
     textTransform: "uppercase",
@@ -76,11 +78,11 @@ const ms = makeStyles({
     backgroundColor: "#fff",
     color: "#02143c",
     fontFamily: "'industry'",
-    height: 37,
+    height: 37 * 0.746031746031746,
     display: "flex",
     alignItems: "center",
-    padding: "0px 39px 0px 0px",
-    fontSize: "13.5pt",
+    padding: `0px ${39 * 0.746031746031746}px 0px 0px`,
+    fontSize: "10.07142857142857pt",
     fontWeight: "bold",
     textTransform: "uppercase",
     letterSpacing: 2,
@@ -101,11 +103,11 @@ const ms = makeStyles({
     width: "100%",
     alignItems: "center",
     // justifyContent: "center",
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(2 * 0.746031746031746),
 
     "& .caster": {
       display: "flex",
-      padding: theme.spacing(0, 6),
+      padding: theme.spacing(0, 6 * 0.746031746031746),
       flexDirection: "column",
       borderRight: "3px solid rgba(255,255,255,.7)",
 
@@ -116,7 +118,7 @@ const ms = makeStyles({
       "& .name": {
         color: "#fff",
         fontFamily: "industry",
-        fontSize: 38,
+        fontSize: 38 * 0.746031746031746,
         textTransform: "uppercase",
         fontWeight: "bold",
         whiteSpace: "pre",
@@ -125,7 +127,7 @@ const ms = makeStyles({
         fontWeight: "bold",
         color: "#ffd200",
         fontFamily: "industry",
-        fontSize: 20,
+        fontSize: 20 * 0.746031746031746,
         textTransform: "uppercase",
       },
     },
@@ -142,12 +144,12 @@ const ms = makeStyles({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    padding: "0px 39px 0px 67px",
+    padding: `0px ${39 * 0.746031746031746}px 0px ${67 * 0.746031746031746}px`,
 
     "& .headline": {
       color: "#ffd200",
       fontFamily: "'industry', sans-serif",
-      fontSize: 28,
+      fontSize: 28 * 0.746031746031746,
       fontWeight: "bold",
       textTransform: "uppercase",
     },
@@ -156,9 +158,9 @@ const ms = makeStyles({
       textTransform: "uppercase",
       fontFamily: "industry",
       color: "#f9f9f9",
-      fontSize: 54,
+      fontSize: 54 * 0.746031746031746,
       fontWeight: "bold",
-      marginTop: -15,
+      marginTop: -15 * 0.746031746031746,
       whiteSpace: "nowrap",
     },
   },
@@ -166,11 +168,11 @@ const ms = makeStyles({
     display: "flex",
     height: "100%",
     width: "100%",
-    paddingLeft: theme.spacing(7),
+    paddingLeft: theme.spacing(7 * 0.746031746031746),
     alignItems: "center",
 
     "& .teamLogo": {
-      width: 100,
+      width: 100 * 0.746031746031746,
       height: "90% ",
       backgroundSize: "contain",
       backgroundPosition: "center",
@@ -183,7 +185,7 @@ const ms = makeStyles({
       backgroundRepeat: "no-repeat",
       transformOrigin: "bottom center",
       height: "100%",
-      width: 120,
+      width: 120 * 0.746031746031746,
       transform: "scale(1.3)",
     },
 
@@ -191,12 +193,17 @@ const ms = makeStyles({
       flex: 1,
       display: "flex",
       flexDirection: "column",
-      padding: theme.spacing(0, 7, 0, 3),
+      padding: theme.spacing(
+        0,
+        7 * 0.746031746031746,
+        0,
+        3 * 0.746031746031746
+      ),
 
       "& .playerName": {
         fontFamily: "industry",
         fontWeight: "bold",
-        fontSize: 24,
+        fontSize: 24 * 0.746031746031746,
         textTransform: "uppercase",
         color: "#ffd200",
       },
@@ -204,7 +211,7 @@ const ms = makeStyles({
         fontFamily: "industry",
         alignSelf: "flex-start",
         fontWeight: 600,
-        fontSize: 26,
+        fontSize: 26 * 0.746031746031746,
         textTransform: "uppercase",
         color: "#f9f9f9",
         lineHeight: 1,
@@ -244,7 +251,7 @@ const ms = makeStyles({
 
         "& .divider": {
           width: 2,
-          height: 48,
+          height: 48 * 0.746031746031746,
           backgroundColor: "#f9f9f9",
         },
 
@@ -262,7 +269,7 @@ const ms = makeStyles({
 
           "& .property": {
             color: "#ffd200",
-            fontSize: 16,
+            fontSize: 16 * 0.746031746031746,
             fontFamily: "industry",
             fontWeight: "bold",
             fontStyle: "italic",
@@ -270,9 +277,9 @@ const ms = makeStyles({
           },
 
           "& .value": {
-            marginTop: -5,
+            marginTop: -5 * 0.746031746031746,
             color: "#fff",
-            fontSize: 28,
+            fontSize: 28 * 0.746031746031746,
             fontFamily: "industry",
             fontWeight: "bold",
             textTransform: "uppercase",
@@ -282,26 +289,26 @@ const ms = makeStyles({
     },
   },
   hidden: {
-    height: 0,
-    width: 0,
+    height: 10 * 0.746031746031746,
+    width: 10 * 0.746031746031746,
     opacity: 0,
-    display: "none",
+    // display: "none",
   },
 
   match: {
     display: "flex",
     position: "absolute",
-    bottom: 99,
-    left: 108,
+    top: 822,
+    left: 359,
     zIndex: 999,
     justifyContent: "space-between",
-    width: 1700,
+    width: 1700 * 0.746031746031746,
     alignItems: "center",
 
     "& .vs": {
       fontFamily: "Druk Wide Bold, sans-serif",
-      fontSize: 34,
-      color: "#004fff",
+      fontSize: 34 * 0.746031746031746,
+      color: "#ffd200",
     },
 
     "& .team": {
@@ -310,9 +317,9 @@ const ms = makeStyles({
       alignItems: "center",
 
       "& .logo": {
-        height: "65%",
-        width: 100,
-        margin: "0px 57px 0px 62px",
+        height: "90%",
+        width: 120 * 0.746031746031746,
+        margin: `0px ${52 * 0.746031746031746}px`,
         backgroundSize: "contain",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -326,7 +333,7 @@ const ms = makeStyles({
           color: "#ddd",
           fontFamily: "industry, sans-serif",
           textTransform: "uppercase",
-          fontSize: 20,
+          fontSize: 20 * 0.746031746031746,
           fontWeight: "bold",
           lineHeight: 1,
           // letterSpacing: 1,
@@ -335,7 +342,7 @@ const ms = makeStyles({
           color: "#ffd200",
           fontFamily: "Druk Wide Bold, sans-serif",
           textTransform: "uppercase",
-          fontSize: 34,
+          fontSize: 34 * 0.746031746031746,
           lineHeight: 1,
         },
       },
@@ -349,9 +356,54 @@ const ms = makeStyles({
         color: "#f9f9f9",
         fontFamily: "Druk Wide Bold, sans-serif",
         textTransform: "uppercase",
-        fontSize: 55,
-        margin: "0px 47px",
+        fontSize: 55 * 0.746031746031746,
+        margin: `0px ${47}px`,
       },
+    },
+  },
+
+  frame1: {
+    backgroundPosition: "center",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundImage: `url(${LeftFrame})`,
+    height: 451,
+    width: 654,
+    position: "absolute",
+    top: 336,
+    left: 333,
+
+    "& .caster": {
+      position: "absolute",
+      left: 22,
+      bottom: 23,
+      color: "#fff",
+      textTransform: "uppercase",
+      fontFamily: "Druk Wide Bold",
+      fontSize: 24,
+    },
+  },
+
+  frame2: {
+    backgroundPosition: "center",
+    backgroundSize: "contain",
+    backgroundRepeat: "no-repeat",
+    backgroundImage: `url(${RightFrame})`,
+    height: 451,
+    width: 654,
+    position: "absolute",
+    top: 336,
+    left: 997,
+
+    "& .caster": {
+      position: "absolute",
+      right: 22,
+      bottom: 23,
+      color: "#fff",
+      textTransform: "uppercase",
+      textAlign: "right",
+      fontFamily: "Druk Wide Bold",
+      fontSize: 24,
     },
   },
 });
@@ -433,7 +485,28 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
       <img src={lowerThirds?.player?.team?.logo} className={c.hidden} />
       <img src={getTeamLogo(match?.player1_id)} className={c.hidden} />
       <img src={getTeamLogo(match?.player2_id)} className={c.hidden} />
-
+      <div className={c.frame1}>
+        <div className="caster">
+          {!Boolean(params.get("alt"))
+            ? casters
+              ? casters[0].name
+              : ""
+            : casters_alt
+            ? casters_alt[0].name
+            : ""}
+        </div>
+      </div>
+      <div className={c.frame2}>
+        <div className="caster">
+          {!Boolean(params.get("alt"))
+            ? casters
+              ? casters[1].name
+              : ""
+            : casters_alt
+            ? casters_alt[1].name
+            : ""}
+        </div>
+      </div>
       <Transition
         items={match_live}
         from={{ opacity: 0, transform: "translateY(10px)" }}
@@ -523,13 +596,14 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                             </div>
                             <div className={c.ticker}>
                               <Marquee
-                                gradientWidth={100}
+                                gradientWidth={100 * 0.746031746031746}
                                 className={c.tickerInner}
                                 style={{
                                   width:
                                     getLTWidth(
                                       getSize(lowerThirds?.mode ?? "ticker")
-                                    ) - 126,
+                                    ) -
+                                    126 * 0.746031746031746,
                                 }}
                               >
                                 {lowerThirds?.ticker
@@ -545,10 +619,14 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                                         1 ===
                                       i ? (
                                         <span
-                                          style={{ margin: "0px 20px" }}
+                                          style={{
+                                            margin: `0px ${
+                                              20 * 0.746031746031746
+                                            }px`,
+                                          }}
                                         ></span>
                                       ) : (
-                                        <span style={{ margin: "0px 20px" }}>
+                                        <span style={{ margin: `0px ${20}px` }}>
                                           |
                                         </span>
                                       )}

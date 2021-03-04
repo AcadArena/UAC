@@ -7,6 +7,9 @@ import { makeStyles } from "@material-ui/core";
 import LowerThirdTicker from "./comps/lowerthirds/LowerThirdTicker";
 import { Route, Switch } from "react-router-dom";
 import CasterCam from "./view/CasterCam";
+import Schedule from "./view/Schedule";
+import Standings from "./view/Standings";
+import InGame from "./view/InGame";
 
 const ms = makeStyles({
   app: {
@@ -24,6 +27,15 @@ function App() {
       <Switch>
         <Route path="/castercam">
           <CasterCam />
+        </Route>
+        <Route path="/schedule">
+          <Schedule />
+        </Route>
+        <Route path="/standings">
+          <Standings group={["ADMU", "DLSU", "MU", "USC", "USA", "FEU"]} />
+        </Route>
+        <Route path="/ingame">
+          <InGame />
         </Route>
       </Switch>
     </div>
