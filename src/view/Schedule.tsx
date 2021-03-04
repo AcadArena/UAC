@@ -195,7 +195,6 @@ const Schedule = () => {
     matches_today = [],
     tournament = { participants: [] },
     match,
-    countdown_minutes = 0,
   } = useSelector((state: ReduxState) => state.live);
 
   const getOrgName = (id: number): string => {

@@ -101,26 +101,34 @@ const Standings: React.FC<{ group?: string[] }> = ({
       (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
     );
 
-    let lost: number =
-      matches
-        ?.map((m) => m.loser_id)
-        .reduce((acc, cur) => {
-          if (groupIds.includes(cur)) {
-            return acc + 1;
-          } else {
-            return acc;
+    let lost: number = 0;
+    let win: number = 0;
+
+    matches
+      ?.filter(
+        (match) =>
+          groupIds.includes(match.player1_id) ||
+          groupIds.includes(match.player2_id)
+      )
+      .forEach((match) => {
+        console.log(match);
+        let isTeam1 = groupIds.includes(match.player1_id);
+        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
+
+        if (isTeam1) {
+          if (ss && ss[1] > ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] < ss[2]) {
+            lost = lost + 1;
           }
-        }, 0) ?? 0;
-    let win: number =
-      matches
-        ?.map((m) => m.winner_id)
-        .reduce((acc, cur) => {
-          if (groupIds.includes(cur)) {
-            return acc + 1;
-          } else {
-            return acc;
+        } else {
+          if (ss && ss[1] < ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] > ss[2]) {
+            lost = lost + 1;
           }
-        }, 0) ?? 0;
+        }
+      });
     return `${win}-${lost}`;
   };
 
@@ -134,17 +142,36 @@ const Standings: React.FC<{ group?: string[] }> = ({
       (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
     );
 
-    return (
-      matches
-        ?.map((m) => m.winner_id)
-        .reduce((acc, cur) => {
-          if (groupIds.includes(cur)) {
-            return acc + 1;
-          } else {
-            return acc;
+    let lost: number = 0;
+    let win: number = 0;
+
+    matches
+      ?.filter(
+        (match) =>
+          groupIds.includes(match.player1_id) ||
+          groupIds.includes(match.player2_id)
+      )
+      .forEach((match) => {
+        console.log(match);
+        let isTeam1 = groupIds.includes(match.player1_id);
+        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
+
+        if (isTeam1) {
+          if (ss && ss[1] > ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] < ss[2]) {
+            lost = lost + 1;
           }
-        }, 0) ?? 0
-    );
+        } else {
+          if (ss && ss[1] < ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] > ss[2]) {
+            lost = lost + 1;
+          }
+        }
+      });
+
+    return win;
   };
   const getGroupsLoses = (team?: Participant): number => {
     const groupIds: number[] = team?.group_player_ids ?? [];
@@ -152,17 +179,36 @@ const Standings: React.FC<{ group?: string[] }> = ({
       (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
     );
 
-    return (
-      matches
-        ?.map((m) => m.loser_id)
-        .reduce((acc, cur) => {
-          if (groupIds.includes(cur)) {
-            return acc + 1;
-          } else {
-            return acc;
+    let lost: number = 0;
+    let win: number = 0;
+
+    matches
+      ?.filter(
+        (match) =>
+          groupIds.includes(match.player1_id) ||
+          groupIds.includes(match.player2_id)
+      )
+      .forEach((match) => {
+        console.log(match);
+        let isTeam1 = groupIds.includes(match.player1_id);
+        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
+
+        if (isTeam1) {
+          if (ss && ss[1] > ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] < ss[2]) {
+            lost = lost + 1;
           }
-        }, 0) ?? 0
-    );
+        } else {
+          if (ss && ss[1] < ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] > ss[2]) {
+            lost = lost + 1;
+          }
+        }
+      });
+
+    return lost;
   };
 
   const groupsSort = (a?: Participant, b?: Participant) => {

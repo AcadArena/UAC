@@ -9,7 +9,11 @@ import { Route, Switch } from "react-router-dom";
 import CasterCam from "./view/CasterCam";
 import Schedule from "./view/Schedule";
 import Standings from "./view/Standings";
+import Drafting from "./view/Drafting";
 import InGame from "./view/InGame";
+import Timer from "./comps/timer/Timer";
+import TimerOnly from "./view/TimerOnly";
+import VsScreen from "./view/VsScreen";
 
 const ms = makeStyles({
   app: {
@@ -34,8 +38,17 @@ function App() {
         <Route path="/standings">
           <Standings group={["ADMU", "DLSU", "MU", "USC", "USA", "FEU"]} />
         </Route>
+        <Route path="/drafting">
+          <Drafting />
+        </Route>
         <Route path="/ingame">
           <InGame />
+        </Route>
+        <Route path="/vs">
+          <VsScreen />
+        </Route>
+        <Route path="/timer">
+          <TimerOnly />
         </Route>
       </Switch>
     </div>

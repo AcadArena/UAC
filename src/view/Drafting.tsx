@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Participant, ReduxState } from "../config/types/types";
-import InGameFrame from "../assets/imgs/ingame.png";
+import DraftingFrame from "../assets/imgs/drafting.png";
 import { getOriginalNode } from "typescript";
 import theme from "../Theme";
 
@@ -14,7 +14,7 @@ const mcs = makeStyles({
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
     backgroundPosition: "center",
-    backgroundImage: `url(${InGameFrame})`,
+    backgroundImage: `url(${DraftingFrame})`,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -28,12 +28,11 @@ const mcs = makeStyles({
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      width: 75,
-      height: 21,
+      width: 136,
+      height: 41,
       fontFamily: "Druk Wide Bold",
       textTransform: "uppercase",
-      fontSize: 12,
-      marginTop: 1,
+      fontSize: 20,
       color: "#0d0e0e",
     },
 
@@ -41,8 +40,8 @@ const mcs = makeStyles({
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      // margin: "0px 5px",
-      height: 50,
+      margin: "0px 10px",
+      height: 70,
       width: 50,
       color: "#fff",
       fontFamily: "Anton",
@@ -51,17 +50,15 @@ const mcs = makeStyles({
     },
   },
   teams: {
-    width: 631,
-    height: 46,
+    width: 914,
+    height: 50,
     position: "absolute",
-    top: 70,
+    top: 158,
     display: "flex",
     justifyContent: "space-between",
 
     "& .two": {
       flexDirection: "row-reverse",
-      paddingLeft: 0,
-      paddingRight: 30,
       "& .details": {
         flex: 1,
         "& .org": { textAlign: "right" },
@@ -71,18 +68,17 @@ const mcs = makeStyles({
 
     "& .team": {
       display: "flex",
-      height: 46,
-      width: 305,
-      paddingLeft: 30,
+      height: 50,
+      width: 396,
       alignItems: "center",
 
       "& .logo": {
-        height: "70%",
+        height: "80%",
         width: 50,
         backgroundSize: "contain",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        margin: "0px 5px",
+        margin: "0px 10px",
       },
 
       "& .details": {
@@ -90,7 +86,7 @@ const mcs = makeStyles({
           color: "#ffd200",
           fontFamily: "Anton",
           lineHeight: 1,
-          fontSize: 18,
+          fontSize: 20,
 
           textTransform: "uppercase",
         },
@@ -98,7 +94,7 @@ const mcs = makeStyles({
           color: "#ffffff",
           fontFamily: "Anton",
           textTransform: "uppercase",
-          fontSize: 8,
+          fontSize: 10,
           lineHeight: 1,
           letterSpacing: 1,
           paddingTop: 3,
@@ -108,7 +104,7 @@ const mcs = makeStyles({
   },
 });
 
-const InGame = () => {
+const Drafting = () => {
   const c = mcs();
   const {
     match,
@@ -273,4 +269,4 @@ const InGame = () => {
   );
 };
 
-export default InGame;
+export default Drafting;

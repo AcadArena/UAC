@@ -23,6 +23,7 @@ export interface Live {
   stat_player?: PlayerStatProps;
   stat_player_vs?: StatPlayerVsProps;
   stat_team_vs?: TeamVsProps;
+  game_number?: number;
   swap_team_positions?: boolean;
 }
 
