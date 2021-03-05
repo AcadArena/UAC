@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { ReduxState } from "../../config/types/types";
+import { Match, ReduxState } from "../../config/types/types";
 
 // @ts-ignore
 import { Textfit } from "react-textfit";
@@ -37,11 +37,14 @@ const ms = makeStyles((theme) => ({
           margin: "0px 20px 0px 20px",
           fontFamily: "Anton",
           alignSelf: "center",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
         },
 
         "& .badge": {
-          color: "#fbfbfb",
-          backgroundColor: "#004fff",
+          color: "#0d0e0e",
+          backgroundColor: "#ffd200",
           padding: "3px 10px",
           display: "flex",
           alignItems: "center",
@@ -51,7 +54,8 @@ const ms = makeStyles((theme) => ({
           transform: "skew(-10deg)",
           fontFamily: "industry",
           fontWeight: "bold",
-          width: 97,
+          fontSize: 12,
+          width: 87,
           // height: 30,
 
           "& .item": {
@@ -62,7 +66,7 @@ const ms = makeStyles((theme) => ({
         "& .team": {
           display: "flex",
           alignItems: "center",
-          width: 200,
+          width: 170,
           "& .logo": {
             height: 55,
             width: 55,
@@ -79,6 +83,7 @@ const ms = makeStyles((theme) => ({
             lineHeight: 1,
             textAlign: "left",
             fontSize: 14,
+            width: 100,
             letterSpacing: 1,
           },
         },
@@ -103,7 +108,7 @@ const ms = makeStyles((theme) => ({
       display: "flex",
       flex: 1,
       justifyContent: "center",
-      // alignItems: "center",
+      alignItems: "center",
       "& .team": {
         width: 160,
         display: "flex",
@@ -183,7 +188,7 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
   const c = ms();
   const {
     matches_today = [],
-    tournament = { participants: [] },
+    tournament = { participants: [], matches: [] },
     match,
   } = useSelector((state: ReduxState) => state.live);
 
@@ -216,6 +221,62 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
       )?.logo ??
       ""
     );
+  };
+
+  const team = (id: number | undefined) => {
+    return tournament?.participants?.find((p) =>
+      p.group_player_ids.includes(id ?? 0)
+    );
+  };
+
+  const getGroupsWins = (team?: Participant): number => {
+    const groupIds: number[] = team?.group_player_ids ?? [];
+    const matches = tournament?.matches.filter(
+      (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
+    );
+
+    let lost: number = 0;
+    let win: number = 0;
+
+    matches
+      ?.filter(
+        (match) =>
+          groupIds.includes(match.player1_id) ||
+          groupIds.includes(match.player2_id)
+      )
+      .forEach((match) => {
+        console.log(match);
+        let isTeam1 = groupIds.includes(match.player1_id);
+        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
+
+        if (isTeam1) {
+          if (ss && ss[1] > ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] < ss[2]) {
+            lost = lost + 1;
+          }
+        } else {
+          if (ss && ss[1] < ss[2]) {
+            win = win + 1;
+          } else if (ss && ss[1] > ss[2]) {
+            lost = lost + 1;
+          }
+        }
+      });
+
+    return win;
+  };
+
+  const badger = (m: Match) => {
+    let team1 = team(m.player1_id);
+    let team2 = team(m.player2_id);
+    if (getGroupsWins(team1) > getGroupsWins(team2)) {
+      return `#${team1?.university_acronym}WIN`;
+    } else if (getGroupsWins(team1) < getGroupsWins(team2)) {
+      return `#${team2?.university_acronym}WIN`;
+    } else if (getGroupsWins(team1) === getGroupsWins(team2)) {
+      return m.badge ?? "SOON";
+    }
   };
 
   return (
@@ -266,6 +327,9 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
         <div className="matches">
           {matches_today.map((match) => (
             <div className="match" key={match.id}>
+              <div className="badge">
+                <div className="item">{badger(match)}</div>
+              </div>
               <div className="team left">
                 <div
                   className="logo"
@@ -276,7 +340,9 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
 
                 <div className="name">{getOrgName(match.player1_id)}</div>
               </div>
-              <div className="vs">VS</div>
+              <div className="vs">
+                <div className="">vs</div>
+              </div>
               <div className="team">
                 <div
                   className="logo"
