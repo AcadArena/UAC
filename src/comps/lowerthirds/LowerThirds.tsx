@@ -64,8 +64,12 @@ const ms = makeStyles({
     filter: (props): string =>
       props.shadow
         ? props.reversecut
-          ? "drop-shadow(-12px 9px 0 #ffd200)"
-          : "drop-shadow(12px 9px 0 #ffd200)"
+          ? `drop-shadow(${-12 * 0.746031746031746}px ${
+              9 * 0.746031746031746
+            }px 0 #ffd200)`
+          : `drop-shadow(${12 * 0.746031746031746}px ${
+              9 * 0.746031746031746
+            }px 0 #ffd200)`
         : "none",
   },
   logo: {

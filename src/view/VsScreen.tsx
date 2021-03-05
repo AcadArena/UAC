@@ -72,7 +72,7 @@ const VsScreen = () => {
   const c = mcs();
   const { tournament, match } = useSelector((state: ReduxState) => state.live);
 
-  const team = (t: Number): Participant | undefined => {
+  const team = (t: number): Participant | undefined => {
     return tournament?.participants.find((p) => p.group_player_ids.includes(t));
   };
 

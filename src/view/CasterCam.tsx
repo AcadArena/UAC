@@ -9,6 +9,7 @@ import {
   ReduxState,
   LowerThirdsMode,
   Participant,
+  VetoItem,
 } from "../config/types/types";
 import Marquee from "react-fast-marquee";
 import theme from "../Theme";
@@ -18,7 +19,14 @@ import { Transition } from "react-spring/renderprops";
 import { RouteComponentProps, withRouter } from "react-router-dom";
 import LeftFrame from "../assets/imgs/left-frame.png";
 import RightFrame from "../assets/imgs/right-frame.png";
-
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForward";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import CancelIcon from "@material-ui/icons/Cancel";
+import ascentMap from "../assets/imgs/ascent.jpeg";
+import bindMap from "../assets/imgs/bind.jpeg";
+import splitMap from "../assets/imgs/split.jpeg";
+import iceboxMap from "../assets/imgs/icebox.jpeg";
+import havenMap from "../assets/imgs/haven.jpeg";
 const ms = makeStyles({
   screen: {
     position: "relative",
@@ -32,6 +40,7 @@ const ms = makeStyles({
     position: "absolute",
     top: 822,
     left: 359,
+    opacity: 0,
 
     "& .fade-enter": {
       opacity: 0,
@@ -407,11 +416,70 @@ const ms = makeStyles({
       fontSize: 24,
     },
   },
+  veto: {
+    display: "flex",
+    alignItems: "center",
+    height: "100%",
+    "& .wrapper": {
+      display: "flex",
+      alignItems: "center",
+      height: "100%",
+    },
+    "& .title": {
+      color: "#ffd200",
+      fontFamily: "Anton",
+      fontSize: 50,
+      textTransform: "uppercase",
+      padding: theme.spacing(0, 2, 0, 5),
+    },
+    "& .veto-item": {
+      width: 100,
+      paddingTop: 5,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      margin: theme.spacing(0, 2),
+      "& .team": {
+        fontFamily: "Anton",
+        fontSize: 20,
+        lineHeight: 1,
+        color: "#ffd200",
+      },
+      "& .map": {
+        width: 100,
+        height: 50,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        fontFamily: "Anton",
+        color: "#ffd200",
+        textTransform: "uppercase",
+        textShadow: "0px 2px 4px rgba(0,0,0,1)",
+        letterSpacing: 1,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      },
+      "& .type": {
+        marginTop: -10,
+        position: "relative",
+        zIndex: 100,
+      },
+    },
+  },
 });
 
 // const isNumber = (n: any): boolean => {
 //   return /^-?[\d.]+(?:e-?\d+)?$/.test(n);
 // };
+
+const maps = {
+  ascent: ascentMap,
+  bind: bindMap,
+  haven: havenMap,
+  split: splitMap,
+  icebox: iceboxMap,
+};
 
 const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
   switch (string) {
@@ -425,6 +493,8 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
       return "medium";
     case "playerQuote":
       return "medium";
+    case "veto":
+      return 1400;
     default:
       return "medium";
   }
@@ -763,6 +833,107 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                                 backgroundImage: `url(${lowerThirds?.player?.photo_main})`,
                               }}
                             ></div>
+                          </div>
+                        )}
+
+                        {lowerThirds?.mode === "veto" && (
+                          <div className={c.veto}>
+                            <div className="title">Veto</div>
+                            <ArrowForwardIosIcon style={{ color: "#ffd200" }} />
+                            <Transition
+                              items={match?.veto ?? []}
+                              keys={(v) => v.map}
+                              from={{
+                                opacity: 0,
+                                transform: "translateX(-5px)",
+                              }}
+                              enter={{
+                                opacity: 1,
+                                transform: "translateX(0px)",
+                              }}
+                              trail={200}
+                            >
+                              {(v, state, i) => (props) => (
+                                <div className="wrapper" style={props}>
+                                  <div className="veto-item">
+                                    <div className="team">
+                                      {v.team.university_acronym}
+                                    </div>
+                                    <div
+                                      className="map"
+                                      style={{
+                                        backgroundImage: `url(${maps[v.map]})`,
+                                        filter:
+                                          v.type === "ban"
+                                            ? "grayscale(100%)"
+                                            : "none",
+                                        color:
+                                          v.type === "ban" ? "#eee" : "#ffd200",
+                                      }}
+                                    >
+                                      {v.map}
+                                    </div>
+                                    {v.type === "ban" ? (
+                                      <CancelIcon className="type" />
+                                    ) : (
+                                      <CheckCircleIcon
+                                        className="type"
+                                        style={{
+                                          color: "#ffd200",
+                                        }}
+                                      />
+                                    )}
+                                  </div>
+                                  {Boolean(
+                                    i !== (match?.veto?.length ?? 5) - 1
+                                  ) && (
+                                    <ArrowForwardIosIcon
+                                      style={{ color: "#ffd200" }}
+                                    />
+                                  )}
+                                </div>
+                              )}
+                            </Transition>
+                            {/* {match?.veto?.map((v, i) => (
+                              <div className="wrapper">
+                                <div className="veto-item">
+                                  <div className="team">
+                                    {v.team.university_acronym}
+                                  </div>
+                                  <div
+                                    className="map"
+                                    style={{
+                                      backgroundImage: `url(${maps[v.map]})`,
+                                      filter:
+                                        v.type === "ban"
+                                          ? "grayscale(100%)"
+                                          : "none",
+                                      color:
+                                        v.type === "ban" ? "#eee" : "#ffd200",
+                                    }}
+                                  >
+                                    {v.map}
+                                  </div>
+                                  {v.type === "ban" ? (
+                                    <CancelIcon className="type" />
+                                  ) : (
+                                    <CheckCircleIcon
+                                      className="type"
+                                      style={{
+                                        color: "#ffd200",
+                                      }}
+                                    />
+                                  )}
+                                </div>
+                                {Boolean(
+                                  i !== (match?.veto?.length ?? 5) - 1
+                                ) && (
+                                  <ArrowForwardIosIcon
+                                    style={{ color: "#ffd200" }}
+                                  />
+                                )}
+                              </div>
+                            ))} */}
                           </div>
                         )}
                       </div>

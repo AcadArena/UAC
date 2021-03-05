@@ -14,6 +14,8 @@ import InGame from "./view/InGame";
 import Timer from "./comps/timer/Timer";
 import TimerOnly from "./view/TimerOnly";
 import VsScreen from "./view/VsScreen";
+import Winner from "./view/Winner";
+import ModuleContainer from "./view/ModuleContainer";
 
 const ms = makeStyles({
   app: {
@@ -49,6 +51,15 @@ function App() {
         </Route>
         <Route path="/timer">
           <TimerOnly />
+        </Route>
+        <Route path="/winner1">
+          <Winner />
+        </Route>
+        <Route path="/winner2">
+          <Winner alt />
+        </Route>
+        <Route path="/content">
+          <ModuleContainer />
         </Route>
       </Switch>
     </div>
