@@ -15,6 +15,7 @@ import Timer from "./comps/timer/Timer";
 import TimerOnly from "./view/TimerOnly";
 import VsScreen from "./view/VsScreen";
 import Winner from "./view/Winner";
+import WinnerAlt from "./view/WinnerAlt";
 import ModuleContainer from "./view/ModuleContainer";
 
 const ms = makeStyles({

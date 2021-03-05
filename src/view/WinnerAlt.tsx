@@ -75,7 +75,7 @@ const mcs = makeStyles({
   },
 });
 
-const Winner: React.FC<{ alt?: boolean }> = ({ alt }) => {
+const WinnerAlt: React.FC = () => {
   const c = mcs();
   const { tournament, match } = useSelector((state: ReduxState) => state.live);
 
@@ -138,21 +138,15 @@ const Winner: React.FC<{ alt?: boolean }> = ({ alt }) => {
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  !alt
-                    ? team(match?.player1_id ?? 0)?.logo ?? ""
-                    : team(match?.player2_id ?? 0)?.logo ?? ""
+                  team(match?.player2_id ?? 0)?.logo ?? ""
                 })`,
               }}
             ></div>
             <div className="org">
-              {!alt
-                ? team(match?.player1_id ?? 0)?.org_name ?? ""
-                : team(match?.player2_id ?? 0)?.org_name ?? ""}
+              {team(match?.player2_id ?? 0)?.org_name ?? ""}
             </div>
             <div className="school">
-              {!alt
-                ? team(match?.player1_id ?? 0)?.university_name ?? ""
-                : team(match?.player2_id ?? 0)?.university_name ?? ""}
+              {team(match?.player2_id ?? 0)?.university_name ?? ""}
             </div>
           </div>
         )}
@@ -161,4 +155,4 @@ const Winner: React.FC<{ alt?: boolean }> = ({ alt }) => {
   );
 };
 
-export default Winner;
+export default WinnerAlt;

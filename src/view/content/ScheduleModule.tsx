@@ -90,7 +90,8 @@ const ms = makeStyles((theme) => ({
     flexDirection: "column",
     width: "50%",
     alignItems: "center",
-    // padding: "0px 10px",s
+    justifyContent: "center",
+    // padding: "0px 10px",
 
     "& .head": {
       fontFamily: "Anton",
