@@ -30,9 +30,10 @@ const mcs = makeStyles({
       alignItems: "center",
       width: 136,
       height: 41,
-      fontFamily: "Druk Wide Bold",
+      fontFamily: "Anton",
       textTransform: "uppercase",
-      fontSize: 20,
+      fontSize: 30,
+      // marginTop: 2,
       color: "#0d0e0e",
     },
 
@@ -135,15 +136,15 @@ const Drafting = () => {
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }
@@ -175,7 +176,7 @@ const Drafting = () => {
                 )
               )}
         </div>
-        <div className="gameCount">Game {game_number}</div>
+        <div className="gameCount">Groups</div>
         <div className="score">
           {!swap_team_positions
             ? getGroupMatchResults(

@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { ReduxState } from "../../config/types/types";
 import frame from "../../assets/imgs/pvp-stats-frame.png";
 import { stat } from "fs";
+import { Spring, Transition } from "react-spring/renderprops";
+import { TransitionGroup } from "react-transition-group";
 
 const mcs = makeStyles({
   playerModule: {
@@ -40,6 +42,8 @@ const mcs = makeStyles({
     display: "flex",
     flexDirection: "column",
     fontFamily: "Anton",
+    justifyContent: "center",
+    paddingBottom: 104,
     textTransform: "uppercase",
     "& .stat": {
       color: "#fff",
@@ -50,7 +54,8 @@ const mcs = makeStyles({
 
       "& .value": {
         color: "#ffd200",
-        fontFamily: "Anton",
+        fontFamily: "industry",
+        fontWeight: "bold",
         flex: 1,
         fontSize: 22,
       },
@@ -64,6 +69,8 @@ const mcs = makeStyles({
         margin: "0px 20px",
         textAlign: "center",
         fontSize: 14,
+        fontFamily: "industry",
+        fontWeight: "bold",
         // transform: "skew(-5deg)",
       },
     },
@@ -134,14 +141,95 @@ const PlayerVsPlayerModule: React.FC<{ className?: string }> = ({
     <div className={c.playerModule + " " + className} {...props}>
       <div className="head">PLAYER MATCHUP</div>
       <div className={c.content}>
-        <div
-          className="player"
-          style={{
-            backgroundImage: `url(${stat_player_vs?.player1.photo_main})`,
-          }}
-        ></div>
+        <Spring
+          from={{ opacity: 0, transform: "translateX(-10px)" }}
+          to={{ opacity: 1, transform: "translateX(0px)" }}
+          delay={800}
+        >
+          {(props) => (
+            <div
+              className="player"
+              style={{
+                backgroundImage: `url(${stat_player_vs?.player1.photo_main})`,
+                ...props,
+              }}
+            ></div>
+          )}
+        </Spring>
+
         <div className={c.stats}>
-          {stat_player_vs?.stat_names
+          <Transition
+            items={
+              stat_player_vs?.stat_names?.filter((sn) =>
+                Boolean(
+                  stat_player_vs.player1.stats.find((s) => s.stat_name === sn)
+                    ?.isOn &&
+                    stat_player_vs.player2.stats.find((s) => s.stat_name === sn)
+                      ?.isOn
+                )
+              ) ?? []
+            }
+            keys={(s: string) => s}
+            from={{ opacity: 0 }}
+            enter={{ opacity: 1 }}
+            trail={100}
+          >
+            {(sn) => (props) => (
+              <div className="stat" style={props}>
+                <div
+                  className="value left"
+                  style={{
+                    color:
+                      parseInt(
+                        stat_player_vs?.player1.stats.find(
+                          (s) => s.stat_name === sn
+                        )?.stat_value ?? 0 + ""
+                      ) >
+                      parseInt(
+                        stat_player_vs?.player2.stats.find(
+                          (s) => s.stat_name === sn
+                        )?.stat_value ?? 0 + ""
+                      )
+                        ? "#ffd200"
+                        : "#fff",
+                  }}
+                >
+                  {
+                    stat_player_vs?.player1.stats.find(
+                      (s) => s.stat_name === sn
+                    )?.stat_value
+                  }
+                </div>
+                <div className="name">{sn}</div>
+                <div
+                  className="value right"
+                  style={{
+                    color:
+                      parseInt(
+                        stat_player_vs?.player1.stats.find(
+                          (s) => s.stat_name === sn
+                        )?.stat_value ?? 0 + ""
+                      ) <
+                      parseInt(
+                        stat_player_vs?.player2.stats.find(
+                          (s) => s.stat_name === sn
+                        )?.stat_value ?? 0 + ""
+                      )
+                        ? "#ffd200"
+                        : "#fff",
+                  }}
+                >
+                  {
+                    stat_player_vs?.player2.stats.find(
+                      (s) => s.stat_name === sn
+                    )?.stat_value
+                  }
+                </div>
+              </div>
+            )}
+          </Transition>
+
+          {/* {stat_player_vs?.stat_names
             .filter((sn) =>
               Boolean(
                 stat_player_vs.player1.stats.find((s) => s.stat_name === sn)
@@ -192,45 +280,71 @@ const PlayerVsPlayerModule: React.FC<{ className?: string }> = ({
                   }
                 </div>
               </div>
-            ))}
+            ))} */}
         </div>
-        <div
-          className="player"
-          style={{
-            backgroundImage: `url(${stat_player_vs?.player2.photo_main})`,
-          }}
-        ></div>
+        <Spring
+          from={{ opacity: 0, transform: "translateX(10px)" }}
+          to={{ opacity: 1, transform: "translateX(0px)" }}
+          delay={800}
+        >
+          {(props) => (
+            <div
+              className="player"
+              style={{
+                backgroundImage: `url(${stat_player_vs?.player2.photo_main})`,
+                ...props,
+              }}
+            ></div>
+          )}
+        </Spring>
       </div>
 
       <div className={c.lowerThirds}>
-        <div className="team">
-          <div
-            className="logo"
-            style={{
-              backgroundImage: `url(${stat_player_vs?.player1.team?.logo})`,
-            }}
-          ></div>
-          <div className="details">
-            <div className="school">
-              {stat_player_vs?.player1.team?.university_name}
+        <Spring
+          from={{ opacity: 0, transform: "translateY(10px)" }}
+          to={{ opacity: 1, transform: "translateY(0px)" }}
+          delay={300}
+        >
+          {(props) => (
+            <div className="team" style={props}>
+              <div
+                className="logo"
+                style={{
+                  backgroundImage: `url(${stat_player_vs?.player1.team?.logo})`,
+                }}
+              ></div>
+              <div className="details">
+                <div className="school">
+                  {stat_player_vs?.player1.team?.university_name}
+                </div>
+                <div className="name">{stat_player_vs?.player1.ign}</div>
+              </div>
             </div>
-            <div className="name">{stat_player_vs?.player1.ign}</div>
-          </div>
-        </div>
-        <div className="team right">
-          <div
-            className="logo"
-            style={{
-              backgroundImage: `url(${stat_player_vs?.player2.team?.logo})`,
-            }}
-          ></div>
-          <div className="details">
-            <div className="school">
-              {stat_player_vs?.player2.team?.university_name}
+          )}
+        </Spring>
+
+        <Spring
+          from={{ opacity: 0, transform: "translateY(10px)" }}
+          to={{ opacity: 1, transform: "translateY(0px)" }}
+          delay={300}
+        >
+          {(props) => (
+            <div className="team right" style={props}>
+              <div
+                className="logo"
+                style={{
+                  backgroundImage: `url(${stat_player_vs?.player2.team?.logo})`,
+                }}
+              ></div>
+              <div className="details">
+                <div className="school">
+                  {stat_player_vs?.player2.team?.university_name}
+                </div>
+                <div className="name">{stat_player_vs?.player2.ign}</div>
+              </div>
             </div>
-            <div className="name">{stat_player_vs?.player2.ign}</div>
-          </div>
-        </div>
+          )}
+        </Spring>
       </div>
     </div>
   );

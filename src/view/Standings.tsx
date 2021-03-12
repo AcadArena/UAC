@@ -111,24 +111,24 @@ const Standings: React.FC<{ group?: string[] }> = ({
           groupIds.includes(match.player2_id)
       )
       .forEach((match) => {
-        console.log(match);
         let isTeam1 = groupIds.includes(match.player1_id);
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }
       });
+    console.log(team?.org_acronym, "win", win);
     return `${win}-${lost}`;
   };
 
@@ -157,15 +157,15 @@ const Standings: React.FC<{ group?: string[] }> = ({
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }
@@ -194,15 +194,15 @@ const Standings: React.FC<{ group?: string[] }> = ({
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }

@@ -17,6 +17,7 @@ import VsScreen from "./view/VsScreen";
 import Winner from "./view/Winner";
 import WinnerAlt from "./view/WinnerAlt";
 import ModuleContainer from "./view/ModuleContainer";
+import Replay from "./view/Replay";
 
 const ms = makeStyles({
   app: {
@@ -39,7 +40,7 @@ function App() {
           <Schedule />
         </Route>
         <Route path="/standings">
-          <Standings group={["ADMU", "DLSU", "MU", "USC", "USA", "FEU"]} />
+          <Standings group={["ADMU", "DLSU", "MU", "USC", "USA", "FTX"]} />
         </Route>
         <Route path="/drafting">
           <Drafting />
@@ -61,6 +62,9 @@ function App() {
         </Route>
         <Route path="/content">
           <ModuleContainer />
+        </Route>
+        <Route path="/replay">
+          <Replay />
         </Route>
       </Switch>
     </div>

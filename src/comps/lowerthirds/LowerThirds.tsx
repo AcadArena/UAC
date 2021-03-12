@@ -53,8 +53,14 @@ const ms = makeStyles({
         ? `polygon(0% -100%, 100% -100%, 100% 100%,${getPercentage(
             getLTWidth(size),
             39 * 0.746031746031746
-          )}% 100%, 0% ${getPercentage(126, 90)}%)`
-        : `polygon(0% -100%, 100% -100%, 100% ${getPercentage(126, 90)}%, ${
+          )}% 100%, 0% ${getPercentage(
+            126 * 0.746031746031746,
+            90 * 0.746031746031746
+          )}%)`
+        : `polygon(0% -100%, 100% -100%, 100% ${getPercentage(
+            126 * 0.746031746031746,
+            90 * 0.746031746031746
+          )}%, ${
             100 - getPercentage(getLTWidth(size), 39 * 0.746031746031746)
           }% 100%, 0% 100%)`,
 
@@ -99,8 +105,8 @@ const ms = makeStyles({
       left: 0,
       backgroundColor: "#ffd200",
       clipPath: `polygon(0% 0%, 100% 0%, ${getPercentage(
-        160,
-        128
+        160 * 0.746031746031746,
+        128 * 0.746031746031746
       )}% 100%, 0% 100%)`,
       zIndex: 90,
     },

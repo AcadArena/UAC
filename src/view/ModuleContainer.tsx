@@ -48,6 +48,7 @@ const ModuleContainer = () => {
   const { container_mode = "schedule" } = useSelector(
     (state: ReduxState) => state.live
   );
+
   return (
     <Frame className={c.banner}>
       <SwitchTransition>
@@ -62,7 +63,7 @@ const ModuleContainer = () => {
             {container_mode === "schedule" && <ScheduleModule />}
             {container_mode === "standings_group_a" && (
               <StandingsModule
-                group={["ADMU", "DLSU", "MU", "USC", "USA", "FEU"]}
+                group={["ADMU", "DLSU", "MU", "USC", "USA", "TFX"]}
               />
             )}
             {container_mode === "standings_group_b" && (

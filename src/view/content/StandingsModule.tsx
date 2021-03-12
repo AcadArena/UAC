@@ -8,6 +8,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
+import { Transition } from "react-spring/renderprops";
 import { Participant, ReduxState } from "../../config/types/types";
 
 const ms = makeStyles({
@@ -68,9 +69,9 @@ const ms = makeStyles({
   },
 });
 
-const StandingsModule: React.FC<{ className?: string; group?: string[] }> = ({
+const StandingsModule: React.FC<{ className?: string; group: string[] }> = ({
   className,
-  group = ["ADMU", "DLSU", "MU", "USC", "USA", "FEU"],
+  group = [],
   ...props
 }) => {
   const c = ms();
@@ -92,20 +93,19 @@ const StandingsModule: React.FC<{ className?: string; group?: string[] }> = ({
           groupIds.includes(match.player2_id)
       )
       .forEach((match) => {
-        console.log(match);
         let isTeam1 = groupIds.includes(match.player1_id);
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }
@@ -133,20 +133,19 @@ const StandingsModule: React.FC<{ className?: string; group?: string[] }> = ({
           groupIds.includes(match.player2_id)
       )
       .forEach((match) => {
-        console.log(match);
         let isTeam1 = groupIds.includes(match.player1_id);
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }
@@ -175,15 +174,15 @@ const StandingsModule: React.FC<{ className?: string; group?: string[] }> = ({
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }
@@ -209,12 +208,45 @@ const StandingsModule: React.FC<{ className?: string; group?: string[] }> = ({
             <TableCell align="center" className="td pos">
               Pos
             </TableCell>
-            <TableCell className="td team">Team</TableCell>
+            <TableCell className="td team">
+              TeamS{" "}
+              {["ADMU", "DLSU", "MU", "USC", "USA", "FTX"].every((item) =>
+                group.includes(item)
+              )
+                ? "(GROUP A)"
+                : "(GROUP B)"}
+            </TableCell>
             <TableCell className="td wl">W-L</TableCell>
           </TableRow>
         </TableHead>
         <TableBody className="table-body">
-          {groups.sort(groupsSort).map((team, i) => (
+          <Transition
+            items={groups.sort(groupsSort)}
+            // @ts-ignore
+            keys={(team, i) => i}
+            from={{ opacity: 0 }}
+            enter={{ opacity: 1 }}
+            trail={100}
+          >
+            {(team, array, i) => (props) => (
+              <TableRow className="tr" style={props}>
+                <TableCell align="center" className="td pos">
+                  {i + 1}
+                </TableCell>
+                <TableCell className="td team">
+                  <div
+                    className="logo"
+                    style={{ backgroundImage: `url(${team?.logo})` }}
+                  ></div>
+                  <div className="name">{team?.org_name}</div>
+                </TableCell>
+                <TableCell className="td wl">
+                  {getGroupMatchResults(team)}
+                </TableCell>
+              </TableRow>
+            )}
+          </Transition>
+          {/* {groups.sort(groupsSort).map((team, i) => (
             <TableRow className="tr" key={i}>
               <TableCell align="center" className="td pos">
                 {i + 1}
@@ -230,7 +262,7 @@ const StandingsModule: React.FC<{ className?: string; group?: string[] }> = ({
                 {getGroupMatchResults(team)}
               </TableCell>
             </TableRow>
-          ))}
+          ))} */}
         </TableBody>
       </Table>
     </div>

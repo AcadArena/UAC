@@ -34,6 +34,10 @@ const mcs = makeStyles({
         textAlign: "center",
         lineHeight: 1,
         marginTop: 20,
+        display: "flex",
+        height: 42,
+        alignItems: "center",
+        justifyContent: "center",
       },
       "& .school": {
         color: "#fff",
@@ -98,15 +102,15 @@ const VsScreen = () => {
         let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
 
         if (isTeam1) {
-          if (ss && ss[1] > ss[2]) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] < ss[2]) {
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             lost = lost + 1;
           }
         } else {
-          if (ss && ss[1] < ss[2]) {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
             win = win + 1;
-          } else if (ss && ss[1] > ss[2]) {
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
             lost = lost + 1;
           }
         }
@@ -122,10 +126,11 @@ const VsScreen = () => {
             backgroundImage: `url(${team(match?.player1_id ?? 0)?.logo})`,
           }}
         ></div>
-
-        <Textfit mode="single" max={43}>
-          <div className="org">{team(match?.player1_id ?? 0)?.org_name}</div>
-        </Textfit>
+        <div className="org">
+          <Textfit mode="single" max={43}>
+            {team(match?.player1_id ?? 0)?.org_name}
+          </Textfit>
+        </div>
         <div className="school">
           {team(match?.player1_id ?? 0)?.university_name}
         </div>
@@ -143,7 +148,11 @@ const VsScreen = () => {
             backgroundImage: `url(${team(match?.player2_id ?? 0)?.logo})`,
           }}
         ></div>
-        <div className="org">{team(match?.player2_id ?? 0)?.org_name}</div>
+        <div className="org">
+          <Textfit mode="single" max={43}>
+            {team(match?.player2_id ?? 0)?.org_name}
+          </Textfit>
+        </div>
         <div className="school">
           {team(match?.player2_id ?? 0)?.university_name}
         </div>

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { ReduxState } from "../../config/types/types";
 // @ts-ignore
 import { Textfit } from "react-textfit";
+import { Spring, Transition } from "react-spring/renderprops";
 
 const mcs = makeStyles({
   playerModule: {
@@ -43,7 +44,8 @@ const mcs = makeStyles({
 
       "& .value": {
         color: "#ffd200",
-        fontFamily: "Anton",
+        fontFamily: "industry",
+        fontWeight: "bold",
         flex: 1,
         fontSize: 24,
         width: 125,
@@ -58,6 +60,8 @@ const mcs = makeStyles({
         margin: "0px 20px",
         textAlign: "center",
         fontSize: 18,
+        fontFamily: "industry",
+        fontWeight: "bold",
         // transform: "skew(-5deg)",
       },
     },
@@ -108,18 +112,83 @@ const TeamVsTeamModule: React.FC<{ className?: string }> = ({
     <div className={c.playerModule + " " + className} {...props}>
       <div className="head">TEAM STATS</div>
       <div className={c.content}>
-        <div className={c.team}>
-          <div
-            className="logo"
-            style={{ backgroundImage: `url(${stat_team_vs?.team1.logo})` }}
-          ></div>
-          <Textfit mode="single" max={20}>
-            <div className="org">{stat_team_vs?.team1.org_name}</div>
-          </Textfit>
-          <div className="school">{stat_team_vs?.team1.university_name}</div>
-        </div>
+        <Spring
+          from={{ opacity: 0, transform: "translateX(-10px)" }}
+          to={{ opacity: 1, transform: "translate(0px)" }}
+          delay={1000}
+        >
+          {(props) => (
+            <div className={c.team} style={props}>
+              <div
+                className="logo"
+                style={{ backgroundImage: `url(${stat_team_vs?.team1.logo})` }}
+              ></div>
+              <div className="org">{stat_team_vs?.team1.org_name}</div>
+              <div className="school">
+                {stat_team_vs?.team1.university_name}
+              </div>
+            </div>
+          )}
+        </Spring>
+
         <div className={c.stats}>
-          {stat_team_vs?.stat_names
+          <Transition
+            items={
+              stat_team_vs?.stat_names.filter((sn) =>
+                Boolean(
+                  stat_team_vs.team1.stats.find((s) => s.stat_name === sn)
+                    ?.isOn &&
+                    stat_team_vs.team2.stats.find((s) => s.stat_name === sn)
+                      ?.isOn
+                )
+              ) ?? []
+            }
+            keys={(s: string) => s}
+            from={{ opacity: 0 }}
+            enter={{ opacity: 1 }}
+            trail={150}
+          >
+            {(sn) => (props) => (
+              <div className="stat" style={props}>
+                <div
+                  className="value left"
+                  style={{
+                    color:
+                      (stat_team_vs?.team1.stats.find((s) => s.stat_name === sn)
+                        ?.stat_value ?? 0) >
+                      (stat_team_vs?.team2.stats.find((s) => s.stat_name === sn)
+                        ?.stat_value ?? 0)
+                        ? "#ffd200"
+                        : "#fff",
+                  }}
+                >
+                  {
+                    stat_team_vs?.team1.stats.find((s) => s.stat_name === sn)
+                      ?.stat_value
+                  }
+                </div>
+                <div className="name">{sn}</div>
+                <div
+                  className="value right"
+                  style={{
+                    color:
+                      (stat_team_vs?.team1.stats.find((s) => s.stat_name === sn)
+                        ?.stat_value ?? 0) <
+                      (stat_team_vs?.team2.stats.find((s) => s.stat_name === sn)
+                        ?.stat_value ?? 0)
+                        ? "#ffd200"
+                        : "#fff",
+                  }}
+                >
+                  {
+                    stat_team_vs?.team2.stats.find((s) => s.stat_name === sn)
+                      ?.stat_value
+                  }
+                </div>
+              </div>
+            )}
+          </Transition>
+          {/* {stat_team_vs?.stat_names
             .filter((sn) =>
               Boolean(
                 stat_team_vs.team1.stats.find((s) => s.stat_name === sn)
@@ -165,18 +234,28 @@ const TeamVsTeamModule: React.FC<{ className?: string }> = ({
                   }
                 </div>
               </div>
-            ))}
+            ))} */}
         </div>
-        <div className={c.team}>
-          <div
-            className="logo"
-            style={{ backgroundImage: `url(${stat_team_vs?.team2.logo})` }}
-          ></div>
-          <Textfit mode="single" max={20}>
-            <div className="org">{stat_team_vs?.team2.org_name}</div>
-          </Textfit>
-          <div className="school">{stat_team_vs?.team2.university_name}</div>
-        </div>
+
+        <Spring
+          from={{ opacity: 0, transform: "translateX(10px)" }}
+          to={{ opacity: 1, transform: "translate(0px)" }}
+          delay={1000}
+        >
+          {(props) => (
+            <div className={c.team} style={props}>
+              <div
+                className="logo"
+                style={{ backgroundImage: `url(${stat_team_vs?.team2.logo})` }}
+              ></div>
+              <div className="org">{stat_team_vs?.team2.org_name}</div>
+              <div className="school">
+                {stat_team_vs?.team2.university_name}
+              </div>
+              qqqqqqqqqq
+            </div>
+          )}
+        </Spring>
       </div>
     </div>
   );

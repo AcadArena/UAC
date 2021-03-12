@@ -367,7 +367,8 @@ const ms = makeStyles({
         fontFamily: "Druk Wide Bold, sans-serif",
         textTransform: "uppercase",
         fontSize: 55 * 0.746031746031746,
-        margin: `0px ${47}px`,
+        width: 150,
+        textAlign: "center",
       },
     },
   },
@@ -550,6 +551,57 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
     return teamIndex === 1 ? team1 : team2;
   };
 
+  const getGroupMatchResults = (team?: Participant): string => {
+    const groupIds: number[] = team?.group_player_ids ?? [];
+
+    const matches = tournament?.matches.filter(
+      (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
+    );
+
+    let lost: number = 0;
+    let win: number = 0;
+
+    matches
+      ?.filter(
+        (match) =>
+          groupIds.includes(match.player1_id) ||
+          groupIds.includes(match.player2_id)
+      )
+      .forEach((match) => {
+        console.log(match);
+        let isTeam1 = groupIds.includes(match.player1_id);
+        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
+
+        if (isTeam1) {
+          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
+            win = win + 1;
+          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
+            lost = lost + 1;
+          }
+        } else {
+          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
+            win = win + 1;
+          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
+            lost = lost + 1;
+          }
+        }
+      });
+    // ?.map((m) => m.winner_id)
+    // .reduce((acc, cur) => {
+    //   if (groupIds.includes(cur)) {
+    //     return acc + 1;
+    //   } else {
+    //     return acc;
+    //   }
+    // }, 0) ?? 0;
+    return `${win}-${lost}`;
+  };
+
+  const team = (id: number) => {
+    return tournament?.participants.find(
+      (p) => p.group_player_ids.includes(id) || p.id === id
+    );
+  };
   return (
     <div className={c.screen}>
       <img src={lowerThirds?.player?.photo_main} className={c.hidden} />
@@ -610,7 +662,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                         </div>
                       </div>
                       <div className="score">
-                        {getFinalScore(match?.scores_csv ?? "", 1)}
+                        {getGroupMatchResults(team(match?.player1_id ?? 0))}
                       </div>
                     </div>
                   </LowerThirds>
@@ -618,7 +670,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                   <LowerThirds size={783} reversecut shadow disablelogo>
                     <div className="team">
                       <div className="score">
-                        {getFinalScore(match?.scores_csv ?? "", 2)}
+                        {getGroupMatchResults(team(match?.player2_id ?? 0))}
                       </div>
                       <div className="details right">
                         <div className="school">

@@ -67,6 +67,7 @@ const ms = makeStyles((theme) => ({
           fontWeight: "bold",
           width: 97,
           // height: 30,
+          whiteSpace: "nowrap",
 
           "& .item": {
             marginTop: -3,

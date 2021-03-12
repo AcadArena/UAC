@@ -1,7 +1,8 @@
 import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
-import { ReduxState } from "../../config/types/types";
+import { Spring, Transition } from "react-spring/renderprops";
+import { ReduxState, Stat } from "../../config/types/types";
 
 const mcs = makeStyles({
   playerModule: {
@@ -69,6 +70,8 @@ const mcs = makeStyles({
         // marginBottom: 30,
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
+        // justifyContent: "center",
         flexWrap: "wrap",
         padding: "0px 20px",
       },
@@ -90,7 +93,8 @@ const mcs = makeStyles({
 
     "& .name": {
       color: "#fff",
-      fontFamily: "Anton",
+      fontFamily: "industry",
+      fontWeight: "bold",
       textTransform: "uppercase",
       letterSpacing: 1,
       width: 75,
@@ -100,7 +104,8 @@ const mcs = makeStyles({
     },
     "& .value": {
       color: "#ffd200",
-      fontFamily: "Anton",
+      fontFamily: "industry",
+      fontWeight: "bold",
       textTransform: "uppercase",
       fontSize: 30,
       letterSpacing: 1,
@@ -122,30 +127,65 @@ const PlayerModule: React.FC<{ className?: string }> = ({
       <div className={c.content}>
         <div className="info">
           <div className="stats">
-            {stat_player?.stats
+            <Transition
+              items={stat_player?.stats.filter((s) => s.isOn) ?? []}
+              keys={(s) => s?.stat_name}
+              from={{ opacity: 0 }}
+              enter={{ opacity: 1 }}
+              trail={150}
+            >
+              {(stat) => (props) => (
+                <div className={c.stat} style={props}>
+                  <div className="name">{stat.stat_name}</div>
+                  <div className="value">{stat.stat_value}</div>
+                </div>
+              )}
+            </Transition>
+            {/* {stat_player?.stats
               .filter((s) => s.isOn)
               .map((stat) => (
                 <div className={c.stat}>
                   <div className="name">{stat.stat_name}</div>
                   <div className="value">{stat.stat_value}</div>
                 </div>
-              ))}
+              ))} */}
           </div>
-          <div className="team">
-            <div
-              className="logo"
-              style={{ backgroundImage: `url(${stat_player?.team?.logo})` }}
-            ></div>
-            <div className="details">
-              <div className="ign">{stat_player?.ign}</div>
-              <div className="name">{stat_player?.name}</div>
-            </div>
-          </div>
+
+          <Spring
+            from={{ opacity: 0, transform: "translateX(-10px)" }}
+            to={{ opacity: 1, transform: "translateX(0px)" }}
+            delay={900}
+          >
+            {(props) => (
+              <div className="team" style={props}>
+                <div
+                  className="logo"
+                  style={{ backgroundImage: `url(${stat_player?.team?.logo})` }}
+                ></div>
+                <div className="details">
+                  <div className="ign">{stat_player?.ign}</div>
+                  <div className="name">{stat_player?.name}</div>
+                </div>
+              </div>
+            )}
+          </Spring>
         </div>
-        <div
-          className="avatar"
-          style={{ backgroundImage: `url(${stat_player?.photo_main})` }}
-        ></div>
+
+        <Spring
+          from={{ opacity: 0, transform: "translateX(10px)" }}
+          to={{ opacity: 1, transform: "translateX(0px)" }}
+          delay={1050}
+        >
+          {(props) => (
+            <div
+              className="avatar"
+              style={{
+                backgroundImage: `url(${stat_player?.photo_main})`,
+                ...props,
+              }}
+            ></div>
+          )}
+        </Spring>
       </div>
     </div>
   );
