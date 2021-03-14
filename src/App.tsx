@@ -18,6 +18,7 @@ import Winner from "./view/Winner";
 import WinnerAlt from "./view/WinnerAlt";
 import ModuleContainer from "./view/ModuleContainer";
 import Replay from "./view/Replay";
+import Veto from "./view/Veto";
 
 const ms = makeStyles({
   app: {
@@ -65,6 +66,9 @@ function App() {
         </Route>
         <Route path="/replay">
           <Replay />
+        </Route>
+        <Route path="/veto">
+          <Veto />
         </Route>
       </Switch>
     </div>
