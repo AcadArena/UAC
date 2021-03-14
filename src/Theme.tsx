@@ -3,6 +3,7 @@ import purple from "@material-ui/core/colors/purple";
 import green from "@material-ui/core/colors/green";
 
 const theme = createMuiTheme({
+  spacing: 5,
   palette: {
     background: {
       default: "rgba(0,0,0,0)",
