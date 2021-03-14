@@ -23,8 +23,12 @@ export interface Live {
   stat_player?: PlayerStatProps;
   stat_player_vs?: StatPlayerVsProps;
   stat_team_vs?: TeamVsProps;
-  game_number?: number;
+  live_data?: LiveData;
   swap_team_positions?: boolean;
+  match_winner?: {
+    live: boolean;
+    team?: Participant;
+  };
   container_mode?:
     | "schedule"
     | "bracket"
@@ -35,6 +39,13 @@ export interface Live {
     | "stats_player"
     | "stats_player_vs"
     | "ending";
+}
+
+export interface LiveData {
+  split_title: string;
+  stage: string;
+  season: string;
+  ingame: string;
 }
 
 export interface TeamVsProps {
@@ -125,6 +136,7 @@ export interface Tournament {
   participants: Participant[];
   matches: Match[];
   game_name: string;
+  logo?: string;
 }
 
 export interface ParticipantElement {
@@ -189,11 +201,14 @@ export interface Match {
   underway_at: null | string;
   optional: boolean | null;
   completed_at: string;
+  is_completed?: boolean;
   suggested_play_order: number;
   prerequisite_match_ids_csv: string;
   scores_csv: string;
   veto?: VetoItem[];
   badge?: string;
+  schedule?: Date;
+  bestOf?: number;
   [key: string]: any;
 }
 
@@ -202,16 +217,17 @@ export interface VetoItem {
     org_name: string;
     university_name: string;
     university_acronym: string;
+    org_acronym: string;
     logo: string;
   };
   type: "ban" | "pick";
   map: ValorantMap;
   winner?: {
     org_name: string;
-    university_name: string;
     university_acronym: string;
+    university_name: string;
     logo: string;
-  };
+  } | null;
 }
 
 export type ValorantMap = "ascent" | "bind" | "haven" | "icebox" | "split";
