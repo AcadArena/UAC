@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Participant, ReduxState } from "../config/types/types";
-import InGameFrame from "../assets/imgs/ingame.png";
+import InGameFrame from "../assets/imgs/top.png";
 import { getOriginalNode } from "typescript";
 import theme from "../Theme";
 
@@ -13,7 +13,7 @@ const mcs = makeStyles({
     position: "relative",
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
-    backgroundPosition: "center",
+    backgroundPosition: "top center",
     backgroundImage: `url(${InGameFrame})`,
     display: "flex",
     flexDirection: "column",
@@ -24,17 +24,15 @@ const mcs = makeStyles({
     display: "flex",
     justifyContent: "center",
 
-    "& .gameCount": {
+    "& .stage": {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      width: 75,
-      height: 21,
-      fontFamily: "Anton",
+      fontFamily: "Druk Wide Bold",
       textTransform: "uppercase",
-      fontSize: 18,
-      marginTop: 2,
-      color: "#0d0e0e",
+      fontSize: 14,
+      marginTop: 7,
+      color: "#f8f8f8",
     },
 
     "& .score": {
@@ -51,17 +49,19 @@ const mcs = makeStyles({
     },
   },
   teams: {
-    width: 631,
-    height: 46,
+    width: "100%",
+    height: 51,
     position: "absolute",
-    top: 70,
     display: "flex",
     justifyContent: "space-between",
+    "& .spacer": {
+      width: 800,
+    },
 
     "& .two": {
       flexDirection: "row-reverse",
       paddingLeft: 0,
-      paddingRight: 30,
+      // paddingRight: 10,
       "& .details": {
         flex: 1,
         "& .org": { textAlign: "right" },
@@ -71,34 +71,50 @@ const mcs = makeStyles({
 
     "& .team": {
       display: "flex",
-      height: 46,
-      width: 305,
-      paddingLeft: 30,
+      height: 51,
+      width: 400,
+      // paddingLeft: 10,
       alignItems: "center",
 
+      "& .score": {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        // margin: "0px 5px",
+        height: 50,
+        backgroundCOlor: "blue",
+        width: 70,
+        color: "#fff",
+        fontFamily: "Anton",
+        fontSize: 22,
+        whiteSpace: "nowrap",
+      },
+
       "& .logo": {
-        height: "70%",
+        height: "90%",
         width: 50,
         backgroundSize: "contain",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        margin: "0px 5px",
+        margin: "0px 10px",
       },
 
       "& .details": {
+        flex: 1,
+
         "& .org": {
           color: "#ffd200",
-          fontFamily: "Anton",
+          fontFamily: "Druk Wide Bold",
           lineHeight: 1,
-          fontSize: 18,
-
+          fontSize: 20,
+          // whiteSpace: "nowrap",
           textTransform: "uppercase",
         },
         "& .school": {
           color: "#ffffff",
           fontFamily: "Anton",
           textTransform: "uppercase",
-          fontSize: 12,
+          fontSize: 18,
           lineHeight: 1,
           letterSpacing: 1,
         },
@@ -113,7 +129,8 @@ const InGame = () => {
     match,
     swap_team_positions,
     tournament,
-    game_number = 1,
+    // game_number = 1,
+    live_data,
   } = useSelector((state: ReduxState) => state.live);
 
   const getGroupMatchResults = (team?: Participant): string => {
@@ -165,7 +182,7 @@ const InGame = () => {
   return (
     <div className={c.ingame}>
       <div className={c.scores}>
-        <div className="score">
+        {/* <div className="score">
           {swap_team_positions
             ? getGroupMatchResults(
                 tournament?.participants.find((org) =>
@@ -177,9 +194,9 @@ const InGame = () => {
                   org.group_player_ids.includes(match?.player1_id ?? 0)
                 )
               )}
-        </div>
-        <div className="gameCount">GROUPS</div>
-        <div className="score">
+        </div> */}
+        <div className="stage">{live_data?.ingame}</div>
+        {/* <div className="score">
           {!swap_team_positions
             ? getGroupMatchResults(
                 tournament?.participants.find((org) =>
@@ -191,7 +208,7 @@ const InGame = () => {
                   org.group_player_ids.includes(match?.player1_id ?? 0)
                 )
               )}
-        </div>
+        </div> */}
       </div>
 
       <div className={c.teams}>
@@ -220,7 +237,7 @@ const InGame = () => {
                     org.group_player_ids.includes(match?.player1_id ?? 0)
                   )?.org_name}
             </div>
-            <div className="school">
+            {/* <div className="school">
               {swap_team_positions
                 ? tournament?.participants.find((org) =>
                     org.group_player_ids.includes(match?.player2_id ?? 0)
@@ -228,9 +245,24 @@ const InGame = () => {
                 : tournament?.participants.find((org) =>
                     org.group_player_ids.includes(match?.player1_id ?? 0)
                   )?.university_name}
-            </div>
+            </div> */}
+          </div>
+
+          <div className="score">
+            {swap_team_positions
+              ? getGroupMatchResults(
+                  tournament?.participants.find((org) =>
+                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                  )
+                )
+              : getGroupMatchResults(
+                  tournament?.participants.find((org) =>
+                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                  )
+                )}
           </div>
         </div>
+        <div className="spacer"></div>
         <div className="team two">
           <div
             className="logo"
@@ -256,7 +288,7 @@ const InGame = () => {
                     org.group_player_ids.includes(match?.player1_id ?? 0)
                   )?.org_name}
             </div>
-            <div className="school">
+            {/* <div className="school">
               {!swap_team_positions
                 ? tournament?.participants.find((org) =>
                     org.group_player_ids.includes(match?.player2_id ?? 0)
@@ -264,7 +296,20 @@ const InGame = () => {
                 : tournament?.participants.find((org) =>
                     org.group_player_ids.includes(match?.player1_id ?? 0)
                   )?.university_name}
-            </div>
+            </div> */}
+          </div>
+          <div className="score">
+            {!swap_team_positions
+              ? getGroupMatchResults(
+                  tournament?.participants.find((org) =>
+                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                  )
+                )
+              : getGroupMatchResults(
+                  tournament?.participants.find((org) =>
+                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                  )
+                )}
           </div>
         </div>
       </div>
