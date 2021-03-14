@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Match, ReduxState } from "../../config/types/types";
-
+import { format } from "date-fns";
 // @ts-ignore
 import { Textfit } from "react-textfit";
 import { Participant } from "../../config/types/types";
@@ -306,7 +306,7 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
     } else if (getMatchWins(m, team1) < getMatchWins(m, team2)) {
       return `#${team2?.university_acronym}WIN`;
     } else if (getMatchWins(m, team1) === getMatchWins(m, team2)) {
-      return m.badge ?? "SOON";
+      return format(new Date(m.schedule ?? Date.now()), "hh:mm a") ?? "SOON";
     }
   };
 
