@@ -121,6 +121,28 @@ const mcs = makeStyles({
       },
     },
   },
+  schoolnames: {
+    width: 1094,
+    height: 30,
+    display: "flex",
+    justifyContent: "center",
+    "& .spacer": {
+      width: 250,
+    },
+    "& .school": {
+      flex: 1,
+      textAlign: "center",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      fontFamily: "Anton",
+      letterSpacing: 1,
+      marginBottom: 2,
+      fontSize: 18,
+      textTransform: "uppercase",
+      color: "#f8f8f8",
+    },
+  },
 });
 
 const InGame = () => {
@@ -181,6 +203,27 @@ const InGame = () => {
 
   return (
     <div className={c.ingame}>
+      <div className={c.schoolnames}>
+        <div className="school">
+          {swap_team_positions
+            ? tournament?.participants.find((org) =>
+                org.group_player_ids.includes(match?.player2_id ?? 0)
+              )?.university_name
+            : tournament?.participants.find((org) =>
+                org.group_player_ids.includes(match?.player1_id ?? 0)
+              )?.university_name}
+        </div>
+        <div className="spacer"></div>
+        <div className="school">
+          {!swap_team_positions
+            ? tournament?.participants.find((org) =>
+                org.group_player_ids.includes(match?.player2_id ?? 0)
+              )?.university_name
+            : tournament?.participants.find((org) =>
+                org.group_player_ids.includes(match?.player1_id ?? 0)
+              )?.university_name}
+        </div>
+      </div>
       <div className={c.scores}>
         {/* <div className="score">
           {swap_team_positions
