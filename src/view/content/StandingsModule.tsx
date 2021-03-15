@@ -209,8 +209,8 @@ const StandingsModule: React.FC<{ className?: string; group: string[] }> = ({
               Pos
             </TableCell>
             <TableCell className="td team">
-              TeamS{" "}
-              {["ADMU", "DLSU", "MU", "USC", "USA", "FTX"].every((item) =>
+              Teams{" "}
+              {["ADMU", "DLSU", "MU", "USC", "USA", "TFX"].every((item) =>
                 group.includes(item)
               )
                 ? "(GROUP A)"
