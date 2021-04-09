@@ -10,6 +10,7 @@ import {
   LowerThirdsMode,
   Participant,
   VetoItem,
+  PollItemProps,
 } from "../config/types/types";
 import Marquee from "react-fast-marquee";
 import theme from "../Theme";
@@ -27,6 +28,10 @@ import bindMap from "../assets/imgs/bind.jpeg";
 import splitMap from "../assets/imgs/split.jpeg";
 import iceboxMap from "../assets/imgs/icebox.jpeg";
 import havenMap from "../assets/imgs/haven.jpeg";
+
+import { useDocumentData } from "react-firebase-hooks/firestore";
+import { projectFirestore as db } from "../config/firebase";
+
 const ms = makeStyles({
   screen: {
     position: "relative",
@@ -367,7 +372,7 @@ const ms = makeStyles({
         fontFamily: "Druk Wide Bold, sans-serif",
         textTransform: "uppercase",
         fontSize: 55 * 0.746031746031746,
-        width: 150,
+        width: 100,
         textAlign: "center",
       },
     },
@@ -468,6 +473,79 @@ const ms = makeStyles({
       },
     },
   },
+
+  pickem: {
+    height: "100%",
+    alignItems: "center",
+    display: "flex",
+
+    "& .title-wrap": {
+      display: "flex",
+      flexDirection: "column",
+
+      padding: theme.spacing(0, 5, 0, 8),
+      borderRight: "2px solid rgba(255,255,255,.5)",
+      "& .title": {
+        color: "#fff",
+        fontFamily: "Anton",
+        fontSize: 50,
+        textTransform: "uppercase",
+        lineHeight: 1,
+      },
+      "& .sub-title": {
+        color: "#aaa",
+        fontFamily: "Anton",
+        fontSize: 20,
+        textTransform: "uppercase",
+        lineHeight: 1,
+      },
+    },
+
+    "& .wrapper": {
+      display: "flex",
+      height: "100%",
+      alignItems: "center",
+      padding: theme.spacing(0, 5),
+      flex: 1,
+
+      "& .team1, .team2": {
+        height: 75,
+        width: 75,
+        backgroundSize: "contain",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      },
+
+      "& .bar": {
+        flex: 1,
+        height: 50,
+        backgroundColor: "#ffd200",
+        margin: theme.spacing(0, 4),
+        display: "flex",
+        position: "relative",
+        alignItems: "center",
+        clipPath:
+          "polygon(0% 0%, 100% 0%, 100% 80%, 98% 100%, 2% 100%, 0% 80%)",
+
+        "& .team2votes, .team1votes": {
+          fontFamily: "Anton",
+          fontSize: 25,
+          position: "absolute",
+          padding: theme.spacing(0, 3),
+        },
+
+        "& .team1votes": { left: 0 },
+        "& .team2votes": { right: 0 },
+
+        "& .innerbar": {
+          backgroundColor: "#004fff",
+          height: "100%",
+          width: "100%",
+          transition: "all 0.6s cubic-bezier(0.65, 0, 0.35, 1)",
+        },
+      },
+    },
+  },
 });
 
 // const isNumber = (n: any): boolean => {
@@ -496,6 +574,8 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
       return "medium";
     case "veto":
       return 1400;
+    case "pickem":
+      return "large";
     default:
       return "medium";
   }
@@ -511,6 +591,14 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
     match_live,
     tournament,
   } = useSelector((state: ReduxState) => state.live);
+
+  const [poll] = useDocumentData<PollItemProps>(
+    db
+      .collection("tournaments")
+      .doc(tournament?.url)
+      .collection("poll")
+      .doc(match?.id + "")
+  );
 
   let params = new URLSearchParams(search);
 
@@ -602,6 +690,15 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
       (p) => p.group_player_ids.includes(id) || p.id === id
     );
   };
+
+  const getPos = (): number => {
+    let totalVotes: number =
+      (poll?.team1_votes ?? 0) + (poll?.team2_votes ?? 0);
+    let pos = ((poll?.team1_votes ?? 0) / totalVotes) * 100;
+
+    return totalVotes > 0 ? pos : 50;
+  };
+
   return (
     <div className={c.screen}>
       <img src={lowerThirds?.player?.photo_main} className={c.hidden} />
@@ -662,7 +759,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                         </div>
                       </div>
                       <div className="score">
-                        {getGroupMatchResults(team(match?.player1_id ?? 0))}
+                        {getFinalScore(match?.scores_csv ?? "0-0", 1)}
                       </div>
                     </div>
                   </LowerThirds>
@@ -670,7 +767,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                   <LowerThirds size={783} reversecut shadow disablelogo>
                     <div className="team">
                       <div className="score">
-                        {getGroupMatchResults(team(match?.player2_id ?? 0))}
+                        {getFinalScore(match?.scores_csv ?? "0-0", 2)}
                       </div>
                       <div className="details right">
                         <div className="school">
@@ -986,6 +1083,64 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                                 )}
                               </div>
                             ))} */}
+                          </div>
+                        )}
+
+                        {/* pickem */}
+                        {lowerThirds?.mode === "pickem" && (
+                          <div className={c.pickem}>
+                            <div className="title-wrap">
+                              <div className="sub-title">!vote</div>
+                              <div className="title">PICKEM</div>
+                            </div>
+                            <div className="wrapper">
+                              <div
+                                className="team1"
+                                style={{
+                                  backgroundImage: `url(${poll?.team1?.logo})`,
+                                }}
+                              ></div>
+                              <div className="bar">
+                                <div
+                                  className="innerbar"
+                                  style={{
+                                    clipPath: `polygon(0% 0%, ${getPos()}% 0%, ${getPos()}% 100%, 0% 100%)`,
+                                  }}
+                                ></div>
+                                <div className="team1votes">
+                                  {(poll?.team1_votes ?? 0) +
+                                    (poll?.team2_votes ?? 0) ===
+                                  0
+                                    ? 50
+                                    : Math.round(
+                                        ((poll?.team1_votes ?? 0) /
+                                          ((poll?.team1_votes ?? 0) +
+                                            (poll?.team2_votes ?? 0))) *
+                                          100
+                                      )}
+                                  %
+                                </div>
+                                <div className="team2votes">
+                                  {(poll?.team1_votes ?? 0) +
+                                    (poll?.team2_votes ?? 0) ===
+                                  0
+                                    ? 50
+                                    : Math.round(
+                                        ((poll?.team2_votes ?? 0) /
+                                          ((poll?.team1_votes ?? 0) +
+                                            (poll?.team2_votes ?? 0))) *
+                                          100
+                                      )}
+                                  %
+                                </div>
+                              </div>
+                              <div
+                                className="team2"
+                                style={{
+                                  backgroundImage: `url(${poll?.team2?.logo})`,
+                                }}
+                              ></div>
+                            </div>
                           </div>
                         )}
                       </div>

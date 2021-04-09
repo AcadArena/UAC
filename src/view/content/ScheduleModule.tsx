@@ -342,7 +342,9 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
               </div>
               <div className="vs">
                 <div className="text">VS</div>
-                <div className="bestOf">{match?.bestOf ?? "BO1"}</div>
+                <div className="bestOf">
+                  {match?.bestOf ? "BO" + match?.bestOf : "BO1"}
+                </div>
               </div>
               <div className="team">
                 <div

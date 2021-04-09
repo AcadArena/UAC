@@ -29,10 +29,12 @@ const mcs = makeStyles({
       justifyContent: "center",
       alignItems: "center",
       fontFamily: "Druk Wide Bold",
-      textTransform: "uppercase",
+      textTransform: "uppedrcase",
       fontSize: 14,
-      marginTop: 7,
+      marginTop: 6,
       color: "#f8f8f8",
+      position: "absolute",
+      top: 0,
     },
 
     "& .score": {

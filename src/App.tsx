@@ -19,6 +19,7 @@ import WinnerAlt from "./view/WinnerAlt";
 import ModuleContainer from "./view/ModuleContainer";
 import Replay from "./view/Replay";
 import Veto from "./view/Veto";
+import WinnerChampion from "./view/WinnerChampion";
 
 const ms = makeStyles({
   app: {
@@ -60,6 +61,12 @@ function App() {
         </Route>
         <Route path="/winner2">
           <Winner alt />
+        </Route>
+        <Route path="/champion1">
+          <WinnerChampion />
+        </Route>
+        <Route path="/champion2">
+          <WinnerChampion alt />
         </Route>
         <Route path="/content">
           <ModuleContainer />

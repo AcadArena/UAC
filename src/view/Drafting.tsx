@@ -6,11 +6,11 @@ import DraftingFrame from "../assets/imgs/draft.png";
 import { getOriginalNode } from "typescript";
 import theme from "../Theme";
 import { Transition } from "react-spring/renderprops-universal";
-import ascent from "../assets/imgs/ascent.jpeg";
-import haven from "../assets/imgs/haven.jpeg";
-import bind from "../assets/imgs/bind.jpeg";
-import split from "../assets/imgs/split.jpeg";
-import icebox from "../assets/imgs/icebox.jpeg";
+import ascent from "../assets/imgs/ascent.png";
+import haven from "../assets/imgs/haven.png";
+import bind from "../assets/imgs/bind.png";
+import split from "../assets/imgs/split.png";
+import icebox from "../assets/imgs/icebox.webp";
 
 const mapMap = {
   ascent: ascent,
@@ -151,8 +151,8 @@ const mcs = makeStyles({
     marginLeft: -10,
   },
   vetoItem: {
-    height: 58,
-    flex: 1,
+    height: 120,
+    // flex: 1,
     maxWidth: "30%",
     minWidth: "30%",
     margin: "0px 7px 14px 7px",
@@ -165,12 +165,13 @@ const mcs = makeStyles({
     justifyContent: "center",
     position: "relative",
     padding: 10,
+    zIndex: 20,
     "& .text": {
       color: "#fff",
       textTransform: "uppercase",
       fontFamily: "Anton",
       letterSpacing: 1,
-      fontSize: 20,
+      fontSize: 40,
       padding: "3px 20px",
       backgroundColor: "rgba(0,0,0,.6)",
     },
@@ -195,6 +196,15 @@ const mcs = makeStyles({
         filter: "drop-shadow(0px 4px 4px rgba(0,0,0,1))",
       },
     },
+  },
+  currentMap: {
+    width: 884,
+    height: 561,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+    transform: "translateX(-5px)",
+    zIndex: 10,
   },
 });
 
@@ -250,6 +260,13 @@ const Drafting = () => {
     //   }
     // }, 0) ?? 0;
     return `${win}-${lost}`;
+  };
+
+  const getCurrentMap = () => {
+    return mapMap[
+      match?.veto?.filter((v) => v.type === "pick" && !v.winner)[0].map ??
+        "bind"
+    ];
   };
 
   return (
@@ -410,7 +427,6 @@ const Drafting = () => {
               style={{
                 backgroundImage: `url(${mapMap[v.map]})`,
                 ...props,
-                justifyContent: Boolean(v.winner) ? "flex-start" : "center",
               }}
             >
               <div className="text">
@@ -430,8 +446,12 @@ const Drafting = () => {
           )}
         </Transition>
       </div>
+      <div
+        className={c.currentMap}
+        style={{ backgroundImage: `url(${getCurrentMap()})` }}
+      ></div>
     </div>
   );
 };
-
+// 844 561
 export default Drafting;

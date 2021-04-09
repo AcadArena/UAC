@@ -89,6 +89,7 @@ export type LowerThirdsMode =
   | "long"
   | "playerStats"
   | "playerQuote"
+  | "pickem"
   | "veto";
 export interface LowerThirds {
   headline: string;
@@ -231,3 +232,41 @@ export interface VetoItem {
 }
 
 export type ValorantMap = "ascent" | "bind" | "haven" | "icebox" | "split";
+
+import firebase from "../firebase";
+export interface PollItemProps {
+  expiry_date_time: firebase.firestore.Timestamp;
+  team1?: Participant;
+  team2?: Participant;
+  team1_votes: number;
+  team2_votes: number;
+  vote_ids: [];
+  votes: VoteItem[];
+  team1_votes_id: [];
+  team2_votes_id: [];
+  match_id: number;
+  tournament_url: string;
+  is_published: boolean;
+  is_closed: boolean;
+  match_round: number;
+  is_groups: boolean;
+  tournament_name: string;
+  talent_votes: TalentVoteItem[];
+}
+
+export interface TalentVoteItem {
+  caster: Caster;
+  vote?: "team1" | "team2";
+  vote_team_id?: number;
+}
+export interface VoteItem {
+  id: string;
+  vote: "team1" | "team2";
+  vote_team_id: number;
+  date_created: firebase.firestore.Timestamp;
+  fb_link?: string;
+  fb_id?: string;
+  picture: string;
+  name?: string;
+  email: string;
+}
