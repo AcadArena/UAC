@@ -85,7 +85,7 @@ const mcs = makeStyles({
         // margin: "0px 5px",
         height: 50,
         backgroundCOlor: "blue",
-        width: 70,
+        width: 50,
         color: "#fff",
         fontFamily: "Anton",
         fontSize: 22,
@@ -203,42 +203,58 @@ const InGame = () => {
     return `${win}-${lost}`;
   };
 
+  const getFinalScore = (score: string, teamIndex: number) => {
+    const scores: string[] = score.split(",");
+    let team1: number = 0;
+    let team2: number = 0;
+
+    scores.forEach((s) => {
+      let ss = s.match(/^(\d*)-(\d*)/);
+      if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
+        team1 = team1 + 1;
+      } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
+        team2 = team2 + 1;
+      }
+    });
+    return teamIndex === 1 ? team1 : team2;
+  };
+
   return (
     <div className={c.ingame}>
       <div className={c.schoolnames}>
         <div className="school">
           {swap_team_positions
-            ? tournament?.participants.find((org) =>
-                org.group_player_ids.includes(match?.player2_id ?? 0)
+            ? tournament?.participants.find(
+                (org) =>
+                  org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                  org.id === match?.player2_id
               )?.university_name
-            : tournament?.participants.find((org) =>
-                org.group_player_ids.includes(match?.player1_id ?? 0)
+            : tournament?.participants.find(
+                (org) =>
+                  org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                  org.id === match?.player1_id
               )?.university_name}
         </div>
         <div className="spacer"></div>
         <div className="school">
           {!swap_team_positions
-            ? tournament?.participants.find((org) =>
-                org.group_player_ids.includes(match?.player2_id ?? 0)
+            ? tournament?.participants.find(
+                (org) =>
+                  org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                  org.id === match?.player2_id
               )?.university_name
-            : tournament?.participants.find((org) =>
-                org.group_player_ids.includes(match?.player1_id ?? 0)
+            : tournament?.participants.find(
+                (org) =>
+                  org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                  org.id === match?.player1_id
               )?.university_name}
         </div>
       </div>
       <div className={c.scores}>
         {/* <div className="score">
           {swap_team_positions
-            ? getGroupMatchResults(
-                tournament?.participants.find((org) =>
-                  org.group_player_ids.includes(match?.player2_id ?? 0)
-                )
-              )
-            : getGroupMatchResults(
-                tournament?.participants.find((org) =>
-                  org.group_player_ids.includes(match?.player1_id ?? 0)
-                )
-              )}
+            ? getFinalScore(match?.scores_csv ?? "", 2)
+            : getFinalScore(match?.scores_csv ?? "", 1)}
         </div> */}
         <div className="stage">{live_data?.ingame}</div>
         {/* <div className="score">
@@ -263,11 +279,15 @@ const InGame = () => {
             style={{
               backgroundImage: `url(${
                 swap_team_positions
-                  ? tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player2_id ?? 0)
+                  ? tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                        org.id === match?.player2_id
                     )?.logo
-                  : tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player1_id ?? 0)
+                  : tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                        org.id === match?.player1_id
                     )?.logo
               })`,
             }}
@@ -275,11 +295,15 @@ const InGame = () => {
           <div className="details">
             <div className="org">
               {swap_team_positions
-                ? tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                ? tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                      org.id === match?.player2_id
                   )?.org_name
-                : tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                : tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                      org.id === match?.player1_id
                   )?.org_name}
             </div>
             {/* <div className="school">
@@ -295,16 +319,8 @@ const InGame = () => {
 
           <div className="score">
             {swap_team_positions
-              ? getGroupMatchResults(
-                  tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
-                  )
-                )
-              : getGroupMatchResults(
-                  tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
-                  )
-                )}
+              ? getFinalScore(match?.scores_csv ?? "", 2)
+              : getFinalScore(match?.scores_csv ?? "", 1)}
           </div>
         </div>
         <div className="spacer"></div>
@@ -314,11 +330,15 @@ const InGame = () => {
             style={{
               backgroundImage: `url(${
                 !swap_team_positions
-                  ? tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player2_id ?? 0)
+                  ? tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                        org.id === match?.player2_id
                     )?.logo
-                  : tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player1_id ?? 0)
+                  : tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                        org.id === match?.player1_id
                     )?.logo
               })`,
             }}
@@ -326,11 +346,15 @@ const InGame = () => {
           <div className="details">
             <div className="org">
               {!swap_team_positions
-                ? tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                ? tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                      org.id === match?.player2_id
                   )?.org_name
-                : tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                : tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                      org.id === match?.player1_id
                   )?.org_name}
             </div>
             {/* <div className="school">
@@ -345,16 +369,8 @@ const InGame = () => {
           </div>
           <div className="score">
             {!swap_team_positions
-              ? getGroupMatchResults(
-                  tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
-                  )
-                )
-              : getGroupMatchResults(
-                  tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
-                  )
-                )}
+              ? getFinalScore(match?.scores_csv ?? "", 2)
+              : getFinalScore(match?.scores_csv ?? "", 1)}
           </div>
         </div>
       </div>

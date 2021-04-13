@@ -214,6 +214,22 @@ const Drafting = () => {
     (state: ReduxState) => state.live
   );
 
+  const getFinalScore = (score: string, teamIndex: number) => {
+    const scores: string[] = score.split(",");
+    let team1: number = 0;
+    let team2: number = 0;
+
+    scores.forEach((s) => {
+      let ss = s.match(/^(\d*)-(\d*)/);
+      if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
+        team1 = team1 + 1;
+      } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
+        team2 = team2 + 1;
+      }
+    });
+    return teamIndex === 1 ? team1 : team2;
+  };
+
   const getGroupMatchResults = (team?: Participant): string => {
     const groupIds: number[] = team?.group_player_ids ?? [];
 
@@ -264,8 +280,8 @@ const Drafting = () => {
 
   const getCurrentMap = () => {
     return mapMap[
-      match?.veto?.filter((v) => v.type === "pick" && !v.winner)[0].map ??
-        "bind"
+      match?.veto?.filter((v) => v.type === "pick" && Boolean(!v.winner))[0]
+        ?.map || "bind"
     ];
   };
 
@@ -304,31 +320,25 @@ const Drafting = () => {
       </div>
       <div className={c.teams}>
         <div className="team one">
-          {Boolean(match?.group_id) && (
-            <div className="score">
-              {swap_team_positions
-                ? getGroupMatchResults(
-                    tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player2_id ?? 0)
-                    )
-                  )
-                : getGroupMatchResults(
-                    tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player1_id ?? 0)
-                    )
-                  )}
-            </div>
-          )}
+          <div className="score">
+            {swap_team_positions
+              ? getFinalScore(match?.scores_csv ?? "0-0", 2)
+              : getFinalScore(match?.scores_csv ?? "0-0", 1)}
+          </div>
           <div
             className="logo"
             style={{
               backgroundImage: `url(${
                 swap_team_positions
-                  ? tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player2_id ?? 0)
+                  ? tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                        org.id === match?.player2_id
                     )?.logo
-                  : tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player1_id ?? 0)
+                  : tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                        org.id === match?.player1_id
                     )?.logo
               })`,
               margin: Boolean(match?.group_id)
@@ -339,51 +349,53 @@ const Drafting = () => {
           <div className="details">
             <div className="org">
               {swap_team_positions
-                ? tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                ? tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                      org.id === match?.player2_id
                   )?.org_name
-                : tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                : tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                      org.id === match?.player1_id
                   )?.org_name}
             </div>
             <div className="school">
               {swap_team_positions
-                ? tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                ? tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                      org.id === match?.player2_id
                   )?.university_name
-                : tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                : tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                      org.id === match?.player1_id
                   )?.university_name}
             </div>
           </div>
         </div>
         <div className="spacer"></div>
         <div className="team two">
-          {Boolean(match?.group_id) && (
-            <div className="score">
-              {!swap_team_positions
-                ? getGroupMatchResults(
-                    tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player2_id ?? 0)
-                    )
-                  )
-                : getGroupMatchResults(
-                    tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player1_id ?? 0)
-                    )
-                  )}
-            </div>
-          )}
+          <div className="score">
+            {!swap_team_positions
+              ? getFinalScore(match?.scores_csv ?? "0-0", 2)
+              : getFinalScore(match?.scores_csv ?? "0-0", 1)}
+          </div>
           <div
             className="logo"
             style={{
               backgroundImage: `url(${
                 !swap_team_positions
-                  ? tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player2_id ?? 0)
+                  ? tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                        org.id === match?.player2_id
                     )?.logo
-                  : tournament?.participants.find((org) =>
-                      org.group_player_ids.includes(match?.player1_id ?? 0)
+                  : tournament?.participants.find(
+                      (org) =>
+                        org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                        org.id === match?.player1_id
                     )?.logo
               })`,
               margin: Boolean(match?.group_id)
@@ -394,20 +406,28 @@ const Drafting = () => {
           <div className="details">
             <div className="org">
               {!swap_team_positions
-                ? tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                ? tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                      org.id === match?.player2_id
                   )?.org_name
-                : tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                : tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                      org.id === match?.player1_id
                   )?.org_name}
             </div>
             <div className="school">
               {!swap_team_positions
-                ? tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player2_id ?? 0)
+                ? tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player2_id ?? 0) ||
+                      org.id === match?.player2_id
                   )?.university_name
-                : tournament?.participants.find((org) =>
-                    org.group_player_ids.includes(match?.player1_id ?? 0)
+                : tournament?.participants.find(
+                    (org) =>
+                      org.group_player_ids.includes(match?.player1_id ?? 0) ||
+                      org.id === match?.player1_id
                   )?.university_name}
             </div>
           </div>

@@ -20,6 +20,9 @@ import ModuleContainer from "./view/ModuleContainer";
 import Replay from "./view/Replay";
 import Veto from "./view/Veto";
 import WinnerChampion from "./view/WinnerChampion";
+import Bracket from "./view/Bracket";
+import LogitechMVP from "./view/LogitechMVP";
+import IngameLowerThirds from "./view/InGameLowerThirds";
 
 const ms = makeStyles({
   app: {
@@ -76,6 +79,15 @@ function App() {
         </Route>
         <Route path="/veto">
           <Veto />
+        </Route>
+        <Route path="/bracket">
+          <Bracket />
+        </Route>
+        <Route path="/mvp">
+          <LogitechMVP />
+        </Route>
+        <Route path="/lowerThirds">
+          <IngameLowerThirds />
         </Route>
       </Switch>
     </div>

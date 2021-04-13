@@ -77,7 +77,9 @@ const VsScreen = () => {
   const { tournament, match } = useSelector((state: ReduxState) => state.live);
 
   const team = (t: number): Participant | undefined => {
-    return tournament?.participants.find((p) => p.group_player_ids.includes(t));
+    return tournament?.participants.find(
+      (p) => p.group_player_ids.includes(t) || p.id === t
+    );
   };
 
   const getGroupMatchResults = (team?: Participant): string => {
@@ -117,6 +119,22 @@ const VsScreen = () => {
       });
     return `${win}-${lost}`;
   };
+
+  const getFinalScore = (score: string, teamIndex: number) => {
+    const scores: string[] = score.split(",");
+    let team1: number = 0;
+    let team2: number = 0;
+
+    scores.forEach((s) => {
+      let ss = s.match(/^(\d*)-(\d*)/);
+      if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
+        team1 = team1 + 1;
+      } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
+        team2 = team2 + 1;
+      }
+    });
+    return teamIndex === 1 ? team1 : team2;
+  };
   return (
     <div className={c.vsPage}>
       <div className="team">
@@ -134,9 +152,7 @@ const VsScreen = () => {
         <div className="school">
           {team(match?.player1_id ?? 0)?.university_name}
         </div>
-        <div className="score">
-          {getGroupMatchResults(team(match?.player1_id ?? 0))}
-        </div>
+        <div className="score">{getFinalScore(match?.scores_csv ?? "", 1)}</div>
       </div>
 
       <div className="spacer"></div>
@@ -156,9 +172,7 @@ const VsScreen = () => {
         <div className="school">
           {team(match?.player2_id ?? 0)?.university_name}
         </div>
-        <div className="score">
-          {getGroupMatchResults(team(match?.player2_id ?? 0))}
-        </div>
+        <div className="score">{getFinalScore(match?.scores_csv ?? "", 2)}</div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import Frame from "../comps/containers/Frame";
 import { ReduxState } from "../config/types/types";
+import BracketModule from "./content/BracketModule";
 import PlayerModule from "./content/PlayerModule";
 import PlayerVsPlayerModule from "./content/PlayerVsPlayerModule";
 import ScheduleModule from "./content/ScheduleModule";
@@ -76,6 +77,7 @@ const ModuleContainer = () => {
             {container_mode === "stats_player_vs" && <PlayerVsPlayerModule />}
             {container_mode === "stats_team_vs" && <TeamVsTeamModule />}
             {container_mode === "ending" && <ScheduleOnlyModule />}
+            {container_mode === "bracket" && <BracketModule />}
           </div>
         </CSSTransition>
       </SwitchTransition>

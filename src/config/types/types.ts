@@ -1,3 +1,4 @@
+import firebase from "../firebase";
 export interface ReduxState {
   live: Live;
 }
@@ -9,6 +10,7 @@ export interface WebsocketUser {
 }
 export interface Live {
   lowerThirds?: LowerThirds;
+  lowerThirdsIngame?: LowerThirdsIngame;
   tournament?: Tournament;
   casters?: Caster[];
   casters_alt?: Caster[];
@@ -20,6 +22,7 @@ export interface Live {
   websocket_users: WebsocketUser[];
   room: string;
   countdown_minutes?: number;
+  logitech_mvp?: LogitechMVPProps;
   stat_player?: PlayerStatProps;
   stat_player_vs?: StatPlayerVsProps;
   stat_team_vs?: TeamVsProps;
@@ -39,6 +42,10 @@ export interface Live {
     | "stats_player"
     | "stats_player_vs"
     | "ending";
+}
+
+export interface LowerThirdsIngame extends LowerThirds {
+  is_live: boolean;
 }
 
 export interface LiveData {
@@ -69,6 +76,28 @@ export interface PlayerStatProps extends Player {
   stats: Stat[];
 }
 
+export interface LogitechMVPProps extends PlayerStatProps {
+  player_offset_x: number;
+  player_scale_multiplyer: number;
+  agent_offset_x: number;
+  agent_scale_multiplyer: number;
+  agent:
+    | "brimstone"
+    | "phoenix"
+    | "sage"
+    | "sova"
+    | "viper"
+    | "cypher"
+    | "reyna"
+    | "killjoy"
+    | "breach"
+    | "omen"
+    | "jett"
+    | "raze"
+    | "skye"
+    | "yoru"
+    | "astra";
+}
 export interface Stat {
   stat_name: string;
   stat_value: string;
@@ -87,10 +116,12 @@ export type LowerThirdsMode =
   | "ticker"
   | "casters"
   | "long"
-  | "playerStats"
   | "playerQuote"
+  | "playerStats"
   | "pickem"
+  | "pickemShoutout"
   | "veto";
+
 export interface LowerThirds {
   headline: string;
   ticker: string;
@@ -233,7 +264,6 @@ export interface VetoItem {
 
 export type ValorantMap = "ascent" | "bind" | "haven" | "icebox" | "split";
 
-import firebase from "../firebase";
 export interface PollItemProps {
   expiry_date_time: firebase.firestore.Timestamp;
   team1?: Participant;
