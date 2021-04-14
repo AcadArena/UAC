@@ -166,12 +166,13 @@ const mcs = makeStyles({
     position: "relative",
     padding: 10,
     zIndex: 20,
+    transition: "height 0.6s cubic-bezier(0.65, 0, 0.35, 1)",
     "& .text": {
       color: "#fff",
       textTransform: "uppercase",
       fontFamily: "Anton",
       letterSpacing: 1,
-      fontSize: 40,
+      fontSize: 30,
       padding: "3px 20px",
       backgroundColor: "rgba(0,0,0,.6)",
     },
@@ -192,7 +193,7 @@ const mcs = makeStyles({
         backgroundSize: "contain",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        transform: "scale(2)",
+        transform: "scale(1)",
         filter: "drop-shadow(0px 4px 4px rgba(0,0,0,1))",
       },
     },
@@ -437,19 +438,36 @@ const Drafting = () => {
       <div className={c.picks}>
         <Transition
           items={match?.veto?.filter((v) => v.type === "pick") ?? []}
+          keys={(v) => v.map}
           from={{ opacity: 0, transform: "translateY(10px)" }}
+          leave={{ opacity: 0, transform: "translateY(10px)" }}
           enter={{ opacity: 1, transform: "translateY(0px)" }}
-          delay={1500}
+          trail={150}
         >
           {(v) => (props) => (
             <div
               className={c.vetoItem}
               style={{
                 backgroundImage: `url(${mapMap[v.map]})`,
+
+                height:
+                  (match?.veto?.filter((v) => v.type === "pick").length ?? 0) >
+                  3
+                    ? 60
+                    : 120,
                 ...props,
               }}
             >
-              <div className="text">
+              <div
+                className="text"
+                style={{
+                  fontSize:
+                    (match?.veto?.filter((v) => v.type === "pick").length ??
+                      0) > 3
+                      ? 20
+                      : 30,
+                }}
+              >
                 {v.team.university_acronym !== "AUTO" &&
                   `${v.team.university_acronym} — `}
                 {v.map}
