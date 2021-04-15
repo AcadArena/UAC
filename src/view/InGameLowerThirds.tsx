@@ -522,7 +522,7 @@ const ms = makeStyles({
         position: "relative",
         alignItems: "center",
         clipPath:
-          "polygon(0% 0%, 100% 0%, 100% 80%, 98% 100%, 2% 100%, 0% 80%)",
+          "polygon(0% 0%, 100% 0%, 100% 70%, 98.5% 100%, 1.5% 100%, 0% 70%)",
 
         "& .team2votes, .team1votes": {
           fontFamily: "Anton",
@@ -540,6 +540,74 @@ const ms = makeStyles({
           width: "100%",
           transition: "all 0.6s cubic-bezier(0.65, 0, 0.35, 1)",
         },
+      },
+    },
+  },
+  pickemShoutout: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+
+    "& .avatar": {
+      height: 126,
+      width: 126,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      borderRadius: 10,
+      transform: "scale(0.75)",
+    },
+
+    "& .head": {
+      display: "flex",
+      flexDirection: "column",
+      padding: theme.spacing(0, 8, 0, 8),
+      "& .subtitle": {
+        color: "#aaa",
+        fontFamily: "Anton",
+        fontSize: 20,
+        textTransform: "uppercase",
+        lineHeight: 1,
+      },
+
+      "& .shoutout": {
+        color: "#ffd200",
+        fontFamily: "Anton",
+        fontSize: 50,
+        textTransform: "uppercase",
+
+        lineHeight: 1,
+      },
+    },
+
+    "& .wrapper": {
+      padding: `0px 37px 0px 20px`,
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "center",
+
+      "& .headline": {
+        color: "#ffd200",
+        fontFamily: "'industry', sans-serif",
+        fontSize: 28,
+        fontWeight: "bold",
+        textTransform: "uppercase",
+        lineHeight: 1,
+        marginBottom: 3,
+      },
+
+      "& .content": {
+        textTransform: "uppercase",
+        fontFamily: "industry",
+        color: "#f9f9f9",
+        fontSize: 35,
+        fontWeight: "bold",
+        marginTop: -5,
+        lineHeight: 1,
       },
     },
   },
@@ -572,6 +640,8 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
     case "veto":
       return 1400;
     case "pickem":
+      return "large";
+    case "pickemShoutout":
       return "large";
     default:
       return "medium";
@@ -632,6 +702,7 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
               shadow
               className={c.LowerThirds}
               style={props}
+              disablelogo={lowerThirds?.mode === "pickemShoutout"}
             >
               <SwitchTransition mode="out-in">
                 <CSSTransition
@@ -965,6 +1036,33 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
                               backgroundImage: `url(${poll?.team2?.logo})`,
                             }}
                           ></div>
+                        </div>
+                      </div>
+                    )}
+                    {lowerThirds?.mode === "pickemShoutout" && (
+                      <div className={c.pickemShoutout}>
+                        <div className="head">
+                          <div className="subtitle">!pickem</div>
+                          <Typography variant="h4" className="shoutout">
+                            SHOUTOUT
+                          </Typography>
+                        </div>
+                        {lowerThirds.shoutout?.img && (
+                          <div
+                            className="avatar"
+                            style={{
+                              backgroundImage: `url(${lowerThirds.shoutout?.img})`,
+                            }}
+                          ></div>
+                        )}
+                        <div className="wrapper">
+                          <Typography variant="h6" className="headline">
+                            {lowerThirds.shoutout?.alias}
+                          </Typography>
+
+                          <Typography variant="h4" className="content">
+                            {lowerThirds.shoutout?.message}
+                          </Typography>
                         </div>
                       </div>
                     )}
