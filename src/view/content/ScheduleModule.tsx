@@ -16,7 +16,7 @@ const ms = makeStyles((theme) => ({
     width: "50%",
     alignItems: "center",
     padding: "0px 10px",
-    height: 460,
+    // height: 460,
     transition: "all 150ms ease-out",
     "& .head": {
       fontFamily: "Anton",

@@ -11,7 +11,7 @@ const mcs = makeStyles({
   playerModule: {
     display: "flex",
     flexDirection: "column",
-    height: 545,
+    // height: 545,
     overflow: "hidden",
 
     "& .head": {

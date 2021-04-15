@@ -15,7 +15,7 @@ const ms = makeStyles((theme) => ({
     width: "100%",
     alignItems: "center",
     padding: "0px 10px",
-    height: 540,
+    // height: 540,
     transition: "150ms ease-out",
 
     "& .head": {
