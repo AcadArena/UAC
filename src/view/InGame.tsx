@@ -3,8 +3,6 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Participant, ReduxState } from "../config/types/types";
 import InGameFrame from "../assets/imgs/top.png";
-import { getOriginalNode } from "typescript";
-import theme from "../Theme";
 
 const mcs = makeStyles({
   ingame: {
@@ -46,7 +44,7 @@ const mcs = makeStyles({
       width: 50,
       color: "#fff",
       fontFamily: "Anton",
-      fontSize: 24,
+      fontSize: 30,
       whiteSpace: "nowrap",
     },
   },
@@ -88,7 +86,7 @@ const mcs = makeStyles({
         width: 50,
         color: "#fff",
         fontFamily: "Anton",
-        fontSize: 22,
+        fontSize: 30,
         whiteSpace: "nowrap",
       },
 
