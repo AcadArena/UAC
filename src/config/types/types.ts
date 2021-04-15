@@ -26,6 +26,7 @@ export interface Live {
   stat_player?: PlayerStatProps;
   stat_player_vs?: StatPlayerVsProps;
   stat_team_vs?: TeamVsProps;
+  vs_screen?: VsScreenProps;
   live_data?: LiveData;
   swap_team_positions?: boolean;
   match_winner?: {
@@ -44,8 +45,18 @@ export interface Live {
     | "ending";
 }
 
+export interface VsScreenProps {
+  team1_player_settings: Adjustments;
+  team2_player_settings: Adjustments;
+  team1_logo_settings: Adjustments;
+  team2_logo_settings: Adjustments;
+  team1_player?: Player;
+  team2_player?: Player;
+}
+
 export interface LowerThirdsIngame extends LowerThirds {
   is_live: boolean;
+  shoutout?: MessageItem;
 }
 
 export interface LiveData {
@@ -76,11 +87,17 @@ export interface PlayerStatProps extends Player {
   stats: Stat[];
 }
 
+export interface Adjustments {
+  y: number;
+  x: number;
+  scale: number;
+  flip_x?: boolean;
+  flip_y?: boolean;
+}
+
 export interface LogitechMVPProps extends PlayerStatProps {
-  player_offset_x: number;
-  player_scale_multiplyer: number;
-  agent_offset_x: number;
-  agent_scale_multiplyer: number;
+  player_adjustments: Adjustments;
+  agent_adjustments: Adjustments;
   agent:
     | "brimstone"
     | "phoenix"
@@ -299,4 +316,11 @@ export interface VoteItem {
   picture: string;
   name?: string;
   email: string;
+  message?: MessageItem | false;
+}
+
+export interface MessageItem {
+  alias: string;
+  img?: string;
+  message: string;
 }

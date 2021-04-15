@@ -23,6 +23,7 @@ import WinnerChampion from "./view/WinnerChampion";
 import Bracket from "./view/Bracket";
 import LogitechMVP from "./view/LogitechMVP";
 import IngameLowerThirds from "./view/InGameLowerThirds";
+import VsScreenPlayoffs from "./view/VsScreenPlayoffs";
 
 const ms = makeStyles({
   app: {
@@ -54,7 +55,7 @@ function App() {
           <InGame />
         </Route>
         <Route path="/vs">
-          <VsScreen />
+          <VsScreenPlayoffs />
         </Route>
         <Route path="/timer">
           <TimerOnly />

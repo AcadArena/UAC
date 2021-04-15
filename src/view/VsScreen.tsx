@@ -2,6 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Participant, ReduxState } from "../config/types/types";
+import delet from "../assets/imgs/delet.png";
 
 // @ts-ignore
 import { Textfit } from "react-textfit";
@@ -16,6 +17,8 @@ const mcs = makeStyles({
     alignItems: "center",
 
     padding: "0 200px",
+    backgroundSize: "stretch",
+    backgroundImage: `url(${delet})`,
     "& .spacer": {
       width: 500,
     },
