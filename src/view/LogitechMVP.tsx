@@ -19,6 +19,7 @@ import Skye from "../assets/imgs/valorant/Skye_artwork.png";
 import Sova from "../assets/imgs/valorant/Sova_artwork.webp";
 import Viper from "../assets/imgs/valorant/Viper_artwork.png";
 import Yoru from "../assets/imgs/valorant/Yoru_artwork.png";
+import LowerThirds from "../comps/lowerthirds/LowerThirds";
 
 const agents = {
   astra: Astra,
@@ -36,6 +37,10 @@ const agents = {
   sova: Sova,
   viper: Viper,
   yoru: Yoru,
+};
+
+const getPercentage = (base: number, n: number) => {
+  return (n / base) * 100;
 };
 
 const mcs = makeStyles((theme) => ({
@@ -80,6 +85,7 @@ const mcs = makeStyles((theme) => ({
     display: "flex",
     width: 1010,
     aspectRatio: "16/9",
+    height: 568.125,
     position: "absolute",
     left: 815,
     top: 292,
@@ -122,6 +128,80 @@ const mcs = makeStyles((theme) => ({
       },
     },
   },
+  lt: {
+    zIndex: 99,
+    position: "absolute",
+    bottom: 60,
+    left: 60,
+    display: "flex",
+    "& .wrapper": {
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      alignItems: "center",
+    },
+  },
+
+  logo: {
+    position: "relative",
+    height: 126 * 0.746031746031746,
+    width: 128 * 0.746031746031746,
+    marginLeft: 20,
+    // backgroundColor: "#ffd200",
+
+    "& .logo": {
+      position: "relative",
+      height: 126 * 0.746031746031746,
+      width: 128 * 0.746031746031746,
+      // backgroundColor: "#ffd200",
+      zIndex: 100,
+      backgroundSize: "auto 75%",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      filter: "drop-shadow(0px 8px 4px rgba(0,0,0,.25))",
+    },
+
+    // "&::before": {
+    //   content: "''",
+    //   width: 160 * 0.746031746031746,
+    //   height: 126 * 0.746031746031746,
+    //   position: "absolute",
+    //   top: 0,
+    //   left: 0,
+    //   backgroundColor: "#ffd200",
+    //   clipPath: `polygon(0% 0%, 100% 0%, ${getPercentage(
+    //     160 * 0.746031746031746,
+    //     128 * 0.746031746031746
+    //   )}% 100%, 0% 100%)`,
+    //   zIndex: 90,
+    // },
+  },
+
+  info: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    padding: "0px 20px",
+
+    "& .org": {
+      color: "#fbfbfb",
+      fontFamily: "industry",
+      textTransform: "uppercase",
+      fontWeight: "bold",
+      fontSize: 20,
+      lineHeight: 1,
+      marginBottom: 3,
+    },
+
+    "& .player": {
+      color: "#ffd200",
+      fontFamily: "'Druk Wide Bold'",
+      textTransform: "uppercase",
+      fontWeight: "bold",
+      fontSize: 35,
+      lineHeight: 1,
+    },
+  },
 }));
 
 const LogitechMVP = () => {
@@ -133,8 +213,10 @@ const LogitechMVP = () => {
         className={c.photo}
         style={{
           backgroundImage: `url(${logitech_mvp?.photo_main})`,
-          transform: `translateX(${logitech_mvp?.player_offset_x}px)  scale(${
-            1 + (logitech_mvp?.player_scale_multiplyer ?? 0) * 0.01
+          transform: `translateX(${
+            logitech_mvp?.player_adjustments.x
+          }px)  scale(${
+            1 + (logitech_mvp?.player_adjustments.scale ?? 0) * 0.01
           })`,
         }}
       ></div>
@@ -142,12 +224,14 @@ const LogitechMVP = () => {
         className={c.agent}
         style={{
           backgroundImage: `url(${agents[logitech_mvp?.agent || "jett"]})`,
-          transform: `translateX(${logitech_mvp?.agent_offset_x}px) scale(${
-            1 + (logitech_mvp?.agent_scale_multiplyer ?? 0) * 0.01
+          transform: `translateX(${
+            logitech_mvp?.agent_adjustments.x
+          }px) scale(${
+            1 + (logitech_mvp?.agent_adjustments.scale ?? 0) * 0.01
           })`,
         }}
       ></div>
-      <div className={c.frame}></div>
+      {/* <div className={c.frame}></div> */}
 
       <div className={c.stats}>
         {logitech_mvp?.stats.map((stat) => (
@@ -157,6 +241,22 @@ const LogitechMVP = () => {
           </div>
         ))}
       </div>
+
+      <LowerThirds className={c.lt} size={950} disablelogo shadow>
+        <div className="wrapper">
+          <div className={c.logo}>
+            <div
+              className="logo"
+              style={{ backgroundImage: `url(${logitech_mvp?.team?.logo})` }}
+            ></div>
+          </div>
+
+          <div className={c.info}>
+            <div className="org">{logitech_mvp?.team?.org_name}</div>
+            <div className="player">{logitech_mvp?.ign}</div>
+          </div>
+        </div>
+      </LowerThirds>
     </div>
   );
 };
