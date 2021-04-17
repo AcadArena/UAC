@@ -113,7 +113,7 @@ const ms = makeStyles((theme) => ({
       flex: 1,
       justifyContent: "center",
       // alignItems: "center",
-      marginTop: 50,
+      margin: "20px 0",
       "& .team": {
         width: 160,
         display: "flex",
@@ -183,6 +183,49 @@ const ms = makeStyles((theme) => ({
   countdown: {
     top: 783,
     left: 678,
+  },
+
+  lowSched: {
+    margin: 0 + "!important",
+    height: "100%",
+    justifyContent: "center",
+    "& .match": {
+      maxHeight: "none !important",
+      position: "relative",
+      "& .badge": {
+        position: "absolute",
+        bottom: 20,
+        left: "50%",
+
+        transform: "translateX(-50%)!important",
+        // justifySelf: "center",
+        // alignSelf: "center",
+      },
+      "&. left": {
+        "& .name": {
+          textAlign: "center!important",
+        },
+      },
+      "& .team": {
+        flexDirection: "column",
+        alignItems: "center",
+
+        "& .logo": {
+          height: "100px !important",
+          width: "200px !important",
+        },
+
+        "& .name": {
+          fontSize: "20px!important",
+          width: "200px!important",
+          textAlign: "center!important",
+        },
+      },
+      "& .vs": {
+        fontSize: "30px !important",
+        margin: "0px 30px!important",
+      },
+    },
   },
 }));
 
@@ -310,6 +353,10 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
     }
   };
 
+  const lowSched = (): boolean => {
+    return matches_today.filter((m) => m.id !== match?.id).length < 3;
+  };
+
   return (
     <div className={c.wrapper + " " + className} {...props}>
       <div className={c.current}>
@@ -371,7 +418,7 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
       <div className={c.schedule}>
         <div className="head">SCHEDULE</div>
 
-        <div className="matches">
+        <div className={lowSched() ? "matches " + c.lowSched : "matches"}>
           <Transition
             items={matches_today.filter((m) => m.id !== match?.id)}
             keys={(m) => m.id}
@@ -400,8 +447,12 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
             trail={100}
           >
             {(match) => (props) => (
-              // @ts-ignore
-              <div className="match" key={match.id} style={props}>
+              <div
+                className="match"
+                key={match.id}
+                // @ts-ignore
+                style={props}
+              >
                 <div className="badge">
                   <div className="item">{badger(match)}</div>
                 </div>

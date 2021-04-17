@@ -56,7 +56,6 @@ export interface VsScreenProps {
 
 export interface LowerThirdsIngame extends LowerThirds {
   is_live: boolean;
-  shoutout?: MessageItem;
 }
 
 export interface LiveData {
@@ -79,6 +78,8 @@ export interface TeamStatProps extends Participant {
 export interface StatPlayerVsProps {
   player1: PlayerStatProps;
   player2: PlayerStatProps;
+  player1_settings?: Adjustments;
+  player2_settings?: Adjustments;
   stat_names: string[];
   [key: string]: PlayerStatProps | any;
 }
@@ -148,6 +149,8 @@ export interface LowerThirds {
   mode: LowerThirdsMode;
   player?: Player;
   player_quote?: string;
+
+  shoutout?: MessageItem;
   player_stats?: {
     left?: {
       property?: string;

@@ -6,6 +6,7 @@ import frame from "../../assets/imgs/pvp-stats-frame.png";
 import { stat } from "fs";
 import { Spring, Transition } from "react-spring/renderprops";
 import { TransitionGroup } from "react-transition-group";
+import { Stats } from "node:fs";
 
 const mcs = makeStyles({
   playerModule: {
@@ -30,11 +31,12 @@ const mcs = makeStyles({
     padding: "20px 36px",
 
     "& .player": {
-      height: "80%",
+      // height: "100%",
       width: 250,
       backgroundPosition: "bottom center",
       backgroundRepeat: "no-repeat",
       backgroundSize: "contain",
+      transformOrigin: "center bottom",
     },
   },
   stats: {
@@ -137,13 +139,35 @@ const PlayerVsPlayerModule: React.FC<{ className?: string }> = ({
 }) => {
   const c = mcs();
   const { stat_player_vs } = useSelector((state: ReduxState) => state.live);
+
+  const getSettings = (player: "player1" | "player2", beforeValue: boolean) => {
+    const settings =
+      player === "player1"
+        ? stat_player_vs?.player1_settings
+        : player === "player2"
+        ? stat_player_vs?.player2_settings
+        : undefined;
+
+    if (settings) {
+      return ` translateX(${
+        (settings.x ?? 0) +
+        (beforeValue ? (player === "player1" ? -10 : 10) : 0)
+      }px) scale(${1 + (settings.scale ?? 0) * 0.01}) scaleX(${
+        1 * (settings.flip_x ? -1 : 1)
+      })`;
+    } else {
+      return `translateX(${
+        0 + (beforeValue ? (player === "player1" ? -10 : 10) : 0)
+      }px)`;
+    }
+  };
   return (
     <div className={c.playerModule + " " + className} {...props}>
       <div className="head">PLAYER MATCHUP</div>
       <div className={c.content}>
         <Spring
-          from={{ opacity: 0, transform: "translateX(-10px)" }}
-          to={{ opacity: 1, transform: "translateX(0px)" }}
+          from={{ opacity: 0, transform: `${getSettings("player1", true)}` }}
+          to={{ opacity: 1, transform: `${getSettings("player1", false)}` }}
           delay={800}
         >
           {(props) => (
@@ -283,8 +307,11 @@ const PlayerVsPlayerModule: React.FC<{ className?: string }> = ({
             ))} */}
         </div>
         <Spring
-          from={{ opacity: 0, transform: "translateX(10px)" }}
-          to={{ opacity: 1, transform: "translateX(0px)" }}
+          from={{ opacity: 0, transform: `${getSettings("player2", true)}` }}
+          to={{
+            opacity: 1,
+            transform: `${getSettings("player2", false)}`,
+          }}
           delay={800}
         >
           {(props) => (

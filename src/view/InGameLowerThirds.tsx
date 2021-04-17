@@ -429,9 +429,9 @@ const ms = makeStyles({
     "& .title": {
       color: "#ffd200",
       fontFamily: "Anton",
-      fontSize: 50,
+      fontSize: 60,
       textTransform: "uppercase",
-      padding: theme.spacing(0, 4, 0, 8),
+      padding: theme.spacing(0, 4, 0, 10),
     },
     "& .veto-item": {
       width: 100,
@@ -480,19 +480,19 @@ const ms = makeStyles({
       display: "flex",
       flexDirection: "column",
 
-      padding: theme.spacing(0, 5, 0, 8),
+      padding: theme.spacing(0, 7, 0, 10),
       borderRight: "2px solid rgba(255,255,255,.5)",
       "& .title": {
         color: "#fff",
         fontFamily: "Anton",
-        fontSize: 50,
+        fontSize: 60,
         textTransform: "uppercase",
         lineHeight: 1,
       },
       "& .sub-title": {
         color: "#aaa",
         fontFamily: "Anton",
-        fontSize: 20,
+        fontSize: 30,
         textTransform: "uppercase",
         lineHeight: 1,
       },
@@ -502,12 +502,12 @@ const ms = makeStyles({
       display: "flex",
       height: "100%",
       alignItems: "center",
-      padding: theme.spacing(0, 5),
+      padding: theme.spacing(0, 7),
       flex: 1,
 
       "& .team1, .team2": {
-        height: 75,
-        width: 75,
+        height: 100,
+        width: 100,
         backgroundSize: "contain",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
@@ -515,20 +515,21 @@ const ms = makeStyles({
 
       "& .bar": {
         flex: 1,
-        height: 50,
+        height: 60,
         backgroundColor: "#ffd200",
-        margin: theme.spacing(0, 4),
+        margin: theme.spacing(0, 6),
         display: "flex",
         position: "relative",
         alignItems: "center",
         clipPath:
-          "polygon(0% 0%, 100% 0%, 100% 70%, 98.5% 100%, 1.5% 100%, 0% 70%)",
+          "polygon(0% 0%, 100% 0%, 100% 75%, 98% 100%, 2% 100%, 0% 75%)",
 
         "& .team2votes, .team1votes": {
           fontFamily: "Anton",
-          fontSize: 25,
+          fontSize: 30,
           position: "absolute",
-          padding: theme.spacing(0, 3),
+          padding: theme.spacing(0, 4),
+          filter: "drop-shadow(0 8px 4px rgba(0,0,0,.25))",
         },
 
         "& .team1votes": { left: 0 },
@@ -557,16 +558,18 @@ const ms = makeStyles({
       backgroundRepeat: "no-repeat",
       borderRadius: 10,
       transform: "scale(0.75)",
+      marginLeft: 10,
     },
 
     "& .head": {
       display: "flex",
       flexDirection: "column",
-      padding: theme.spacing(0, 8, 0, 8),
+      padding: theme.spacing(0, 8, 0, 10),
+      borderRight: "3px solid rgba(255,255,255,.5)",
       "& .subtitle": {
         color: "#aaa",
         fontFamily: "Anton",
-        fontSize: 20,
+        fontSize: 30,
         textTransform: "uppercase",
         lineHeight: 1,
       },
@@ -574,15 +577,14 @@ const ms = makeStyles({
       "& .shoutout": {
         color: "#ffd200",
         fontFamily: "Anton",
-        fontSize: 50,
+        fontSize: 60,
         textTransform: "uppercase",
-
         lineHeight: 1,
       },
     },
 
     "& .wrapper": {
-      padding: `0px 37px 0px 20px`,
+      padding: `0px 37px 0px 37px`,
       height: "100%",
       width: "100%",
       display: "flex",
@@ -593,7 +595,7 @@ const ms = makeStyles({
       "& .headline": {
         color: "#ffd200",
         fontFamily: "'industry', sans-serif",
-        fontSize: 28,
+        fontSize: 25,
         fontWeight: "bold",
         textTransform: "uppercase",
         lineHeight: 1,
@@ -604,7 +606,7 @@ const ms = makeStyles({
         textTransform: "uppercase",
         fontFamily: "industry",
         color: "#f9f9f9",
-        fontSize: 35,
+        fontSize: 30,
         fontWeight: "bold",
         marginTop: -5,
         lineHeight: 1,
@@ -702,7 +704,7 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
               shadow
               className={c.LowerThirds}
               style={props}
-              disablelogo={lowerThirds?.mode === "pickemShoutout"}
+              // disablelogo={lowerThirds?.mode === "pickemShoutout"}
             >
               <SwitchTransition mode="out-in">
                 <CSSTransition
@@ -987,7 +989,7 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
                       <div className={c.pickem}>
                         <div className="title-wrap">
                           <div className="sub-title">!vote</div>
-                          <div className="title">PICKEM</div>
+                          <div className="title">PICK'EM</div>
                         </div>
                         <div className="wrapper">
                           <div
@@ -1039,6 +1041,7 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
                         </div>
                       </div>
                     )}
+
                     {lowerThirds?.mode === "pickemShoutout" && (
                       <div className={c.pickemShoutout}>
                         <div className="head">
@@ -1055,7 +1058,14 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
                             }}
                           ></div>
                         )}
-                        <div className="wrapper">
+                        <div
+                          className="wrapper"
+                          style={{
+                            padding: !lowerThirds.shoutout?.img
+                              ? "0 37px"
+                              : "0px 37px 0px 10px",
+                          }}
+                        >
                           <Typography variant="h6" className="headline">
                             {lowerThirds.shoutout?.alias}
                           </Typography>

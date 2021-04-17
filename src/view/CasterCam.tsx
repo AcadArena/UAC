@@ -436,7 +436,7 @@ const ms = makeStyles({
       fontFamily: "Anton",
       fontSize: 50,
       textTransform: "uppercase",
-      padding: theme.spacing(0, 2, 0, 5),
+      padding: theme.spacing(0, 2, 0, 8),
     },
     "& .veto-item": {
       width: 100,
@@ -465,6 +465,7 @@ const ms = makeStyles({
         letterSpacing: 1,
         backgroundSize: "cover",
         backgroundPosition: "center",
+        fontSize: 18,
       },
       "& .type": {
         marginTop: -10,
@@ -532,6 +533,8 @@ const ms = makeStyles({
           fontSize: 25,
           position: "absolute",
           padding: theme.spacing(0, 3),
+
+          filter: "drop-shadow(0 8px 4px rgba(0,0,0,.25))",
         },
 
         "& .team1votes": { left: 0 },
@@ -543,6 +546,83 @@ const ms = makeStyles({
           width: "100%",
           transition: "all 0.6s cubic-bezier(0.65, 0, 0.35, 1)",
         },
+      },
+    },
+  },
+
+  pickemShoutout: {
+    height: "100%",
+    width: "100%",
+    display: "flex",
+    alignItems: "center",
+
+    "& .avatar": {
+      height: 126 * 0.746031746031746,
+      width: 126 * 0.746031746031746,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      borderRadius: 10 * 0.746031746031746,
+      transform: "scale(0.75)",
+      marginLeft: 10 * 0.746031746031746,
+    },
+
+    "& .head": {
+      display: "flex",
+      flexDirection: "column",
+      padding: theme.spacing(
+        0,
+        8 * 0.746031746031746,
+        0,
+        10 * 0.746031746031746
+      ),
+      borderRight: "3px solid rgba(255,255,255,.5)",
+      "& .subtitle": {
+        color: "#aaa",
+        fontFamily: "Anton",
+        fontSize: 30 * 0.746031746031746,
+        textTransform: "uppercase",
+        lineHeight: 1,
+      },
+
+      "& .shoutout": {
+        color: "#ffd200",
+        fontFamily: "Anton",
+        fontSize: 60 * 0.746031746031746,
+        textTransform: "uppercase",
+        lineHeight: 1,
+      },
+    },
+
+    "& .wrapper": {
+      padding: `0px ${37 * 0.746031746031746}px 0px ${
+        10 * 0.746031746031746
+      }px`,
+      height: "100%",
+      width: "100%",
+      display: "flex",
+      flex: 1,
+      flexDirection: "column",
+      justifyContent: "center",
+
+      "& .headline": {
+        color: "#ffd200",
+        fontFamily: "'industry', sans-serif",
+        fontSize: 25 * 0.746031746031746,
+        fontWeight: "bold",
+        textTransform: "uppercase",
+        lineHeight: 1,
+        marginBottom: 3 * 0.746031746031746,
+      },
+
+      "& .content": {
+        textTransform: "uppercase",
+        fontFamily: "industry",
+        color: "#f9f9f9",
+        fontSize: 30 * 0.746031746031746,
+        fontWeight: "bold",
+        marginTop: -5 * 0.746031746031746,
+        lineHeight: 1,
       },
     },
   },
@@ -575,6 +655,8 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
     case "veto":
       return 1400;
     case "pickem":
+      return "large";
+    case "pickemShoutout":
       return "large";
     default:
       return "medium";
@@ -1091,7 +1173,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                           <div className={c.pickem}>
                             <div className="title-wrap">
                               <div className="sub-title">!vote</div>
-                              <div className="title">PICKEM</div>
+                              <div className="title">PICK'EM</div>
                             </div>
                             <div className="wrapper">
                               <div
@@ -1140,6 +1222,43 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                                   backgroundImage: `url(${poll?.team2?.logo})`,
                                 }}
                               ></div>
+                            </div>
+                          </div>
+                        )}
+
+                        {lowerThirds?.mode === "pickemShoutout" && (
+                          <div className={c.pickemShoutout}>
+                            <div className="head">
+                              <div className="subtitle">!pickem</div>
+                              <Typography variant="h4" className="shoutout">
+                                SHOUTOUT
+                              </Typography>
+                            </div>
+                            {lowerThirds.shoutout?.img && (
+                              <div
+                                className="avatar"
+                                style={{
+                                  backgroundImage: `url(${lowerThirds.shoutout?.img})`,
+                                }}
+                              ></div>
+                            )}
+                            <div
+                              className="wrapper"
+                              style={{
+                                padding: !lowerThirds.shoutout?.img
+                                  ? `0 ${37 * 0.746031746031746}px`
+                                  : `0px ${37 * 0.746031746031746}px 0px ${
+                                      10 * 0.746031746031746
+                                    }px`,
+                              }}
+                            >
+                              <Typography variant="h6" className="headline">
+                                {lowerThirds.shoutout?.alias}
+                              </Typography>
+
+                              <Typography variant="h4" className="content">
+                                {lowerThirds.shoutout?.message}
+                              </Typography>
                             </div>
                           </div>
                         )}
