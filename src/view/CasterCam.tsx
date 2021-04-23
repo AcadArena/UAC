@@ -31,6 +31,7 @@ import havenMap from "../assets/imgs/haven.jpeg";
 
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { projectFirestore as db } from "../config/firebase";
+import Ad from "./lowerthirds/Ad";
 
 const ms = makeStyles({
   screen: {
@@ -1262,6 +1263,8 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                             </div>
                           </div>
                         )}
+
+                        {lowerThirds?.mode === "ad" && <Ad small />}
                       </div>
                     </CSSTransition>
                   </SwitchTransition>

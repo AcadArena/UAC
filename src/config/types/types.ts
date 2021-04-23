@@ -1,4 +1,5 @@
 import firebase from "../firebase";
+import { AdProps } from "./ads.interface";
 export interface ReduxState {
   live: Live;
 }
@@ -138,6 +139,7 @@ export type LowerThirdsMode =
   | "playerStats"
   | "pickem"
   | "pickemShoutout"
+  | "ad"
   | "veto";
 
 export interface LowerThirds {
@@ -149,7 +151,7 @@ export interface LowerThirds {
   mode: LowerThirdsMode;
   player?: Player;
   player_quote?: string;
-
+  ad?: AdProps;
   shoutout?: MessageItem;
   player_stats?: {
     left?: {

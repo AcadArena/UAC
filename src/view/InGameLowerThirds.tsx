@@ -31,6 +31,7 @@ import havenMap from "../assets/imgs/haven.jpeg";
 
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { projectFirestore as db } from "../config/firebase";
+import Ad from "./lowerthirds/Ad";
 
 const ms = makeStyles({
   screen: {
@@ -645,6 +646,8 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
       return "large";
     case "pickemShoutout":
       return "large";
+    case "ad":
+      return "large";
     default:
       return "medium";
   }
@@ -1042,6 +1045,7 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
                       </div>
                     )}
 
+                    {/* pickem shoutout */}
                     {lowerThirds?.mode === "pickemShoutout" && (
                       <div className={c.pickemShoutout}>
                         <div className="head">
@@ -1076,6 +1080,10 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
                         </div>
                       </div>
                     )}
+
+                    {lowerThirds?.mode === "ad" &&
+                      <Ad />
+                    }
                   </div>
                 </CSSTransition>
               </SwitchTransition>
