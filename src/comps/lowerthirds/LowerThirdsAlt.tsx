@@ -50,13 +50,25 @@ const ms = makeStyles({
     width: ({ size }: LowerThirdsProp): number => getLTWidth(size),
     clipPath: ({ size, reversecut, nocut }: LowerThirdsProp) =>
       reversecut
-        ? `polygon(0% -100%, 100% -100%, 100% 100%,${getPercentage(
-            getLTWidth(size),
-            39
-          )}% 100%, 0% ${getPercentage(126, 90)}%)`
-        : `polygon(0% -100%, 100% -100%, 100% ${getPercentage(126, 90)}%, ${
-            100 - getPercentage(getLTWidth(size), 39)
-          }% 100%, 0% 100%)`,
+        ? `polygon(
+            -100% -100%,
+            200% -100%,
+            200% 200%,
+
+            ${getPercentage(getLTWidth(size), 39)}% 200%,
+            ${getPercentage(getLTWidth(size), 39)}% 100%,
+            0% ${getPercentage(126, 90)}%
+            -100% ${getPercentage(126, 90)}%
+          )`
+        : `polygon(
+            -100% -100%,
+            200% -100%,
+            200%  ${getPercentage(126, 90)}%,
+            100% ${getPercentage(126, 90)}%,
+            ${100 - getPercentage(getLTWidth(size), 39)}% 100%,
+            ${100 - getPercentage(getLTWidth(size), 39)}% 200%,
+            -100% 200%
+          )`,
 
     display: "flex",
   },

@@ -50,19 +50,40 @@ const ms = makeStyles({
     width: ({ size }: LowerThirdsProp): number => getLTWidth(size),
     clipPath: ({ size, reversecut, nocut }: LowerThirdsProp) =>
       reversecut
-        ? `polygon(-100% -100%, 200% -100%, 200% 200%,${getPercentage(
-            getLTWidth(size),
-            39 * 0.746031746031746
-          )}% 100%, 0% ${getPercentage(
-            126 * 0.746031746031746,
-            90 * 0.746031746031746
-          )}%)`
-        : `polygon(-100% -100%, 200% -100%, 100% ${getPercentage(
-            126 * 0.746031746031746,
-            90 * 0.746031746031746
-          )}%, ${
-            100 - getPercentage(getLTWidth(size), 39 * 0.746031746031746)
-          }% 100%, -100% 200%)`,
+        ? `polygon(
+            -100% -100%,
+            200% -100%,
+            200% 200%,
+            ${getPercentage(getLTWidth(size), 39 * 0.746031746031746)}% 200%,
+            ${getPercentage(getLTWidth(size), 39 * 0.746031746031746)}% 100%,
+            0% ${getPercentage(
+              126 * 0.746031746031746,
+              90 * 0.746031746031746
+            )}%
+            -100% ${getPercentage(
+              126 * 0.746031746031746,
+              90 * 0.746031746031746
+            )}%
+          )`
+        : `polygon(
+            -100% -100%,
+            200% -100%,
+            200% ${getPercentage(
+              126 * 0.746031746031746,
+              90 * 0.746031746031746
+            )}%,
+            100% ${getPercentage(
+              126 * 0.746031746031746,
+              90 * 0.746031746031746
+            )}%,
+            ${
+              100 - getPercentage(getLTWidth(size), 39 * 0.746031746031746)
+            }% 100%,
+            ${
+              100 - getPercentage(getLTWidth(size), 39 * 0.746031746031746)
+            }% 200%,
+            -100% 200%
+            )`,
 
     display: "flex",
   },
