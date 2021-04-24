@@ -6,6 +6,7 @@ import { ReduxState } from "../config/types/types";
 import pauseSvg from "../assets/imgs/tactical.svg";
 import technicalPause from "../assets/imgs/technical.svg";
 import { PauseType } from "../config/types/pause.interface";
+import { Transition } from "react-spring/renderprops";
 
 const makeComponentStyles = makeStyles({
   wrapper: {
@@ -78,7 +79,16 @@ const Pause = () => {
   const { pause } = useSelector((state: ReduxState) => state.live);
   return (
     <div className={classes.wrapper}>
-      <LowerThirdsAlt disablelogo shadow size={400}>
+      <Transition
+        items={pause?.paused}
+        from={{ opacity: 0, transform: "translateX(-20px)" }}
+        enter={{ opacity: 1, transform: "translateX(0px)" }}
+        leave={{ opacity: 0, transform: "translateX(-20px)" }}
+      >
+            {/* @ts-ignore */}
+          {(item) => item && (props => (
+
+      <LowerThirdsAlt disablelogo shadow size={400} style={props}>
         <div className={classes.content}>
           {pause?.type === PauseType.tactical && <div className="clock"></div>}
           {pause?.type === PauseType.technical && <div className="screw"></div>}
@@ -103,6 +113,9 @@ const Pause = () => {
           </div>
         </div>
       </LowerThirdsAlt>
+      ))
+
+      }</Transition>
     </div>
   );
 };
