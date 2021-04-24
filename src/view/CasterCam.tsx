@@ -909,7 +909,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                                     126 * 0.746031746031746,
                                 }}
                               >
-                                {lowerThirds?.ticker
+                                {(lowerThirds?.ticker ?? "")
                                   .split("\n")
                                   .map((item, i) => (
                                     <div
