@@ -1,5 +1,6 @@
 import firebase from "../firebase";
 import { AdProps } from "./ads.interface";
+import { PauseProps } from "./pause.interface";
 export interface ReduxState {
   live: Live;
 }
@@ -44,6 +45,7 @@ export interface Live {
     | "stats_player"
     | "stats_player_vs"
     | "ending";
+  pause?: PauseProps;
 }
 
 export interface VsScreenProps {

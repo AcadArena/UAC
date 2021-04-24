@@ -24,6 +24,7 @@ import Bracket from "./view/Bracket";
 import LogitechMVP from "./view/LogitechMVP";
 import IngameLowerThirds from "./view/InGameLowerThirds";
 import VsScreenPlayoffs from "./view/VsScreenPlayoffs";
+import Pause from "./view/Pause";
 
 const ms = makeStyles({
   app: {
@@ -89,6 +90,9 @@ function App() {
         </Route>
         <Route path="/lowerThirds">
           <IngameLowerThirds />
+        </Route>
+        <Route path="/pause">
+          <Pause />
         </Route>
       </Switch>
     </div>
