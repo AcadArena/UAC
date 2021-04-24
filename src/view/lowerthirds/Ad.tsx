@@ -61,8 +61,10 @@ interface AdComponentProps {
 
 const Ad: FC<AdComponentProps> = ({ small, children, className, ...props }) => {
   const classes = makeComponentStyles();
-  const { lowerThirdsIngame } = useSelector((state: ReduxState) => state.live);
-  const ad = lowerThirdsIngame?.ad;
+  const { lowerThirdsIngame, lowerThirds } = useSelector(
+    (state: ReduxState) => state.live
+  );
+  const ad = small ? lowerThirds?.ad : lowerThirdsIngame?.ad;
 
   return (
     <div className={classes.adPage + " " + className} {...props}>

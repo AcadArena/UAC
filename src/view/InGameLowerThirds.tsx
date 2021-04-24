@@ -648,6 +648,8 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
       return "large";
     case "ad":
       return "large";
+    case "adSmall":
+      return "medium";
     default:
       return "medium";
   }
@@ -1081,9 +1083,8 @@ const IngameLowerThirds: React.FC<RouteComponentProps> = ({
                       </div>
                     )}
 
-                    {lowerThirds?.mode === "ad" &&
-                      <Ad />
-                    }
+                    {(lowerThirds?.mode === "ad" ||
+                      lowerThirds?.mode === "adSmall") && <Ad />}
                   </div>
                 </CSSTransition>
               </SwitchTransition>

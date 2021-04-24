@@ -142,13 +142,16 @@ export type LowerThirdsMode =
   | "pickem"
   | "pickemShoutout"
   | "ad"
+  | "adSmall"
   | "veto";
 
 export interface LowerThirds {
   headline: string;
   ticker: string;
   announcement_headline: string;
+  announcement_headline_font_size?: number;
   announcement_content: string;
+  announcement_content_font_size?: number;
   live?: boolean;
   mode: LowerThirdsMode;
   player?: Player;

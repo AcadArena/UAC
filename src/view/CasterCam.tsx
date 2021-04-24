@@ -659,6 +659,10 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
       return "large";
     case "pickemShoutout":
       return "large";
+    case "ad":
+      return "large";
+    case "adSmall":
+      return "medium";
     default:
       return "medium";
   }
@@ -969,13 +973,18 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
 
                         {/* Announcements */}
                         {lowerThirds?.mode === "long" && (
-                          <div className={c.announcements}>
-                            <Typography variant="h6" className="headline">
-                              {lowerThirds.announcement_headline}
-                            </Typography>
 
-                            <Typography variant="h4" className="content">
-                              {lowerThirds.announcement_content}
+                          // @prettier-ignore
+                          <div className={c.announcements}>
+                            <Typography variant="h6" className="headline" style={{
+                              fontSize: (lowerThirds?.announcement_headline_font_size || 28) * 0.746031746031746
+                            }}>
+                              {lowerThirds?.announcement_headline}
+                            </Typography>
+                            <Typography variant="h4" className="content" style={{
+                              fontSize: (lowerThirds?.announcement_headline_font_size || 54) * 0.746031746031746
+                            }}>
+                              {lowerThirds?.announcement_content}
                             </Typography>
                           </div>
                         )}
@@ -1264,7 +1273,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                           </div>
                         )}
 
-                        {lowerThirds?.mode === "ad" && <Ad small />}
+                        {(lowerThirds?.mode === "ad" || lowerThirds?.mode === "adSmall") && <Ad small />}
                       </div>
                     </CSSTransition>
                   </SwitchTransition>
