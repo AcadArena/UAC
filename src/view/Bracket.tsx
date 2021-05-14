@@ -146,6 +146,7 @@ const Bracket = () => {
         team2 = team2 + 1;
       }
     });
+
     return teamIndex === 1 ? team1 : team2;
   };
 

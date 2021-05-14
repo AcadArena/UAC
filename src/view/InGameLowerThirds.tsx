@@ -92,7 +92,7 @@ const ms = makeStyles({
     backgroundColor: "#fff",
     color: "#02143c",
     fontFamily: "'industry'",
-    height: 37,
+    height: 36,
     display: "flex",
     alignItems: "center",
     padding: `0px ${39}px 0px 0px`,
@@ -117,7 +117,7 @@ const ms = makeStyles({
     width: "100%",
     alignItems: "center",
     // justifyContent: "center",
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(4),
 
     "& .caster": {
       display: "flex",

@@ -25,6 +25,11 @@ import LogitechMVP from "./view/LogitechMVP";
 import IngameLowerThirds from "./view/InGameLowerThirds";
 import VsScreenPlayoffs from "./view/VsScreenPlayoffs";
 import Pause from "./view/Pause";
+import PointsSystemTest from "./view/PointsSystemTest";
+import { Highlight } from "@material-ui/icons";
+import Highlights from "./view/Highlights";
+import InGameWr from "./view/InGame_wr";
+import MatchResults from "./view/MatchResults";
 
 const ms = makeStyles({
   app: {
@@ -52,7 +57,7 @@ function App() {
         <Route path="/drafting">
           <Drafting />
         </Route>
-        <Route path="/ingame">
+        <Route path="/ingame/valorant">
           <InGame />
         </Route>
         <Route path="/vs">
@@ -93,6 +98,15 @@ function App() {
         </Route>
         <Route path="/pause">
           <Pause />
+        </Route>
+        <Route path="/highlights">
+          <Highlights />
+        </Route>
+        <Route path="/ingame/wr">
+          <InGameWr />
+        </Route>
+        <Route path="/results">
+          <MatchResults />
         </Route>
       </Switch>
     </div>

@@ -8,6 +8,7 @@ import { Textfit } from "react-textfit";
 import { Participant } from "../../config/types/types";
 import { config, Spring, Transition } from "react-spring/renderprops";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import useTournament from "../../comps/hooks/useTournament";
 
 const ms = makeStyles((theme) => ({
   schedule: {
@@ -16,11 +17,10 @@ const ms = makeStyles((theme) => ({
     width: "50%",
     alignItems: "center",
     padding: "0px 10px",
-    // height: 460,
     transition: "all 150ms ease-out",
     "& .head": {
       fontFamily: "Anton",
-      fontSize: 50,
+      fontSize: 60,
       color: "#ffd200",
     },
 
@@ -29,15 +29,18 @@ const ms = makeStyles((theme) => ({
       flexDirection: "column",
       marginTop: 14,
       marginRight: 40,
-
+      height: "100%",
+      width: "100%",
+      justifyContent: "center",
       "& .match": {
         display: "flex",
-        marginBottom: 20,
+        width: "100%",
+        marginBottom: 10,
 
         "& .vs": {
           color: "#fff",
-          fontSize: 16,
-          margin: "0px 20px 0px 20px",
+          fontSize: 28,
+          margin: "0px 40px 0px 40px",
           fontFamily: "Anton",
           alignSelf: "center",
           display: "flex",
@@ -57,37 +60,38 @@ const ms = makeStyles((theme) => ({
           transform: "skew(-10deg)",
           fontFamily: "industry",
           fontWeight: "bold",
-          fontSize: 12,
+          fontSize: 14,
           width: 87,
           whiteSpace: "nowrap",
           // height: 30,
 
           "& .item": {
-            marginTop: -3,
+            marginTop: -2,
           },
         },
 
         "& .team": {
           display: "flex",
           alignItems: "center",
-          width: 170,
+          width: 200,
           "& .logo": {
             height: 55,
-            width: 55,
+            width: 70,
             backgroundSize: "contain",
             backgroundRepeat: "no-repeat",
             backgroundPosition: "center",
             marginRight: 15,
+            flexShrink: 0,
           },
 
           "& .name": {
             color: "#fbfbfb",
-            fontFamily: "Anton",
+            fontFamily: "Druk Wide Bold",
             textTransform: "uppercase",
             lineHeight: 1,
             textAlign: "left",
-            fontSize: 14,
-            width: 100,
+            fontSize: 25,
+            width: 150,
             letterSpacing: 1,
           },
         },
@@ -104,7 +108,7 @@ const ms = makeStyles((theme) => ({
 
     "& .head": {
       fontFamily: "Anton",
-      fontSize: 50,
+      fontSize: 60,
       color: "#ffd200",
     },
 
@@ -113,9 +117,9 @@ const ms = makeStyles((theme) => ({
       flex: 1,
       justifyContent: "center",
       // alignItems: "center",
-      margin: "20px 0",
+      margin: "50px 0 0",
       "& .team": {
-        width: 160,
+        width: 200,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
@@ -123,12 +127,11 @@ const ms = makeStyles((theme) => ({
           height: 160,
           width: 160,
           backgroundSize: "contain",
-          backgroundPosition: "center",
+          backgroundPosition: "bottom center",
           backgroundRepeat: "no-repeat",
           marginBottom: 10,
         },
         "& .org": {
-          color: "#ffd200",
           fontFamily: "Anton",
           textTransform: "uppercase",
           // fontSize: 35,
@@ -137,18 +140,20 @@ const ms = makeStyles((theme) => ({
           width: 200,
           height: 35,
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-end",
           justifyContent: "center",
+          color: "#fff",
         },
         "& .school": {
-          width: 150,
-          paddingTop: 5,
-          color: "#fff",
-          fontFamily: "Druk Wide Bold",
+          width: 200,
+          // paddingTop: 5,
+          fontFamily: "industry",
+          fontWeight: "bold",
           textTransform: "uppercase",
-          fontSize: 12,
-          letterSpacing: 1,
+          fontSize: 18,
+          // letterSpacing: 1,
           lineHeight: 1,
+          color: "#ffd200",
           textAlign: "center",
         },
       },
@@ -178,6 +183,8 @@ const ms = makeStyles((theme) => ({
     display: "flex",
     padding: "20px 0px",
     width: "100%",
+
+    height: "100%",
   },
 
   countdown: {
@@ -188,15 +195,17 @@ const ms = makeStyles((theme) => ({
   lowSched: {
     margin: 0 + "!important",
     height: "100%",
+    width: "100%",
     justifyContent: "center",
     "& .match": {
       maxHeight: "none !important",
       position: "relative",
+      width: "100%",
+      justifyContent: "center",
       "& .badge": {
         position: "absolute",
         bottom: 20,
         left: "50%",
-
         transform: "translateX(-50%)!important",
         // justifySelf: "center",
         // alignSelf: "center",
@@ -207,23 +216,26 @@ const ms = makeStyles((theme) => ({
         },
       },
       "& .team": {
+        display: "flex",
         flexDirection: "column",
         alignItems: "center",
 
         "& .logo": {
           height: "100px !important",
           width: "200px !important",
+
+          marginRight: "0px !important",
         },
 
         "& .name": {
-          fontSize: "20px!important",
+          fontSize: "15px!important",
           width: "200px!important",
           textAlign: "center!important",
         },
       },
       "& .vs": {
         fontSize: "30px !important",
-        margin: "0px 30px!important",
+        margin: "0px 60px!important",
       },
     },
   },
@@ -234,124 +246,11 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
   ...props
 }) => {
   const c = ms();
-  const {
-    matches_today = [],
-    tournament = { participants: [], matches: [] },
-    match,
-  } = useSelector((state: ReduxState) => state.live);
+  const { matches_today = [], match } = useSelector(
+    (state: ReduxState) => state.live
+  );
 
-  const getOrgName = (id: number): string => {
-    return (
-      tournament?.participants?.find((p: Participant) => p.id === id)
-        ?.org_name ??
-      tournament?.participants.find((p: Participant) =>
-        p.group_player_ids.includes(id)
-      )?.org_name ??
-      ""
-    );
-  };
-  const getUniversityName = (id: number): string => {
-    return (
-      tournament?.participants?.find((p: Participant) => p.id === id)
-        ?.university_name ??
-      tournament?.participants.find((p: Participant) =>
-        p.group_player_ids.includes(id)
-      )?.university_name ??
-      ""
-    );
-  };
-
-  const getOrgLogo = (id: number): string => {
-    return (
-      tournament?.participants?.find((p: Participant) => p.id === id)?.logo ??
-      tournament?.participants.find((p: Participant) =>
-        p.group_player_ids.includes(id)
-      )?.logo ??
-      ""
-    );
-  };
-
-  const team = (id: number | undefined) => {
-    return tournament?.participants?.find(
-      (p) => p.group_player_ids.includes(id ?? 0) || p.id === id
-    );
-  };
-
-  const getGroupsWins = (team?: Participant): number => {
-    const groupIds: number[] = team?.group_player_ids ?? [];
-    const matches = tournament?.matches.filter(
-      (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
-    );
-
-    let lost: number = 0;
-    let win: number = 0;
-
-    matches
-      ?.filter(
-        (match) =>
-          groupIds.includes(match.player1_id) ||
-          groupIds.includes(match.player2_id)
-      )
-      .forEach((match) => {
-        console.log(match);
-        let isTeam1 = groupIds.includes(match.player1_id);
-        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
-
-        if (isTeam1) {
-          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        } else {
-          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        }
-      });
-
-    return win;
-  };
-
-  const getMatchWins = (match: Match, team?: Participant) => {
-    const groupIds: number[] = team?.group_player_ids ?? [];
-
-    let win: number = 0;
-    let lost: number = 0;
-
-    let isTeam1 =
-      groupIds.includes(match.player1_id) || team?.id === match.player1_id;
-    let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
-
-    if (isTeam1) {
-      if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-        win = win + 1;
-      } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-        lost = lost + 1;
-      }
-    } else {
-      if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-        win = win + 1;
-      } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-        lost = lost + 1;
-      }
-    }
-    return win;
-  };
-
-  const badger = (m: Match) => {
-    let team1 = team(m.player1_id);
-    let team2 = team(m.player2_id);
-    if (getMatchWins(m, team1) > getMatchWins(m, team2)) {
-      return `#${team1?.university_acronym}WIN`;
-    } else if (getMatchWins(m, team1) < getMatchWins(m, team2)) {
-      return `#${team2?.university_acronym}WIN`;
-    } else if (getMatchWins(m, team1) === getMatchWins(m, team2)) {
-      return format(new Date(m.schedule ?? Date.now()), "hh:mm a") ?? "SOON";
-    }
-  };
+  const { team, badger } = useTournament();
 
   const lowSched = (): boolean => {
     return matches_today.filter((m) => m.id !== match?.id).length < 3;
@@ -373,18 +272,16 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
                 <div
                   className="logo"
                   style={{
-                    backgroundImage: `url(${getOrgLogo(
-                      match?.player1_id ?? 0
-                    )})`,
+                    backgroundImage: `url(${team(match?.player1_id)?.logo})`,
                   }}
                 ></div>
                 <Textfit mode="single" max={35}>
                   <div className="org">
-                    <div>{getOrgName(match?.player1_id ?? 0)}</div>
+                    <div>{team(match?.player1_id)?.org_name}</div>
                   </div>
                 </Textfit>
                 <div className="school">
-                  {getUniversityName(match?.player1_id ?? 0)}
+                  {team(match?.player1_id)?.university_name}
                 </div>
               </div>
               <div className="vs">
@@ -397,30 +294,27 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
                 <div
                   className="logo"
                   style={{
-                    backgroundImage: `url(${getOrgLogo(
-                      match?.player2_id ?? 0
-                    )})`,
+                    backgroundImage: `url(${team(match?.player2_id)?.logo})`,
                   }}
                 ></div>
                 <Textfit mode="single" max={35}>
-                  <div className="org">
-                    {getOrgName(match?.player2_id ?? 0)}
-                  </div>
+                  <div className="org">{team(match?.player2_id)?.org_name}</div>
                 </Textfit>
                 <div className="school">
-                  {getUniversityName(match?.player2_id ?? 0)}
+                  {team(match?.player2_id)?.university_name}
                 </div>
               </div>
             </div>
           )}
         </Spring>
       </div>
+
       <div className={c.schedule}>
         <div className="head">SCHEDULE</div>
 
         <div className={lowSched() ? "matches " + c.lowSched : "matches"}>
           <Transition
-            items={matches_today.filter((m) => m.id !== match?.id)}
+            items={matches_today.filter((m) => m.id !== match?.id).slice(0, 5)}
             keys={(m) => m.id}
             from={{
               opacity: 0,
@@ -446,73 +340,45 @@ const ScheduleModule: React.FC<{ className?: string }> = ({
             }}
             trail={100}
           >
-            {(match) => (props) => (
-              <div
-                className="match"
-                key={match.id}
-                // @ts-ignore
-                style={props}
-              >
-                <div className="badge">
-                  <div className="item">{badger(match)}</div>
+            {(match) => (props) =>
+              (
+                <div
+                  className="match"
+                  key={match.id}
+                  // @ts-ignore
+                  style={props}
+                >
+                  <div className="badge">
+                    <div className="item">{badger(match)}</div>
+                  </div>
+                  <div className="team left">
+                    <div
+                      className="logo"
+                      style={{
+                        backgroundImage: `url(${team(match.player1_id)?.logo})`,
+                      }}
+                    ></div>
+                    <div className="name">
+                      {team(match.player1_id)?.university_acronym}
+                    </div>
+                  </div>
+                  <div className="vs">
+                    <div className="">vs</div>
+                  </div>
+                  <div className="team">
+                    <div
+                      className="logo"
+                      style={{
+                        backgroundImage: `url(${team(match.player2_id)?.logo})`,
+                      }}
+                    ></div>
+                    <div className="name">
+                      {team(match.player2_id)?.university_acronym}
+                    </div>
+                  </div>
                 </div>
-                <div className="team left">
-                  <div
-                    className="logo"
-                    style={{
-                      backgroundImage: `url(${getOrgLogo(match.player1_id)})`,
-                    }}
-                  ></div>
-
-                  <div className="name">{getOrgName(match.player1_id)}</div>
-                </div>
-                <div className="vs">
-                  <div className="">vs</div>
-                </div>
-                <div className="team">
-                  <div
-                    className="logo"
-                    style={{
-                      backgroundImage: `url(${getOrgLogo(match.player2_id)})`,
-                    }}
-                  ></div>
-                  <div className="name">{getOrgName(match.player2_id)}</div>
-                </div>
-              </div>
-            )}
+              )}
           </Transition>
-
-          {/* {matches_today
-            .filter((m) => m.id !== match?.id)
-            .map((match) => (
-              <div className="match" key={match.id}>
-                <div className="badge">
-                  <div className="item">{badger(match)}</div>
-                </div>
-                <div className="team left">
-                  <div
-                    className="logo"
-                    style={{
-                      backgroundImage: `url(${getOrgLogo(match.player1_id)})`,
-                    }}
-                  ></div>
-
-                  <div className="name">{getOrgName(match.player1_id)}</div>
-                </div>
-                <div className="vs">
-                  <div className="">vs</div>
-                </div>
-                <div className="team">
-                  <div
-                    className="logo"
-                    style={{
-                      backgroundImage: `url(${getOrgLogo(match.player2_id)})`,
-                    }}
-                  ></div>
-                  <div className="name">{getOrgName(match.player2_id)}</div>
-                </div>
-              </div>
-            ))} */}
         </div>
       </div>
     </div>
