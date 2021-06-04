@@ -4,7 +4,7 @@ import React from "react";
 // @ts-ignore
 import { Textfit } from "react-textfit";
 import Timer from "../comps/timer/Timer";
-import timerFrame from "../assets/imgs/frameTimer.png";
+import timerFrame from "../assets/imgs/startingsoon-container.png";
 import { useSelector } from "react-redux";
 import { ReduxState } from "../config/types/types";
 
@@ -14,26 +14,35 @@ const ms = makeStyles((theme) => ({
     backgroundSize: "stretch",
     backgroundPosition: "center",
     backgroundImage: `url(${timerFrame})`,
-    height: 168,
-    width: 420,
+    height: 133,
+    width: 728,
     display: "flex",
-    flexDirection: "column",
-
+    flexDirection: "row",
+    alignItems: "center",
     padding: "10px 0",
     "& .starting": {
-      color: "#004fff",
-      fontFamily: "Druk Wide Bold",
+      color: "#fff",
+      fontFamily: "Anton",
       lineHeight: 1,
+      fontSize: 63,
+      textAlign: "center",
+      flex: 1,
+      paddingRight: 20,
+      textTransform: "uppercase",
     },
 
     "& .time": {
       paddingTop: 10,
-      color: "#fff",
+      color: "#000",
       fontFamily: "Anton",
-      fontSize: 90,
+      fontSize: 80,
       textAlign: "center",
       lineHeight: 1,
-      width: 420,
+      width: 241,
+      height: 102,
+      backgroundColor: "#edc401",
+      padding: "10px 20px",
+      marginLeft: 30,
     },
   },
 }));
@@ -49,12 +58,10 @@ const TimerOnly: React.FC<{ className?: string }> = ({
 
   return (
     <div className={c.timer + " " + className} {...props}>
-      <Textfit mode="single" max={42}>
-        <div className="starting">Starting Soon</div>
-        <div className="time">
-          <Timer expiryTimestamp={countdown_minutes} />
-        </div>
-      </Textfit>
+      <div className="time">
+        <Timer expiryTimestamp={countdown_minutes} />
+      </div>
+      <div className="starting">Starting Soon</div>
     </div>
   );
 };

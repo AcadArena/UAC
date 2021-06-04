@@ -63,14 +63,10 @@ const ModuleContainer = () => {
           <div className={c.wrapper}>
             {container_mode === "schedule" && <ScheduleModule />}
             {container_mode === "standings_group_a" && (
-              <StandingsModule
-                group={["ADMU", "DLSU", "MU", "USC", "USA", "TFX"]}
-              />
+              <StandingsModule group={0} />
             )}
             {container_mode === "standings_group_b" && (
-              <StandingsModule
-                group={["MCL", "HAU", "FIT", "UPD", "TUP-M", "UST"]}
-              />
+              <StandingsModule group={1} />
             )}
 
             {container_mode === "stats_player" && <PlayerModule />}

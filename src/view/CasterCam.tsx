@@ -18,8 +18,8 @@ import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { wsContext } from "../config/WebsocketProvider";
 import { Transition } from "react-spring/renderprops";
 import { RouteComponentProps, withRouter } from "react-router-dom";
-import LeftFrame from "../assets/imgs/left-frame.png";
-import RightFrame from "../assets/imgs/right-frame.png";
+import LeftFrame from "../assets/imgs/left-frame2.png";
+import RightFrame from "../assets/imgs/right-frame2.png";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForward";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import CancelIcon from "@material-ui/icons/Cancel";
@@ -28,10 +28,13 @@ import bindMap from "../assets/imgs/bind.jpeg";
 import splitMap from "../assets/imgs/split.jpeg";
 import iceboxMap from "../assets/imgs/icebox.jpeg";
 import havenMap from "../assets/imgs/haven.jpeg";
+import laurel from "../assets/imgs/laurel.svg";
+import sticker from "../assets/imgs/sticker2.png";
 
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import { projectFirestore as db } from "../config/firebase";
 import Ad from "./lowerthirds/Ad";
+import useTournament from "../comps/hooks/useTournament";
 
 const ms = makeStyles({
   screen: {
@@ -93,7 +96,7 @@ const ms = makeStyles({
     backgroundColor: "#fff",
     color: "#02143c",
     fontFamily: "'industry'",
-    height: 37 * 0.746031746031746,
+    height: 35 * 0.746031746031746,
     display: "flex",
     alignItems: "center",
     padding: `0px ${39 * 0.746031746031746}px 0px 0px`,
@@ -118,7 +121,7 @@ const ms = makeStyles({
     width: "100%",
     alignItems: "center",
     // justifyContent: "center",
-    marginLeft: theme.spacing(2 * 0.746031746031746),
+    marginLeft: theme.spacing(4 * 0.746031746031746),
 
     "& .caster": {
       display: "flex",
@@ -319,6 +322,8 @@ const ms = makeStyles({
     zIndex: 999,
     justifyContent: "space-between",
     width: 1700 * 0.746031746031746,
+    // width: 1700 * 0.746031746031746,
+    // transform: "",
     alignItems: "center",
 
     "& .vs": {
@@ -331,6 +336,7 @@ const ms = makeStyles({
       height: "100%",
       display: "flex",
       alignItems: "center",
+      position: "relative",
 
       "& .logo": {
         height: "90%",
@@ -384,20 +390,25 @@ const ms = makeStyles({
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
     backgroundImage: `url(${LeftFrame})`,
-    height: 451,
-    width: 654,
+    height: 427,
+    width: 734,
     position: "absolute",
     top: 336,
     left: 333,
-
+    transform: `translate(-${734 - 654 + 15}px, ${451 - 427}px)`,
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "center",
     "& .caster": {
-      position: "absolute",
-      left: 22,
-      bottom: 23,
-      color: "#fff",
+      color: "#111",
       textTransform: "uppercase",
       fontFamily: "Druk Wide Bold",
       fontSize: 24,
+      backgroundSize: "100% 100%",
+      backgroundRepeat: "no-repeat",
+      padding: "5px 15px",
+      backgroundImage: `url(${sticker})`,
+      marginBottom: 20,
     },
   },
 
@@ -406,21 +417,27 @@ const ms = makeStyles({
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
     backgroundImage: `url(${RightFrame})`,
-    height: 451,
-    width: 654,
+    height: 427,
+    width: 734,
     position: "absolute",
     top: 336,
     left: 997,
+    transform: `translate(15px, ${451 - 427}px)`,
+    display: "flex",
+    alignItems: "flex-end",
+    justifyContent: "center",
 
     "& .caster": {
-      position: "absolute",
-      right: 22,
-      bottom: 23,
-      color: "#fff",
+      color: "#111",
       textTransform: "uppercase",
       textAlign: "right",
       fontFamily: "Druk Wide Bold",
       fontSize: 24,
+      backgroundSize: "100% 100%",
+      backgroundRepeat: "no-repeat",
+      padding: "5px 15px",
+      backgroundImage: `url(${sticker})`,
+      marginBottom: 20,
     },
   },
   veto: {
@@ -627,6 +644,43 @@ const ms = makeStyles({
       },
     },
   },
+  pointsLeft: {
+    left: 0,
+  },
+  pointsRight: { right: 0 },
+  points: {
+    display: "flex",
+    position: "absolute",
+    top: "100%",
+    marginTop: 2,
+    "& .text, .value": {
+      backgroundColor: "#0d0e0e",
+      padding: "8px 10px 5px 10px",
+      fontFamily: "Anton",
+      color: "#fff",
+      display: "flex",
+      lineHeight: 1,
+      textTransform: "uppercase",
+    },
+    "& .text": { letterSpacing: 2 },
+    "& .value": { color: "#ffd200", marginLeft: 2, marginRight: 2 },
+    "& .laurel": {
+      width: 25,
+      height: 27,
+      backgroundColor: "#0d0e0e",
+      backgroundSize: "auto 70%",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+      backgroundImage: `url(${laurel})`,
+    },
+
+    "& .left": {
+      paddingLeft: "2px!important",
+    },
+    "& .right": {
+      paddingRight: "2px!important",
+    },
+  },
 });
 
 // const isNumber = (n: any): boolean => {
@@ -677,6 +731,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
     match,
     match_live,
     tournament,
+    swap_team_positions,
   } = useSelector((state: ReduxState) => state.live);
 
   const [poll] = useDocumentData<PollItemProps>(
@@ -688,6 +743,7 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
   );
 
   let params = new URLSearchParams(search);
+  const { getTeamGroupsResult } = useTournament();
 
   const ws = React.useContext(wsContext);
   React.useEffect(() => {
@@ -816,9 +872,18 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
       </div>
       <Transition
         items={match_live}
-        from={{ opacity: 0, transform: "translateY(10px)" }}
-        enter={{ opacity: 1, transform: "translateY(0px)" }}
-        leave={{ opacity: 0, transform: "translateY(10px)" }}
+        from={{
+          opacity: 0,
+          transform: "translateY(10px) scale(1.143601414115391)",
+        }}
+        enter={{
+          opacity: 1,
+          transform: "translateY(0px) scale(1.143601414115391)",
+        }}
+        leave={{
+          opacity: 0,
+          transform: "translateY(10px) scale(1.143601414115391)",
+        }}
       >
         {(toggle) =>
           toggle
@@ -826,52 +891,106 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                 <div className={c.match} style={props}>
                   <LowerThirds size={783} disablelogo shadow>
                     <div className="team">
+                      <div className={c.points + " " + c.pointsLeft}>
+                        <div className="laurel"></div>
+                        <div className="text left">Points</div>
+                        <div className="value">
+                          {
+                            getTeamGroupsResult(
+                              (swap_team_positions
+                                ? match?.player2_id
+                                : match?.player1_id) ?? 0
+                            ).points
+                          }
+                        </div>
+                      </div>
                       <div
                         className="logo"
                         style={{
                           backgroundImage: `url(${getTeamLogo(
-                            match?.player1_id
+                            (swap_team_positions
+                              ? match?.player2_id
+                              : match?.player1_id) ?? 0
                           )}})`,
                         }}
                       ></div>
                       <div className="details">
                         <div className="school">
                           {
-                            getParticipant(match?.player1_id ?? 0)
-                              ?.university_name
+                            getParticipant(
+                              (swap_team_positions
+                                ? match?.player2_id
+                                : match?.player1_id) ?? 0
+                            )?.university_name
                           }
                         </div>
                         <div className="name">
-                          {getParticipant(match?.player1_id ?? 0)?.org_name}
+                          {
+                            getParticipant(
+                              swap_team_positions
+                                ? match?.player2_id ?? 0
+                                : match?.player1_id ?? 0
+                            )?.org_name
+                          }
                         </div>
                       </div>
                       <div className="score">
-                        {getFinalScore(match?.scores_csv ?? "0-0", 1)}
+                        {getFinalScore(
+                          match?.scores_csv ?? "0-0",
+                          swap_team_positions ? 2 : 1
+                        )}
                       </div>
                     </div>
                   </LowerThirds>
                   <div className="vs">VS</div>
                   <LowerThirds size={783} reversecut shadow disablelogo>
                     <div className="team">
+                      <div className={c.points + " " + c.pointsRight}>
+                        <div className="value">
+                          {
+                            getTeamGroupsResult(
+                              swap_team_positions
+                                ? match?.player1_id
+                                : match?.player2_id
+                            ).points
+                          }
+                        </div>
+                        <div className="text right">Points</div>
+                        <div className="laurel"></div>
+                      </div>
                       <div className="score">
-                        {getFinalScore(match?.scores_csv ?? "0-0", 2)}
+                        {getFinalScore(
+                          match?.scores_csv ?? "0-0",
+                          swap_team_positions ? 1 : 2
+                        )}
                       </div>
                       <div className="details right">
                         <div className="school">
                           {
-                            getParticipant(match?.player2_id ?? 0)
-                              ?.university_name
+                            getParticipant(
+                              (swap_team_positions
+                                ? match?.player1_id
+                                : match?.player2_id) ?? 0
+                            )?.university_name
                           }
                         </div>
                         <div className="name">
-                          {getParticipant(match?.player2_id ?? 0)?.org_name}
+                          {
+                            getParticipant(
+                              (swap_team_positions
+                                ? match?.player1_id
+                                : match?.player2_id) ?? 0
+                            )?.org_name
+                          }
                         </div>
                       </div>
                       <div
                         className="logo"
                         style={{
                           backgroundImage: `url(${getTeamLogo(
-                            match?.player2_id
+                            swap_team_positions
+                              ? match?.player1_id
+                              : match?.player2_id
                           )}})`,
                         }}
                       ></div>
@@ -973,17 +1092,28 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
 
                         {/* Announcements */}
                         {lowerThirds?.mode === "long" && (
-
                           // @prettier-ignore
                           <div className={c.announcements}>
-                            <Typography variant="h6" className="headline" style={{
-                              fontSize: (lowerThirds?.announcement_headline_font_size || 28) * 0.746031746031746
-                            }}>
+                            <Typography
+                              variant="h6"
+                              className="headline"
+                              style={{
+                                fontSize:
+                                  (lowerThirds?.announcement_headline_font_size ||
+                                    28) * 0.746031746031746,
+                              }}
+                            >
                               {lowerThirds?.announcement_headline}
                             </Typography>
-                            <Typography variant="h4" className="content" style={{
-                              fontSize: (lowerThirds?.announcement_headline_font_size || 54) * 0.746031746031746
-                            }}>
+                            <Typography
+                              variant="h4"
+                              className="content"
+                              style={{
+                                fontSize:
+                                  (lowerThirds?.announcement_headline_font_size ||
+                                    54) * 0.746031746031746,
+                              }}
+                            >
                               {lowerThirds?.announcement_content}
                             </Typography>
                           </div>
@@ -1094,46 +1224,51 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                               }}
                               trail={200}
                             >
-                              {(v, state, i) => (props) => (
-                                <div className="wrapper" style={props}>
-                                  <div className="veto-item">
-                                    <div className="team">
-                                      {v.team.university_acronym}
-                                    </div>
-                                    <div
-                                      className="map"
-                                      style={{
-                                        backgroundImage: `url(${maps[v.map]})`,
-                                        filter:
-                                          v.type === "ban"
-                                            ? "grayscale(100%)"
-                                            : "none",
-                                        color:
-                                          v.type === "ban" ? "#eee" : "#ffd200",
-                                      }}
-                                    >
-                                      {v.map}
-                                    </div>
-                                    {v.type === "ban" ? (
-                                      <CancelIcon className="type" />
-                                    ) : (
-                                      <CheckCircleIcon
-                                        className="type"
+                              {(v, state, i) => (props) =>
+                                (
+                                  <div className="wrapper" style={props}>
+                                    <div className="veto-item">
+                                      <div className="team">
+                                        {v.team.university_acronym}
+                                      </div>
+                                      <div
+                                        className="map"
                                         style={{
-                                          color: "#ffd200",
+                                          backgroundImage: `url(${
+                                            maps[v.map]
+                                          })`,
+                                          filter:
+                                            v.type === "ban"
+                                              ? "grayscale(100%)"
+                                              : "none",
+                                          color:
+                                            v.type === "ban"
+                                              ? "#eee"
+                                              : "#ffd200",
                                         }}
+                                      >
+                                        {v.map}
+                                      </div>
+                                      {v.type === "ban" ? (
+                                        <CancelIcon className="type" />
+                                      ) : (
+                                        <CheckCircleIcon
+                                          className="type"
+                                          style={{
+                                            color: "#ffd200",
+                                          }}
+                                        />
+                                      )}
+                                    </div>
+                                    {Boolean(
+                                      i !== (match?.veto?.length ?? 5) - 1
+                                    ) && (
+                                      <ArrowForwardIosIcon
+                                        style={{ color: "#ffd200" }}
                                       />
                                     )}
                                   </div>
-                                  {Boolean(
-                                    i !== (match?.veto?.length ?? 5) - 1
-                                  ) && (
-                                    <ArrowForwardIosIcon
-                                      style={{ color: "#ffd200" }}
-                                    />
-                                  )}
-                                </div>
-                              )}
+                                )}
                             </Transition>
                             {/* {match?.veto?.map((v, i) => (
                               <div className="wrapper">
@@ -1273,7 +1408,8 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                           </div>
                         )}
 
-                        {(lowerThirds?.mode === "ad" || lowerThirds?.mode === "adSmall") && <Ad small />}
+                        {(lowerThirds?.mode === "ad" ||
+                          lowerThirds?.mode === "adSmall") && <Ad small />}
                       </div>
                     </CSSTransition>
                   </SwitchTransition>

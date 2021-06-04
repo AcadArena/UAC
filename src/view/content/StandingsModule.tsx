@@ -9,6 +9,8 @@ import {
 import React from "react";
 import { useSelector } from "react-redux";
 import { Transition } from "react-spring/renderprops";
+import GroupBanner from "../../comps/containers/GroupBanner";
+import useTournament from "../../comps/hooks/useTournament";
 import { Participant, ReduxState } from "../../config/types/types";
 
 const ms = makeStyles({
@@ -18,13 +20,21 @@ const ms = makeStyles({
         borderBottom: "3px solid #ffd200",
         "& .td": {
           color: "#ffd200",
-          padding: "30px 20px 10px 20px",
+          padding: "30px 20px 20px 20px",
           fontFamily: "Anton",
           fontSize: 24,
+          textTransform: "uppercase",
         },
 
         "& .team": {
           // paddingLeft: 100,
+        },
+        "& .groupName": {
+          width: 355,
+        },
+
+        "& .wl": {
+          textAlign: "center",
         },
       },
     },
@@ -35,9 +45,15 @@ const ms = makeStyles({
         "& .td": {
           border: "none",
           color: "#fff",
-          padding: "10px 20px",
+          padding: "10px 25px",
           fontFamily: "Anton",
-          fontSize: 24,
+          fontSize: 22,
+          verticalAlign: "middle",
+        },
+
+        "& .groupName": {
+          width: 355,
+          columnSpan: 4,
         },
 
         "& .team": {
@@ -60,163 +76,89 @@ const ms = makeStyles({
           },
         },
 
-        "& .wl, .pos": {
-          fontSize: 19,
-          width: 180,
+        "& .wl, .pos, .points": {
+          fontSize: 22,
+          width: 150,
+          textAlign: "center",
+        },
+        "& .points": {
+          // fontSize: 34,
+          color: "#ffd000",
         },
       },
     },
   },
+  module: {
+    position: "relative",
+  },
+  head: {
+    position: "absolute",
+    height: "100%",
+    width: 380,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+
+    paddingTop: 50,
+    "& .head": {
+      fontFamily: "Anton",
+      fontSize: 70,
+      color: "#ffd000",
+    },
+  },
 });
 
-const StandingsModule: React.FC<{ className?: string; group: string[] }> = ({
+const StandingsModule: React.FC<{ className?: string; group: number }> = ({
   className,
-  group = [],
+  group = 0,
   ...props
 }) => {
   const c = ms();
   const { tournament } = useSelector((state: ReduxState) => state.live);
-  const getGroupMatchResults = (team?: Participant): string => {
-    const groupIds: number[] = team?.group_player_ids ?? [];
 
-    const matches = tournament?.matches.filter(
-      (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
-    );
+  const { matches, team, getTeamGroupsResult } = useTournament();
 
-    let lost: number = 0;
-    let win: number = 0;
-
-    matches
-      ?.filter(
-        (match) =>
-          groupIds.includes(match.player1_id) ||
-          groupIds.includes(match.player2_id)
-      )
-      .forEach((match) => {
-        let isTeam1 = groupIds.includes(match.player1_id);
-        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
-
-        if (isTeam1) {
-          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        } else {
-          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        }
-      });
-    return `${win}-${lost}`;
-  };
-
-  let groups = group.map((uni) =>
-    tournament?.participants?.find((p) => p.university_acronym === uni)
+  let allGroups = Array.from(
+    new Set(matches.filter((m) => Boolean(m.group_id)).map((m) => m.group_id))
   );
+  console.log("group", allGroups);
 
-  const getGroupsWins = (team?: Participant): number => {
-    const groupIds: number[] = team?.group_player_ids ?? [];
-    const matches = tournament?.matches.filter(
-      (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
-    );
+  let groupMatches = matches.filter((m) => m.group_id === allGroups[group]);
 
-    let lost: number = 0;
-    let win: number = 0;
+  let groupIds = new Set([
+    ...groupMatches.map((m) => m.player1_id),
+    ...groupMatches.map((m) => m.player2_id),
+  ]);
 
-    matches
-      ?.filter(
-        (match) =>
-          groupIds.includes(match.player1_id) ||
-          groupIds.includes(match.player2_id)
-      )
-      .forEach((match) => {
-        let isTeam1 = groupIds.includes(match.player1_id);
-        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
+  console.log(groupIds);
+  // console.log(groupIds);
 
-        if (isTeam1) {
-          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        } else {
-          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        }
-      });
-
-    return win;
-  };
-  const getGroupsLoses = (team?: Participant): number => {
-    const groupIds: number[] = team?.group_player_ids ?? [];
-    const matches = tournament?.matches.filter(
-      (m) => groupIds.includes(m.player1_id) || groupIds.includes(m.player2_id)
-    );
-
-    let lost: number = 0;
-    let win: number = 0;
-
-    matches
-      ?.filter(
-        (match) =>
-          groupIds.includes(match.player1_id) ||
-          groupIds.includes(match.player2_id)
-      )
-      .forEach((match) => {
-        console.log(match);
-        let isTeam1 = groupIds.includes(match.player1_id);
-        let ss = match.scores_csv.match(/^(\d*)-(\d*)/);
-
-        if (isTeam1) {
-          if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        } else {
-          if (ss && parseInt(ss[1]) < parseInt(ss[2])) {
-            win = win + 1;
-          } else if (ss && parseInt(ss[1]) > parseInt(ss[2])) {
-            lost = lost + 1;
-          }
-        }
-      });
-
-    return lost;
-  };
+  let groups = Array.from(groupIds).map((id) => team(id));
+  console.log(groups);
 
   const groupsSort = (a?: Participant, b?: Participant) => {
-    const aWins = getGroupsWins(a);
-    const bWins = getGroupsWins(b);
-    const aLoses = getGroupsLoses(a);
-    const bLoses = getGroupsLoses(b);
-    if (aWins === bWins) return aLoses > bLoses ? 1 : -1;
-    return aWins < bWins ? 1 : -1;
+    const aPoints = getTeamGroupsResult(a?.id).points;
+    const bPoints = getTeamGroupsResult(b?.id).points;
+    return aPoints < bPoints ? 1 : -1;
   };
 
   return (
-    <div style={{ paddingBottom: 10 }}>
+    <div className={c.module}>
+      <div className={c.head}>
+        <div className="head">STANDINGS</div>
+        <GroupBanner group={group === 0 ? "A" : "B"} />
+      </div>
       <Table className={c.table + " " + className} {...props}>
         <TableHead className="table-head">
           <TableRow className="tr">
+            <TableCell align="center" className="td groupName"></TableCell>
             <TableCell align="center" className="td pos">
               Pos
             </TableCell>
-            <TableCell className="td team">
-              Teams{" "}
-              {["ADMU", "DLSU", "MU", "USC", "USA", "TFX"].every((item) =>
-                group.includes(item)
-              )
-                ? "(GROUP A)"
-                : "(GROUP B)"}
-            </TableCell>
+            <TableCell className="td team">Team</TableCell>
             <TableCell className="td wl">W-L</TableCell>
+            <TableCell className="td wl">Points</TableCell>
           </TableRow>
         </TableHead>
         <TableBody className="table-body">
@@ -224,12 +166,13 @@ const StandingsModule: React.FC<{ className?: string; group: string[] }> = ({
             items={groups.sort(groupsSort)}
             // @ts-ignore
             keys={(team, i) => i}
-            from={{ opacity: 0 }}
-            enter={{ opacity: 1 }}
+            from={{ opacity: 0, transform: "translateX(-10px)" }}
+            enter={{ opacity: 1, transform: "translateX(0px)" }}
             trail={100}
           >
             {(team, array, i) => (props) => (
               <TableRow className="tr" style={props}>
+                <TableCell align="center" className="td groupName"></TableCell>
                 <TableCell align="center" className="td pos">
                   {i + 1}
                 </TableCell>
@@ -241,28 +184,15 @@ const StandingsModule: React.FC<{ className?: string; group: string[] }> = ({
                   <div className="name">{team?.org_name}</div>
                 </TableCell>
                 <TableCell className="td wl">
-                  {getGroupMatchResults(team)}
+                  {getTeamGroupsResult(team?.id).wins} -{" "}
+                  {getTeamGroupsResult(team?.id).loses}
+                </TableCell>
+                <TableCell className="td points">
+                  {getTeamGroupsResult(team?.id).points}
                 </TableCell>
               </TableRow>
             )}
           </Transition>
-          {/* {groups.sort(groupsSort).map((team, i) => (
-            <TableRow className="tr" key={i}>
-              <TableCell align="center" className="td pos">
-                {i + 1}
-              </TableCell>
-              <TableCell className="td team">
-                <div
-                  className="logo"
-                  style={{ backgroundImage: `url(${team?.logo})` }}
-                ></div>
-                <div className="name">{team?.org_name}</div>
-              </TableCell>
-              <TableCell className="td wl">
-                {getGroupMatchResults(team)}
-              </TableCell>
-            </TableRow>
-          ))} */}
         </TableBody>
       </Table>
     </div>

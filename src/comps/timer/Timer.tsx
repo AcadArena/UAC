@@ -33,6 +33,8 @@ const Timer: React.FC<{ expiryTimestamp: number }> = ({
   }, [countdown_minutes]);
 
   ws.socket.on("time_command", (command: string) => {
+    console.log(command);
+
     switch (command) {
       // case "start":
       //   return start();
@@ -54,7 +56,7 @@ const Timer: React.FC<{ expiryTimestamp: number }> = ({
     <div {...props}>
       {state ? (
         <>
-          {Boolean(hours) && (hours < 10 ? "0" + hours : hours) + ":"}
+          {/* {Boolean(hours) && (hours < 10 ? "0" + hours : hours) + ":"} */}
           {minutes < 10 && "0"}
           {minutes}:{seconds < 10 && "0"}
           {seconds}
