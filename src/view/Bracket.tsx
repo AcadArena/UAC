@@ -50,7 +50,7 @@ const mcs = makeStyles((theme) => ({
     "& .logo": {
       height: 30,
       width: 40,
-      margin: "0px 4px 0px 6px",
+      margin: "0px 10px 0px 6px",
       backgroundSize: "contain",
       backgroundPosition: "center",
       backgroundRepeat: "no-repeat",
@@ -177,19 +177,19 @@ const Bracket = () => {
         {/* Team 1 */}
         <div className="team">
           <div className="score">
-            {score(match(234331922)?.scores_csv ?? "0-0", 1)}
+            {score(match(239481248)?.scores_csv ?? "0-0", 1)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331922)?.player1_id ?? 0)?.logo
+                  team(match(239481248)?.player1_id ?? 0)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331922)?.player1_id ?? 0)?.org_acronym}
+              {team(match(239481248)?.player1_id ?? 0)?.university_acronym}
             </div>
           </div>
         </div>
@@ -197,19 +197,19 @@ const Bracket = () => {
         {/* Team 2 */}
         <div className="team">
           <div className="score">
-            {score(match(234331922)?.scores_csv ?? "0-0", 2)}
+            {score(match(239481248)?.scores_csv ?? "0-0", 2)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331922)?.player2_id ?? 0)?.logo
+                  team(match(239481248)?.player2_id ?? 0)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331922)?.player2_id ?? 0)?.org_acronym}
+              {team(match(239481248)?.player2_id ?? 0)?.university_acronym}
             </div>
           </div>
         </div>
@@ -226,19 +226,19 @@ const Bracket = () => {
         {/* Team 1 */}
         <div className="team">
           <div className="score">
-            {score(match(234331923)?.scores_csv ?? "0-0", 1)}
+            {score(match(239481249)?.scores_csv ?? "0-0", 1)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331923)?.player1_id ?? 0)?.logo
+                  team(match(239481249)?.player1_id ?? 0)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331923)?.player1_id ?? 0)?.org_acronym}
+              {team(match(239481249)?.player1_id ?? 0)?.university_acronym}
             </div>
           </div>
         </div>
@@ -246,19 +246,19 @@ const Bracket = () => {
         {/* Team 2 */}
         <div className="team">
           <div className="score">
-            {score(match(234331923)?.scores_csv ?? "0-0", 2)}
+            {score(match(239481249)?.scores_csv ?? "0-0", 2)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331923)?.player2_id ?? 0)?.logo
+                  team(match(239481249)?.player2_id ?? 0)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331923)?.player2_id ?? 0)?.org_acronym}
+              {team(match(239481249)?.player2_id ?? 0)?.university_acronym}
             </div>
           </div>
         </div>
@@ -275,19 +275,19 @@ const Bracket = () => {
         {/* Team 1 */}
         <div className="team">
           <div className="score">
-            {score(match(234331924)?.scores_csv ?? "0-0", 1)}
+            {score(match(239481250)?.scores_csv ?? "0-0", 1)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331924)?.player1_id ?? 0)?.logo
+                  team(match(239481250)?.player1_id ?? 0)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331924)?.player1_id ?? 0)?.org_acronym}
+              {team(match(239481250)?.player1_id ?? 0)?.university_acronym}
             </div>
           </div>
         </div>
@@ -295,21 +295,21 @@ const Bracket = () => {
         {/* Team 2 */}
         <div className="team">
           <div className="score">
-            {score(match(234331924)?.scores_csv ?? "0-0", 2)}
+            {score(match(239481250)?.scores_csv ?? "0-0", 2)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331924)?.player2_id ?? 0)?.logo ??
-                  getWinner(234331922)?.logo
+                  team(match(239481250)?.player2_id ?? 0)?.logo ??
+                  getWinner(239481248)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331924)?.player2_id ?? 0)?.org_acronym ??
-                getWinner(234331922)?.org_acronym ??
+              {team(match(239481250)?.player2_id ?? 0)?.university_acronym ??
+                getWinner(239481248)?.university_acronym ??
                 "TBD"}
             </div>
           </div>
@@ -327,19 +327,19 @@ const Bracket = () => {
         {/* Team 1 */}
         <div className="team">
           <div className="score">
-            {score(match(234331925)?.scores_csv ?? "0-0", 1)}
+            {score(match(239481251)?.scores_csv ?? "0-0", 1)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331925)?.player1_id ?? 0)?.logo
+                  team(match(239481251)?.player1_id ?? 0)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331925)?.player1_id ?? 0)?.org_acronym}
+              {team(match(239481251)?.player1_id ?? 0)?.university_acronym}
             </div>
           </div>
         </div>
@@ -347,21 +347,21 @@ const Bracket = () => {
         {/* Team 2 */}
         <div className="team">
           <div className="score">
-            {score(match(234331925)?.scores_csv ?? "0-0", 2)}
+            {score(match(239481251)?.scores_csv ?? "0-0", 2)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331925)?.player2_id ?? 0)?.logo ??
-                  getWinner(234331923)?.logo
+                  team(match(239481251)?.player2_id ?? 0)?.logo ??
+                  getWinner(239481249)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331925)?.player2_id ?? 0)?.org_acronym ??
-                getWinner(234331923)?.org_acronym ??
+              {team(match(239481251)?.player2_id ?? 0)?.university_acronym ??
+                getWinner(239481249)?.university_acronym ??
                 "TBD"}
             </div>
           </div>
@@ -379,21 +379,21 @@ const Bracket = () => {
         {/* Team 1 */}
         <div className="team">
           <div className="score">
-            {score(match(234331926)?.scores_csv ?? "0-0", 1)}
+            {score(match(239481252)?.scores_csv ?? "0-0", 1)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331926)?.player1_id ?? 0)?.logo ??
-                  getWinner(234331924)?.logo
+                  team(match(239481252)?.player1_id ?? 0)?.logo ??
+                  getWinner(239481250)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331926)?.player1_id ?? 0)?.org_acronym ??
-                getWinner(234331924)?.org_acronym ??
+              {team(match(239481252)?.player1_id ?? 0)?.university_acronym ??
+                getWinner(239481250)?.university_acronym ??
                 "TBD"}
             </div>
           </div>
@@ -402,21 +402,21 @@ const Bracket = () => {
         {/* Team 2 */}
         <div className="team">
           <div className="score">
-            {score(match(234331926)?.scores_csv ?? "0-0", 2)}
+            {score(match(239481252)?.scores_csv ?? "0-0", 2)}
           </div>
           <div className={c.details}>
             <div
               className="logo"
               style={{
                 backgroundImage: `url(${
-                  team(match(234331926)?.player2_id ?? 0)?.logo ??
-                  getWinner(234331925)?.logo
+                  team(match(239481252)?.player2_id ?? 0)?.logo ??
+                  getWinner(239481251)?.logo
                 })`,
               }}
             ></div>
             <div className="org">
-              {team(match(234331926)?.player2_id ?? 0)?.org_acronym ??
-                getWinner(234331925)?.org_acronym ??
+              {team(match(239481252)?.player2_id ?? 0)?.university_acronym ??
+                getWinner(239481251)?.university_acronym ??
                 "TBD"}
             </div>
           </div>
@@ -438,7 +438,7 @@ const Bracket = () => {
             backgroundImage: `url(${getWinner(233491296)?.logo})`,
           }}
         ></div>
-        <div className="org">{getWinner(233491296)?.org_acronym}</div>
+        <div className="org">{getWinner(233491296)?.university_acronym}</div>
       </div>
 
       {/* Winner 2 */}
@@ -456,7 +456,7 @@ const Bracket = () => {
             backgroundImage: `url(${getWinner(233491297)?.logo})`,
           }}
         ></div>
-        <div className="org">{getWinner(233491297)?.org_acronym}</div>
+        <div className="org">{getWinner(233491297)?.university_acronym}</div>
       </div>
 
       {/* Winner 3 */}
@@ -474,7 +474,7 @@ const Bracket = () => {
             backgroundImage: `url(${getWinner(233491301)?.logo})`,
           }}
         ></div>
-        <div className="org">{getWinner(233491301)?.org_acronym}</div>
+        <div className="org">{getWinner(233491301)?.university_acronym}</div>
       </div>
 
       {/* Winner 4 */}
@@ -492,7 +492,7 @@ const Bracket = () => {
             backgroundImage: `url(${getWinner(233491302)?.logo})`,
           }}
         ></div>
-        <div className="org">{getWinner(233491302)?.org_acronym}</div>
+        <div className="org">{getWinner(233491302)?.university_acronym}</div>
       </div>
     </div>
   );
