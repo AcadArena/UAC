@@ -48,13 +48,13 @@ const BracketModule: React.FC<{ className?: string }> = ({
       <div className={c.bracket}>BRACKET</div>
       <div className={c.labels}>
         <div className="label" style={{ transform: "translateY(50px)" }}>
-          Round 1 - April 18
+          Quarterfinals - June 5
         </div>
         <div className="label" style={{ transform: "translateX(10px)" }}>
-          Semi-Finals - April 25
+          Semi-Finals - June 6
         </div>
         <div className="label" style={{ transform: "translateY(100px)" }}>
-          Grand Finals - May 2
+          Grand Finals - June 13
         </div>
       </div>
       <Bracket />
