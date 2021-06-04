@@ -30,6 +30,7 @@ import { Highlight } from "@material-ui/icons";
 import Highlights from "./view/Highlights";
 import InGameWr from "./view/InGame_wr";
 import MatchResults from "./view/MatchResults";
+import SchedWithAds from "./view/SchedWithAd";
 
 const ms = makeStyles({
   app: {
@@ -101,6 +102,9 @@ function App() {
         </Route>
         <Route path="/highlights">
           <Highlights />
+        </Route>
+        <Route path="/schedwithads">
+          <SchedWithAds />
         </Route>
         <Route path="/ingame/wr">
           <InGameWr />

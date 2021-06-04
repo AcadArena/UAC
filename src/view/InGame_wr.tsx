@@ -126,9 +126,11 @@ const InGameWr = () => {
         </div>
         <div className="info info-left">
           <div className="org">
-            {swap_team_positions
-              ? team(match?.player2_id)?.org_name
-              : team(match?.player1_id)?.org_name}
+            {team(swap_team_positions ? match?.player2_id : match?.player1_id)
+              ?.university_acronym +
+              " " +
+              team(swap_team_positions ? match?.player2_id : match?.player1_id)
+                ?.org_name}
           </div>
           <div className="score">
             {
@@ -163,10 +165,11 @@ const InGameWr = () => {
             }
           </div>
           <div className="org">
-            {
+            {team(swap_team_positions ? match?.player1_id : match?.player2_id)
+              ?.university_acronym +
+              " " +
               team(swap_team_positions ? match?.player1_id : match?.player2_id)
-                ?.org_name
-            }
+                ?.org_name}
           </div>
         </div>
       </div>

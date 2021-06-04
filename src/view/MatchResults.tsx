@@ -77,7 +77,9 @@ const mcs = makeStyles((theme) => ({
 const MatchResults = () => {
   const classes = mcs();
 
-  const { match } = useSelector<ReduxState, Live>((state) => state.live);
+  const { match, swap_team_positions } = useSelector<ReduxState, Live>(
+    (state) => state.live
+  );
   const { team, getTeamMatchResult } = useTournament();
 
   return (
@@ -85,21 +87,51 @@ const MatchResults = () => {
       <div className="team left">
         <div
           className="logo"
-          style={{ backgroundImage: `url(${team(match?.player1_id)?.logo})` }}
+          style={{
+            backgroundImage: `url(${
+              team(swap_team_positions ? match?.player2_id : match?.player1_id)
+                ?.logo
+            })`,
+          }}
         ></div>
-        <div className="name">{team(match?.player1_id)?.org_name}</div>
+        <div className="name">
+          {
+            team(swap_team_positions ? match?.player2_id : match?.player1_id)
+              ?.org_name
+          }
+        </div>
         <div className="score">
-          {getTeamMatchResult(match, match?.player1_id).wins}
+          {
+            getTeamMatchResult(
+              match,
+              swap_team_positions ? match?.player2_id : match?.player1_id
+            ).wins
+          }
         </div>
       </div>
       <div className="team right">
         <div
           className="logo"
-          style={{ backgroundImage: `url(${team(match?.player2_id)?.logo})` }}
+          style={{
+            backgroundImage: `url(${
+              team(swap_team_positions ? match?.player1_id : match?.player2_id)
+                ?.logo
+            })`,
+          }}
         ></div>
-        <div className="name">{team(match?.player2_id)?.org_name}</div>
+        <div className="name">
+          {
+            team(swap_team_positions ? match?.player1_id : match?.player2_id)
+              ?.org_name
+          }
+        </div>
         <div className="score">
-          {getTeamMatchResult(match, match?.player2_id).wins}
+          {
+            getTeamMatchResult(
+              match,
+              swap_team_positions ? match?.player1_id : match?.player2_id
+            ).wins
+          }
         </div>
       </div>
     </div>

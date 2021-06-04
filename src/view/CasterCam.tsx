@@ -724,8 +724,15 @@ const getSize = (string: LowerThirdsMode): LowerThirdsSize => {
 
 const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
   const c = ms();
-  const { lowerThirds, casters, casters_alt, match, match_live, tournament } =
-    useSelector((state: ReduxState) => state.live);
+  const {
+    lowerThirds,
+    casters,
+    casters_alt,
+    match,
+    match_live,
+    tournament,
+    swap_team_positions,
+  } = useSelector((state: ReduxState) => state.live);
 
   const [poll] = useDocumentData<PollItemProps>(
     db
@@ -888,30 +895,50 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                         <div className="laurel"></div>
                         <div className="text left">Points</div>
                         <div className="value">
-                          {getTeamGroupsResult(match?.player1_id).points}
+                          {
+                            getTeamGroupsResult(
+                              (swap_team_positions
+                                ? match?.player2_id
+                                : match?.player1_id) ?? 0
+                            ).points
+                          }
                         </div>
                       </div>
                       <div
                         className="logo"
                         style={{
                           backgroundImage: `url(${getTeamLogo(
-                            match?.player1_id
+                            (swap_team_positions
+                              ? match?.player2_id
+                              : match?.player1_id) ?? 0
                           )}})`,
                         }}
                       ></div>
                       <div className="details">
                         <div className="school">
                           {
-                            getParticipant(match?.player1_id ?? 0)
-                              ?.university_name
+                            getParticipant(
+                              (swap_team_positions
+                                ? match?.player2_id
+                                : match?.player1_id) ?? 0
+                            )?.university_name
                           }
                         </div>
                         <div className="name">
-                          {getParticipant(match?.player1_id ?? 0)?.org_name}
+                          {
+                            getParticipant(
+                              swap_team_positions
+                                ? match?.player2_id ?? 0
+                                : match?.player1_id ?? 0
+                            )?.org_name
+                          }
                         </div>
                       </div>
                       <div className="score">
-                        {getFinalScore(match?.scores_csv ?? "0-0", 1)}
+                        {getFinalScore(
+                          match?.scores_csv ?? "0-0",
+                          swap_team_positions ? 2 : 1
+                        )}
                       </div>
                     </div>
                   </LowerThirds>
@@ -920,30 +947,50 @@ const CasterCam: React.FC<RouteComponentProps> = ({ location: { search } }) => {
                     <div className="team">
                       <div className={c.points + " " + c.pointsRight}>
                         <div className="value">
-                          {getTeamGroupsResult(match?.player1_id).points}
+                          {
+                            getTeamGroupsResult(
+                              swap_team_positions
+                                ? match?.player1_id
+                                : match?.player2_id
+                            ).points
+                          }
                         </div>
                         <div className="text right">Points</div>
                         <div className="laurel"></div>
                       </div>
                       <div className="score">
-                        {getFinalScore(match?.scores_csv ?? "0-0", 2)}
+                        {getFinalScore(
+                          match?.scores_csv ?? "0-0",
+                          swap_team_positions ? 1 : 2
+                        )}
                       </div>
                       <div className="details right">
                         <div className="school">
                           {
-                            getParticipant(match?.player2_id ?? 0)
-                              ?.university_name
+                            getParticipant(
+                              (swap_team_positions
+                                ? match?.player1_id
+                                : match?.player2_id) ?? 0
+                            )?.university_name
                           }
                         </div>
                         <div className="name">
-                          {getParticipant(match?.player2_id ?? 0)?.org_name}
+                          {
+                            getParticipant(
+                              (swap_team_positions
+                                ? match?.player1_id
+                                : match?.player2_id) ?? 0
+                            )?.org_name
+                          }
                         </div>
                       </div>
                       <div
                         className="logo"
                         style={{
                           backgroundImage: `url(${getTeamLogo(
-                            match?.player2_id
+                            swap_team_positions
+                              ? match?.player1_id
+                              : match?.player2_id
                           )}})`,
                         }}
                       ></div>

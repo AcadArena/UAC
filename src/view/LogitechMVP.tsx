@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import { FiberPin } from "@material-ui/icons";
 import React from "react";
 import { useSelector } from "react-redux";
-import { ReduxState } from "../config/types/types";
+import { LogitechMVPProps, ReduxState } from "../config/types/types";
 
 import Astra from "../assets/imgs/valorant/Astra_artwork.png";
 import Breach from "../assets/imgs/valorant/Breach_artwork.png";
@@ -49,8 +49,18 @@ const mcs = makeStyles((theme) => ({
     width: 1920,
     display: "flex",
     position: "relative",
-    backgroundSize: "stretch",
+    // backgroundSize: "stretch",
     alignItems: " flex-start",
+
+    "& .bg": {
+      position: "absolute",
+      top: 0,
+      left: 0,
+      height: "100%",
+      width: "100%",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    },
   },
 
   photo: {
@@ -205,10 +215,19 @@ const mcs = makeStyles((theme) => ({
 }));
 
 const LogitechMVP = () => {
-  const c = mcs();
   const { logitech_mvp } = useSelector((state: ReduxState) => state.live);
+  const c = mcs(logitech_mvp ?? { champion: "" });
   return (
     <div className={c.mvpPage}>
+      <div
+        className="bg"
+        style={{
+          backgroundImage: `url("${logitech_mvp?.champion}")`,
+          transform: `scaleX(${
+            1 * (logitech_mvp?.agent_adjustments.flip_x ? -1 : 1)
+          })`,
+        }}
+      ></div>
       <div
         className={c.photo}
         style={{
@@ -220,7 +239,7 @@ const LogitechMVP = () => {
           })`,
         }}
       ></div>
-      <div
+      {/* <div
         className={c.agent}
         style={{
           backgroundImage: `url(${agents[logitech_mvp?.agent || "jett"]})`,
@@ -230,7 +249,7 @@ const LogitechMVP = () => {
             1 + (logitech_mvp?.agent_adjustments.scale ?? 0) * 0.01
           })`,
         }}
-      ></div>
+      ></div> */}
       {/* <div className={c.frame}></div> */}
 
       <div className={c.stats}>

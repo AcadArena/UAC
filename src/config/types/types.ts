@@ -102,7 +102,10 @@ export interface Adjustments {
 export interface LogitechMVPProps extends PlayerStatProps {
   player_adjustments: Adjustments;
   agent_adjustments: Adjustments;
-  agent:
+  champion?: string;
+  championName?: string;
+  championIcon?: string;
+  agent?:
     | "brimstone"
     | "phoenix"
     | "sage"

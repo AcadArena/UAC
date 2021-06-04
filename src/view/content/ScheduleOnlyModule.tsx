@@ -26,6 +26,7 @@ const ms = makeStyles((theme) => ({
       color: "#ffd200",
       width: "100%",
       textAlign: "center",
+      paddingTop: 10,
       borderBottom: "5px solid #ffd200",
     },
 
@@ -36,7 +37,7 @@ const ms = makeStyles((theme) => ({
       justifyContent: "center",
       flexWrap: "wrap",
       // maxHeight: 200,
-      // marginTop: 14,
+      marginTop: 5,
       // marginRight: 40,
 
       "& .match": {
@@ -77,7 +78,7 @@ const ms = makeStyles((theme) => ({
         "& .team": {
           display: "flex",
           alignItems: "center",
-          width: 200,
+          width: 450,
           "& .logo": {
             height: 50,
             width: 90,
@@ -88,12 +89,12 @@ const ms = makeStyles((theme) => ({
           },
 
           "& .name": {
-            color: "#fbfbfb",
+            color: "#eeeeee",
             fontFamily: "Druk Wide Bold",
             textTransform: "uppercase",
             lineHeight: 1,
             textAlign: "left",
-            fontSize: 24,
+            fontSize: 18,
             letterSpacing: 1,
           },
         },
@@ -163,10 +164,7 @@ const ScheduleOnlyModule: React.FC<{ className?: string }> = ({
                 // @ts-ignore
                 <div className="match" key={match.id} style={props}>
                   <div className="badge">{badger(match)}</div>
-                  <div
-                    className="team left"
-                    style={{ flexDirection: "row-reverse" }}
-                  >
+                  <div className="team left">
                     <div
                       className="logo"
                       style={{
@@ -174,8 +172,9 @@ const ScheduleOnlyModule: React.FC<{ className?: string }> = ({
                       }}
                     ></div>
 
-                    <div className="name">
-                      {team(match.player1_id)?.university_acronym}
+                    <div className="name" style={{ textAlign: "right" }}>
+                      {team(match.player1_id)?.university_acronym}{" "}
+                      {team(match.player1_id)?.org_name}
                     </div>
                   </div>
                   <div className="vs">VS</div>
@@ -187,7 +186,8 @@ const ScheduleOnlyModule: React.FC<{ className?: string }> = ({
                       }}
                     ></div>
                     <div className="name">
-                      {team(match.player2_id)?.university_acronym}
+                      {team(match.player2_id)?.university_acronym}{" "}
+                      {team(match.player2_id)?.org_name}
                     </div>
                   </div>
                 </div>
