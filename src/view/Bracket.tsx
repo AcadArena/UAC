@@ -6,7 +6,7 @@ import bracketPng from "../assets/imgs/bracket.png";
 const mcs = makeStyles((theme) => ({
   bracket: {
     backgroundSize: "contain",
-    backgroundImage: `url(${bracketPng})`,
+    backgroundImage: `url("${bracketPng}")`,
     backgroundRepeat: "no-repeat",
     width: 874,
     height: 331,
@@ -183,9 +183,9 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481248)?.player1_id ?? 0)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -203,9 +203,9 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481248)?.player2_id ?? 0)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -232,9 +232,9 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481249)?.player1_id ?? 0)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -252,9 +252,9 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481249)?.player2_id ?? 0)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -281,9 +281,9 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481250)?.player1_id ?? 0)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -301,10 +301,10 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481250)?.player2_id ?? 0)?.logo ??
                   getWinner(239481248)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -333,9 +333,9 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481251)?.player1_id ?? 0)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -353,10 +353,10 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481251)?.player2_id ?? 0)?.logo ??
                   getWinner(239481249)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -385,10 +385,10 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481252)?.player1_id ?? 0)?.logo ??
                   getWinner(239481250)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -408,10 +408,10 @@ const Bracket = () => {
             <div
               className="logo"
               style={{
-                backgroundImage: `url(${
+                backgroundImage: `url("${
                   team(match(239481252)?.player2_id ?? 0)?.logo ??
                   getWinner(239481251)?.logo
-                })`,
+                }")`,
               }}
             ></div>
             <div className="org">
@@ -435,7 +435,7 @@ const Bracket = () => {
         <div
           className="logo"
           style={{
-            backgroundImage: `url(${getWinner(233491296)?.logo})`,
+            backgroundImage: `url("${getWinner(233491296)?.logo}")`,
           }}
         ></div>
         <div className="org">{getWinner(233491296)?.university_acronym}</div>
@@ -453,7 +453,7 @@ const Bracket = () => {
         <div
           className="logo"
           style={{
-            backgroundImage: `url(${getWinner(233491297)?.logo})`,
+            backgroundImage: `url("${getWinner(233491297)?.logo}")`,
           }}
         ></div>
         <div className="org">{getWinner(233491297)?.university_acronym}</div>
@@ -471,7 +471,7 @@ const Bracket = () => {
         <div
           className="logo"
           style={{
-            backgroundImage: `url(${getWinner(233491301)?.logo})`,
+            backgroundImage: `url("${getWinner(233491301)?.logo}")`,
           }}
         ></div>
         <div className="org">{getWinner(233491301)?.university_acronym}</div>
@@ -489,7 +489,7 @@ const Bracket = () => {
         <div
           className="logo"
           style={{
-            backgroundImage: `url(${getWinner(233491302)?.logo})`,
+            backgroundImage: `url("${getWinner(233491302)?.logo}")`,
           }}
         ></div>
         <div className="org">{getWinner(233491302)?.university_acronym}</div>

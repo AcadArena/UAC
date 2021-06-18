@@ -14,16 +14,26 @@ export const wsContext = createContext<WebsocketProps>({
   setLiveSettings: () => {},
   updateSocketUsername: () => {},
 });
-let host: string = "";
-const hostCloud: string = "https://rot-websocket-server.herokuapp.com/";
+let config = {
+  host: "",
+  path: "",
+};
+const hostCloud: string = "https://servers.acadarena.com/";
 const hostLocal: string = "localhost:3200";
 
 if (window.location.hostname === "localhost") {
-  host = hostLocal;
+  config = {
+    host: hostLocal,
+    path: "/socket.io",
+  };
 } else {
-  host = hostCloud;
+  config = {
+    host: hostCloud,
+    path: "/ws/socket.io",
+  };
 }
-let socket = io.connect(`${host}`);
+
+let socket: any = io.connect(`${config.host}`, { path: config.path });
 socket.emit("join_room", { room: "uac", username: "brodcast module" });
 socket.on("set_live_settings", (settings: any) =>
   store.dispatch(setLiveSettings(settings))
