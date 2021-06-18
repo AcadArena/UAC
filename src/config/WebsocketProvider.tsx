@@ -28,7 +28,7 @@ if (window.location.hostname === "localhost") {
   };
 } else {
   config = {
-    host: hostLocal,
+    host: hostCloud,
     path: "/ws/socket.io",
   };
 }
